@@ -2,11 +2,11 @@ const fs = require("fs");
 const path = require("path");
 
 function init() {
-  fs.readdir(path.resolve(__dirname, "./svg"), (err, files) => {
+  fs.readdir(path.resolve(__dirname, "../svg"), (err, files) => {
     const exportsArr = [];
     const svgArr = [];
     files.forEach((file, index, array) => {
-      fs.readFile(path.resolve(__dirname, "./svg/" + file), "utf8", (err, data) => {
+      fs.readFile(path.resolve(__dirname, "../svg/" + file), "utf8", (err, data) => {
         if (err) return console.error(err);
 
         let fileName = file.replace(/\-/g, "_");
@@ -31,7 +31,7 @@ function init() {
 
 function makeModuleFile(exportsArr) {
   exportsArr = exportsArr.join("\n");
-  const newPath = path.resolve(__dirname, "./dist/fa.js");
+  const newPath = path.resolve(__dirname, "../dist/fa.js");
   fs.writeFile(newPath, exportsArr, err => {
     if (err) return console.error(err);
     console.log("done Module");
@@ -61,7 +61,7 @@ function makeUI(svgArr) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Olum Icons</title>
-    <link rel="stylesheet" href="./app.css"/>
+    <link rel="stylesheet" href="./src/app.css"/>
   </head>
   <body>
   
@@ -73,11 +73,11 @@ function makeUI(svgArr) {
       ${cards}
     </main>
 
-    <script defer src="./app.js"></script>
+    <script defer src="./src/app.js"></script>
   </body>
 </html>`;
 
-  const newPath = path.resolve(__dirname, "./index.html");
+  const newPath = path.resolve(__dirname, "../index.html");
   fs.writeFile(newPath, html, err => {
     if (err) return console.error(err);
     console.log("done UI");
