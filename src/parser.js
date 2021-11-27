@@ -34,7 +34,7 @@ function makeModuleFile(arr) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
   arr.forEach((item, index, array) => {
-    const icon = "export const " + item.name + " = `" + item.svg + "`;";
+    const icon = "const " + item.name + " = `" + item.svg + "`;\nexport default " + item.name + ";";
     const newPath = path.resolve(__dirname, "../dist/fa/" + item.name + ".js");
     fs.writeFile(newPath, icon, err => {
       if (err) return console.error(err);

@@ -1,6 +1,6 @@
 {
   "name": "olum-icons",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "OlumIcons is a wrapper for font awesome svg tags",
   "main": "dist",
   "directories": {
