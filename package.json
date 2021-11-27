@@ -1,13 +1,13 @@
 {
   "name": "olum-icons",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "OlumIcons is a wrapper for font awesome svg tags",
-  "main": "dist/index.js",
+  "main": "dist",
   "directories": {
     "dist": "dist"
   },
   "scripts": {
-    "build": "gulp"
+    "build": "node src/parser.js"
   },
   "repository": {
     "type": "git",

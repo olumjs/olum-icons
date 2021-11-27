@@ -3,7 +3,6 @@ const path = require("path");
 
 function init() {
   fs.readdir(path.resolve(__dirname, "../svg"), (err, files) => {
-    const exportsArr = [];
     const svgArr = [];
     files.forEach((file, index, array) => {
       fs.readFile(path.resolve(__dirname, "../svg/" + file), "utf8", (err, data) => {
@@ -15,13 +14,13 @@ function init() {
         fileName = fileName.join("").trim();
         fileName = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].includes(+fileName[0]) ? "_" + fileName : fileName; // add underscore before any name starts with number
         data = data.replace(/\<\!\-\-(.|\s)*?\-\-\>/gi, ""); // remove html comments
-        const icon = "export const " + fileName + " = `" + data + "`;";
 
-        svgArr.push({ svg: data, name: fileName });
-        exportsArr.push(icon);
+        if (data.trim() !== "" || fileName.trim() !== "") {
+          svgArr.push({ svg: data, name: fileName });
+        }
 
         if (index === array.length - 1) {
-          makeModuleFile(exportsArr);
+          makeModuleFile(svgArr);
           makeUI(svgArr);
         }
       });
@@ -29,17 +28,26 @@ function init() {
   });
 }
 
-function makeModuleFile(exportsArr) {
-  exportsArr = exportsArr.join("\n");
-  const newPath = path.resolve(__dirname, "../dist/fa.js");
-  fs.writeFile(newPath, exportsArr, err => {
-    if (err) return console.error(err);
-    console.log("done Module");
+function makeModuleFile(arr) {
+  // console.log(arr);
+  const dir = path.resolve(__dirname, "../dist/fa");
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+
+  arr.forEach((item, index, array) => {
+    const icon = "export const " + item.name + " = `" + item.svg + "`;";
+    const newPath = path.resolve(__dirname, "../dist/fa/" + item.name + ".js");
+    fs.writeFile(newPath, icon, err => {
+      if (err) return console.error(err);
+      if (index === array.length - 1) {
+        console.log("done Module");
+      }
+    });
   });
 }
 
 function makeUI(svgArr) {
-  const cards = svgArr.map(obj => {
+  const cards = svgArr
+    .map(obj => {
       return `
       <div class="card" data-name="${obj.name}">
         <section>${obj.svg}</section>
@@ -52,7 +60,8 @@ function makeUI(svgArr) {
         <div class="layer">Copied!</div>
       </div>
     `;
-  }).join("\n");
+    })
+    .join("\n");
 
   let html = `<!DOCTYPE html>
 <html lang="en">
