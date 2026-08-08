@@ -1,0 +1,522 @@
+{
+  "design": {
+    "tags": [
+      "magnifying glass",
+      "plus"
+    ],
+    "name": "Design"
+  },
+  "text": {
+    "tags": [
+      "magnifying glass",
+      "plus"
+    ],
+    "name": "Text formatting"
+  },
+  "accessibility": {
+    "tags": [
+      "magnifying glass",
+      "plus"
+    ],
+    "name": "Accessibility"
+  },
+  "medical": {
+    "tags": [
+      "gender",
+      "sex",
+      "female",
+      "feminine",
+      "woman",
+      "girl"
+    ],
+    "name": "Medical"
+  },
+  "account": {
+    "tags": [
+      "account",
+      "settings",
+      "spanner",
+      "diy",
+      "toolbox",
+      "build",
+      "construction"
+    ],
+    "name": "Accounts & access"
+  },
+  "multimedia": {
+    "tags": [
+      "water",
+      "sea",
+      "sound",
+      "hertz",
+      "wavelength",
+      "vibrate",
+      "ocean",
+      "swimming",
+      "frequency"
+    ],
+    "name": "Multimedia"
+  },
+  "science": {
+    "tags": [
+      "tubes",
+      "vials",
+      "phials",
+      "flasks",
+      "ampoules",
+      "ampules",
+      "lab",
+      "chemistry",
+      "experiment",
+      "test"
+    ],
+    "name": "Science"
+  },
+  "social": {
+    "tags": [
+      "virgin",
+      "maiden",
+      "harvest",
+      "precision",
+      "earth",
+      "analysis",
+      "astrology",
+      "star sign",
+      "horoscope",
+      "constellation",
+      "celestial"
+    ],
+    "name": "Social"
+  },
+  "notifications": {
+    "tags": [
+      "cancel",
+      "close",
+      "cross",
+      "delete",
+      "ex",
+      "remove",
+      "times",
+      "clear",
+      "math",
+      "multiply",
+      "multiplication"
+    ],
+    "name": "Notification"
+  },
+  "home": {
+    "tags": [
+      "swimming",
+      "water",
+      "pool",
+      "lifeguard",
+      "ocean",
+      "🌊",
+      "🏊‍♂️",
+      "🏊‍♀️",
+      "🏊",
+      "🥽"
+    ],
+    "name": "Home"
+  },
+  "connectivity": {
+    "tags": [
+      "flash",
+      "camera",
+      "lightning",
+      "electricity",
+      "energy",
+      "power",
+      "quick"
+    ],
+    "name": "Connectivity"
+  },
+  "devices": {
+    "tags": [
+      "flash",
+      "camera",
+      "lightning",
+      "electricity",
+      "energy",
+      "power",
+      "quick"
+    ],
+    "name": "Devices"
+  },
+  "time": {
+    "tags": [
+      "clock",
+      "time"
+    ],
+    "name": "Time & calendar"
+  },
+  "travel": {
+    "tags": [
+      "tumble dryer",
+      "amenities",
+      "electronics",
+      "cycle",
+      "clothes",
+      "rinse",
+      "spin",
+      "drum"
+    ],
+    "name": "Travel"
+  },
+  "photography": {
+    "tags": [
+      "magnifying glass",
+      "plus"
+    ],
+    "name": "Photography"
+  },
+  "layout": {
+    "tags": [
+      "magnifying glass",
+      "plus"
+    ],
+    "name": "Layout"
+  },
+  "transportation": {
+    "tags": [
+      "minivan",
+      "cart",
+      "wagon",
+      "truck",
+      "lorry",
+      "trailer",
+      "camper",
+      "vehicle",
+      "drive",
+      "trip",
+      "journey",
+      "van",
+      "transport",
+      "carriage",
+      "delivery",
+      "travel"
+    ],
+    "name": "Transportation"
+  },
+  "development": {
+    "tags": [
+      "account",
+      "settings",
+      "spanner",
+      "diy",
+      "toolbox",
+      "build",
+      "construction"
+    ],
+    "name": "Coding & development"
+  },
+  "food-beverage": {
+    "tags": [
+      "alcohol",
+      "beverage",
+      "bar",
+      "drink",
+      "glass",
+      "sommelier",
+      "vineyard",
+      "winery"
+    ],
+    "name": "Food & beverage"
+  },
+  "gaming": {
+    "tags": [
+      "magic",
+      "selection"
+    ],
+    "name": "Gaming"
+  },
+  "communication": {
+    "tags": [
+      "camera",
+      "security"
+    ],
+    "name": "Communication"
+  },
+  "buildings": {
+    "tags": [
+      "storage",
+      "storehouse",
+      "depot",
+      "depository",
+      "repository",
+      "stockroom",
+      "logistics",
+      "building"
+    ],
+    "name": "Buildings"
+  },
+  "tools": {
+    "tags": [
+      "account",
+      "settings",
+      "spanner",
+      "diy",
+      "toolbox",
+      "build",
+      "construction"
+    ],
+    "name": "Tools"
+  },
+  "files": {
+    "tags": [
+      "connection",
+      "signal",
+      "wireless",
+      "directory",
+      "settings",
+      "control",
+      "preferences",
+      "cog",
+      "edit",
+      "gear"
+    ],
+    "name": "File icons"
+  },
+  "mail": {
+    "tags": [
+      "empty",
+      "deletion",
+      "cleanup",
+      "junk",
+      "clear",
+      "garbage",
+      "delete",
+      "remove",
+      "bin",
+      "waste",
+      "recycle",
+      "discard",
+      "binoculars",
+      "rubbish"
+    ],
+    "name": "Mail"
+  },
+  "arrows": {
+    "tags": [
+      "person",
+      "assign",
+      "move",
+      "give",
+      "setup",
+      "self",
+      "me",
+      "myself",
+      "profile",
+      "avatar",
+      "incoming",
+      "recipient",
+      "assignee",
+      "inbound"
+    ],
+    "name": "Arrows"
+  },
+  "math": {
+    "tags": [
+      "cancel",
+      "close",
+      "cross",
+      "delete",
+      "ex",
+      "remove",
+      "times",
+      "clear",
+      "math",
+      "multiply",
+      "multiplication"
+    ],
+    "name": "Mathematics"
+  },
+  "shapes": {
+    "tags": [
+      "shape",
+      "geometry",
+      "art",
+      "width",
+      "height",
+      "size",
+      "calculate",
+      "measure",
+      "select",
+      "graphics",
+      "box"
+    ],
+    "name": "Shapes"
+  },
+  "sports": {
+    "tags": [
+      "swimming",
+      "water",
+      "pool",
+      "lifeguard",
+      "ocean",
+      "🌊",
+      "🏊‍♂️",
+      "🏊‍♀️",
+      "🏊",
+      "🥽"
+    ],
+    "name": "Sports"
+  },
+  "people": {
+    "tags": [
+      "user",
+      "shield",
+      "admin",
+      "protected",
+      "guard",
+      "profile",
+      "security",
+      "privacy",
+      "permissions",
+      "role"
+    ],
+    "name": "People"
+  },
+  "finance": {
+    "tags": [
+      "money",
+      "finance",
+      "pocket"
+    ],
+    "name": "Finance"
+  },
+  "shopping": {
+    "tags": [
+      "discount",
+      "reduced",
+      "offer",
+      "voucher",
+      "entry",
+      "pass",
+      "event",
+      "concert",
+      "show",
+      "book",
+      "purchase",
+      "%"
+    ],
+    "name": "Shopping"
+  },
+  "emoji": {
+    "tags": [
+      "virgin",
+      "maiden",
+      "harvest",
+      "precision",
+      "earth",
+      "analysis",
+      "astrology",
+      "star sign",
+      "horoscope",
+      "constellation",
+      "celestial"
+    ],
+    "name": "Emoji"
+  },
+  "navigation": {
+    "tags": [
+      "indirection",
+      "vpn",
+      "virtual private network",
+      "proxy",
+      "connections",
+      "bounce",
+      "reroute",
+      "path",
+      "journey",
+      "planner",
+      "stops",
+      "stations",
+      "shared",
+      "spread",
+      "viral"
+    ],
+    "name": "Navigation & Places"
+  },
+  "nature": {
+    "tags": [
+      "tree",
+      "forest",
+      "park",
+      "nature"
+    ],
+    "name": "Nature"
+  },
+  "animals": {
+    "tags": [
+      "invertebrate",
+      "grub",
+      "larva",
+      "snake",
+      "crawl",
+      "wiggle",
+      "slither",
+      "pest control",
+      "computer virus",
+      "malware"
+    ],
+    "name": "Animals"
+  },
+  "security": {
+    "tags": [
+      "invertebrate",
+      "grub",
+      "larva",
+      "snake",
+      "crawl",
+      "wiggle",
+      "slither",
+      "pest control",
+      "computer virus",
+      "malware"
+    ],
+    "name": "Security"
+  },
+  "weather": {
+    "tags": [
+      "flash",
+      "camera",
+      "lightning",
+      "electricity",
+      "energy",
+      "power",
+      "quick"
+    ],
+    "name": "Weather"
+  },
+  "charts": {
+    "tags": [
+      "statistics"
+    ],
+    "name": "Charts"
+  },
+  "cursors": {
+    "tags": [
+      "magic",
+      "selection"
+    ],
+    "name": "Cursors"
+  },
+  "sustainability": {
+    "tags": [
+      "weather",
+      "air",
+      "blow"
+    ],
+    "name": "Sustainability"
+  },
+  "seasons": {
+    "tags": [
+      "brightness",
+      "weather",
+      "light",
+      "summer"
+    ],
+    "name": "Seasons"
+  }
+}

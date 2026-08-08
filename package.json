@@ -1,13 +1,16 @@
 {
   "name": "olum-icons",
   "version": "0.1.3",
-  "description": "OlumIcons is a wrapper for font awesome svg tags",
+  "description": "A framework-agnostic collection of SVG icons as strings.",
   "main": "dist/index.js",
   "directories": {
     "dist": "dist"
   },
   "scripts": {
-    "build": "node src/parser.js"
+    "parse:lucide": "node scripts/parse-lucide.js",
+    "parse:heroicons": "node scripts/parse-heroicons.js",
+    "parse:fontawesome": "node scripts/parse-fontawesome.js",
+    "build": "node scripts/index.js"
   },
   "repository": {
     "type": "git",
