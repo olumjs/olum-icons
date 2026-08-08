@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs");
 const { ls } = require("./helpers");
 
-const metaFile = path.resolve(__dirname, "../dist/lucide.json");
 const lucidePath = path.resolve(__dirname, "../svg/lucide");
 // this object is made manually since it's needed only once
 const mainCategories = {
@@ -85,4 +84,9 @@ if (fs.existsSync(lucidePath)) {
 }
 
 console.log("handled " + count + " lucide svg files!");
+
+const destDir = path.resolve(__dirname, "../dist");
+fs.mkdirSync(destDir, { recursive: true, force: true }); // create dist dir if doesn't exist
+
+const metaFile = path.resolve(destDir, "./lucide.json");
 fs.writeFileSync(metaFile, JSON.stringify(meta, null, 2));

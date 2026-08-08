@@ -3,7 +3,7 @@ const fs = require("fs");
 const { ls, toPascalCase } = require("./helpers");
 
 const indexFile = path.resolve(__dirname, "../dist/index.js");
-if (indexFile) fs.unlinkSync(indexFile);
+if (fs.existsSync(indexFile)) fs.unlinkSync(indexFile);
 
 const lucide = () => {
   const lucidePath = path.resolve(__dirname, "../svg_out/lucide");
@@ -11,9 +11,17 @@ const lucide = () => {
   fs.rmSync(destDir, { recursive: true, force: true });
   fs.mkdirSync(destDir, { recursive: true, force: true });
 
+  const seen = new Set();
   if (fs.existsSync(lucidePath)) {
     const files = ls(lucidePath);
-    files.forEach((file) => {
+    const uniquePaths = files.filter((filePath) => {
+      const basename = path.basename(filePath);
+      if (seen.has(basename)) return false;
+      seen.add(basename);
+      return true;
+    });
+
+    uniquePaths.forEach((file) => {
       if (fs.existsSync(file) && fs.lstatSync(file).isFile()) {
         const svgName = toPascalCase(path.basename(file).replace(/\.svg$/, ""));
         if (svgName) {

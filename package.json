@@ -1,6 +1,6 @@
 {
   "name": "olum-icons",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A framework-agnostic collection of SVG icons as strings.",
   "main": "dist/index.js",
   "directories": {
@@ -10,7 +10,8 @@
     "parse:lucide": "node scripts/parse-lucide.js",
     "parse:heroicons": "node scripts/parse-heroicons.js",
     "parse:fontawesome": "node scripts/parse-fontawesome.js",
-    "build": "node scripts/index.js"
+    "build": "node scripts/index.js",
+    "clean": "rm -rf svg_out dist"
   },
   "repository": {
     "type": "git",
