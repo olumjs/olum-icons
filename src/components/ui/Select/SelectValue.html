@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { placeholder = "", class: className = "" } = props();
+
+  const classes = () => twMerge("flex flex-1 text-left data-[placeholder]:text-muted-foreground", className);
+</script>
+
+<span data-slot="select-value" data-placeholder class="{classes()}">{placeholder}</span>

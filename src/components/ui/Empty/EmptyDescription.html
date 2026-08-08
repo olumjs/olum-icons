@@ -1,0 +1,12 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const base = "text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="empty-description" class="{classes()}">{children}</div>

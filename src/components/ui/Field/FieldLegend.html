@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { variant = "legend", class: className = "", children } = props();
+
+  const classes = () => twMerge("mb-1.5 font-medium", variant === "label" ? "text-sm" : "text-base", className);
+</script>
+
+<legend data-slot="field-legend" data-variant="{variant}" class="{classes()}">{children}</legend>

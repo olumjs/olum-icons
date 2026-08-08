@@ -1,0 +1,32 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { toggleGroupStore, nextToggleGroupId } from "./toggleGroupStore";
+
+  const { multiple = false, defaultValue = [], orientation = "horizontal", class: className = "", children } = props();
+
+  // Coordinating which item(s) are pressed can't live on each item's own
+  // Toggle instance (there's no way for siblings to see each other's local
+  // state), so it's kept here in a per-group-instance store entry instead --
+  // same "store keyed by a per-instance id" pattern Carousel uses. Items
+  // find this group via host.closest('[data-slot="toggle-group"]') and read
+  // data-group-id/data-multiple off it.
+  const id = nextToggleGroupId();
+  toggleGroupStore.init(id, defaultValue);
+
+  // Reference app's ToggleGroup defaults to a real gap between items (its
+  // `spacing` prop defaults to 2, not 0) -- items are separate, fully
+  // rounded buttons by default. The joined/segmented look (rounded-none
+  // except the outer edges) only happens there when spacing is explicitly
+  // set to 0, which neither demo does, so it's not replicated here.
+  const base = "group/toggle-group flex w-fit items-center gap-2 rounded-lg";
+
+  const orientations = {
+    horizontal: "flex-row",
+    vertical: "flex-col items-stretch",
+  };
+
+  const classes = () => twMerge(base, orientations[orientation] || orientations.horizontal, className);
+</script>
+
+<div role="group" data-slot="toggle-group" data-group-id="{id}" data-multiple="{multiple}" data-orientation="{orientation}" class="{classes()}">{children}</div>

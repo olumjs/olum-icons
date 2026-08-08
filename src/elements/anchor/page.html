@@ -1,0 +1,88 @@
+<script>
+  import Anchor from "../../components/ui/Anchor/Anchor";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+  const icons = {
+    circleFadingArrowUp: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 7.38 16.75" /><path d="m16 12-4-4-4 4" /><path d="M12 16V8" /><path d="M2.5 8.875a10 10 0 0 0-.5 3" /><path d="M2.83 16a10 10 0 0 0 2.43 3.4" /><path d="M4.636 5.235a10 10 0 0 1 .891-.857" /><path d="M8.644 21.42a10 10 0 0 0 7.631-.38" /></svg>`,
+    gitBranch: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="18" r="2" /><circle cx="7" cy="6" r="2" /><circle cx="17" cy="18" r="2" /><path d="M7 8v8" /><path d="M7 8a4 4 0 0 0 4 4h4" /></svg>`,
+    gitFork: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="2" /><circle cx="6" cy="6" r="2" /><circle cx="18" cy="6" r="2" /><path d="M12 16v-4" /><path d="M6 8v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8" /></svg>`,
+    arrowUp: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></svg>`,
+    spinner: `<svg xmlns="http://www.w3.org/2000/svg" class="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>`,
+  };
+</script>
+
+<Navbar />
+<GalleryNav id="anchor" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="anchor" />
+
+  <DemoBlock label="variants" snippet="{snippets['variants']}">
+    <Anchor>Anchor</Anchor>
+    <Anchor variant="outline">Outline</Anchor>
+    <Anchor variant="secondary">Secondary</Anchor>
+    <Anchor variant="ghost">Ghost</Anchor>
+    <Anchor variant="destructive">Destructive</Anchor>
+    <Anchor variant="link">Link</Anchor>
+  </DemoBlock>
+
+  <InstallBlock id="anchor" />
+  <DemoBlock label="icon" snippet="{snippets['icon']}">
+    <Anchor variant="outline" size="icon">
+      <div html="icons.circleFadingArrowUp"></div>
+    </Anchor>
+  </DemoBlock>
+
+  <DemoBlock label="sizes" snippet="{snippets['sizes']}">
+    <div class="flex items-center gap-2">
+      <Anchor size="xs">xs</Anchor>
+      <Anchor size="sm">sm</Anchor>
+      <Anchor size="default">default</Anchor>
+      <Anchor size="lg">lg</Anchor>
+    </div>
+  </DemoBlock>
+
+  <DemoBlock label="with icon" snippet="{snippets['with-icon']}">
+    <div class="flex gap-2">
+      <Anchor variant="outline">
+        <div data-icon="inline-start" html="icons.gitBranch"></div>
+        New Branch
+      </Anchor>
+      <Anchor variant="outline">
+        Fork
+        <div data-icon="inline-end" html="icons.gitFork"></div>
+      </Anchor>
+    </div>
+  </DemoBlock>
+
+  <DemoBlock label="pill" snippet="{snippets['pill']}">
+    <div class="flex gap-2">
+      <Anchor class="rounded-full">Get Started</Anchor>
+      <Anchor variant="outline" size="icon" class="rounded-full">
+        <div html="icons.arrowUp"></div>
+      </Anchor>
+    </div>
+  </DemoBlock>
+
+  <DemoBlock label="loading" snippet="{snippets['loading']}">
+    <div class="flex gap-2">
+      <Anchor variant="outline" disabled="{true}">
+        <div data-icon="inline-start" html="icons.spinner"></div>
+        Generating
+      </Anchor>
+      <Anchor variant="secondary" disabled="{true}">
+        Downloading
+        <div data-icon="inline-start" html="icons.spinner"></div>
+      </Anchor>
+    </div>
+  </DemoBlock>
+
+  <Pager id="anchor" />
+</div>

@@ -1,0 +1,33 @@
+<script>
+  import Skeleton from "../../components/ui/Skeleton/Skeleton";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="skeleton" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="skeleton" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <div class="flex items-center gap-3">
+      <Skeleton class="size-10 rounded-full" />
+      <div class="flex flex-col gap-2">
+        <Skeleton class="h-4 w-40" />
+        <Skeleton class="h-4 w-24" />
+      </div>
+    </div>
+  </DemoBlock>
+
+  <InstallBlock id="skeleton" />
+  <Pager id="skeleton" />
+</div>

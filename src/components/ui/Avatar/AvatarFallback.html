@@ -1,0 +1,12 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const base = "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<span data-slot="avatar-fallback" class="{classes()}">{children}</span>

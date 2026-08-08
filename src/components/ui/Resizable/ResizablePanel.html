@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { defaultSize = 50, class: className = "", children } = props();
+
+  const classes = () => twMerge("min-w-0 min-h-0 overflow-hidden", className);
+</script>
+
+<div data-slot="resizable-panel" style="flex:{defaultSize} 1 0px;" class="{classes()}">{children}</div>

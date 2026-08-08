@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { href = "#", class: className = "", children } = props();
+
+  const classes = () => twMerge("transition-colors hover:text-foreground", className);
+</script>
+
+<a data-slot="breadcrumb-link" href="{href}" class="{classes()}">{children}</a>

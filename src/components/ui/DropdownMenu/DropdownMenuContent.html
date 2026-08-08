@@ -1,0 +1,51 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { align = "start", class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="dropdown-menu"]');
+    const input = root && root.querySelector(":scope > input");
+
+    const close = () => {
+      if (!input) return;
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onDocClick = (e) => {
+      if (root && !root.contains(e.target)) close();
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape" && input && input.checked) close();
+    };
+    const onItemClick = (e) => {
+      const item = e.target.closest("[data-slot=dropdown-menu-item]");
+      if (item && !item.hasAttribute("data-sub-trigger")) close();
+    };
+
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onKey);
+    host.addEventListener("click", onItemClick);
+    return () => {
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("keydown", onKey);
+      host.removeEventListener("click", onItemClick);
+    };
+  });
+
+  const aligns = {
+    start: "left-0",
+    center: "left-1/2 -translate-x-1/2",
+    end: "right-0",
+  };
+
+  const classes = () =>
+    twMerge(
+      "absolute top-full z-50 mt-1 min-w-32 rounded-lg bg-background p-1 text-foreground shadow-md ring-1 ring-border outline-none",
+      aligns[align] || aligns.start,
+      className,
+    );
+</script>
+
+<div data-slot="dropdown-menu-content" class="{classes()}">{children}</div>

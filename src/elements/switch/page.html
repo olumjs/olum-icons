@@ -1,0 +1,39 @@
+<script>
+  import Label from "../../components/ui/Label/Label";
+  import Switch from "../../components/ui/Switch/Switch";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="switch" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="switch" />
+
+  
+  <DemoBlock label="variants" snippet="{snippets['variants']}">
+    <div class="flex items-center gap-2">
+      <Switch id="switch-default" defaultChecked="{true}" />
+      <Label for="switch-default">Default</Label>
+    </div>
+    <div class="flex items-center gap-2">
+      <Switch id="switch-sm" size="sm" />
+      <Label for="switch-sm">Small</Label>
+    </div>
+    <div class="flex items-center gap-2">
+      <Switch id="switch-disabled" disabled="{true}" />
+      <Label for="switch-disabled">Disabled</Label>
+    </div>
+  </DemoBlock>
+  <InstallBlock id="switch" />
+
+  <Pager id="switch" />
+</div>

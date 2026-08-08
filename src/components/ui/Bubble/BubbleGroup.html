@@ -1,0 +1,14 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // [&>[data-olum]]:contents: Bubble is its own component, so BubbleGroup's real
+  // direct child is its host wrapper div, not the data-slot=bubble div carrying
+  // self-end -- align-self only affects actual flex items (direct children), so
+  // without this, align="end" bubbles never shift to the right.
+  const classes = () => twMerge("flex min-w-0 flex-col gap-2 [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="bubble-group" class="{classes()}">{children}</div>

@@ -1,0 +1,15 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { heading, class: className = "", children } = props();
+
+  const classes = () => twMerge("overflow-hidden p-1 text-foreground", className);
+</script>
+
+<div data-slot="command-group" class="{classes()}">
+  <if when="heading">
+    <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground">{heading}</div>
+  </if>
+  {children}
+</div>

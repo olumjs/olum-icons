@@ -1,0 +1,67 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { index = 0, class: className = "" } = props();
+
+  // Rounding/left-border for the group's outer edges is applied by
+  // InputOTPGroup instead of here: each slot's real <input> lives inside its
+  // own OlumJS host wrapper div, so first:/last: (:first-child/:last-child)
+  // on this element's own class always matches trivially (it's the only
+  // child of that wrapper) regardless of its position among sibling slots --
+  // every slot would get rounded on both ends instead of just the group's.
+  const base =
+    "relative flex size-8 items-center justify-center border-y border-r border-border bg-transparent text-center text-sm outline-none transition-all focus:z-10 focus:border-ring focus:ring-3 focus:ring-ring/50 appearance-none";
+
+  const classes = () => twMerge(base, className);
+
+  onMount(() => {
+    const input = host.querySelector("input");
+
+    const allSlots = () => {
+      const container = host.closest('[data-slot="input-otp"]') || document;
+      return Array.from(container.querySelectorAll('input[data-slot="input-otp-slot"]'));
+    };
+
+    const onInput = (e) => {
+      e.target.value = e.target.value.replace(/[^0-9a-zA-Z]/g, "").slice(-1);
+      if (e.target.value) {
+        const slots = allSlots();
+        const idx = slots.indexOf(input);
+        if (slots[idx + 1]) slots[idx + 1].focus();
+      }
+    };
+
+    const onKeydown = (e) => {
+      if (e.key === "Backspace" && !e.target.value) {
+        const slots = allSlots();
+        const idx = slots.indexOf(input);
+        if (slots[idx - 1]) slots[idx - 1].focus();
+      }
+    };
+
+    const onPaste = (e) => {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData("text").replace(/[^0-9a-zA-Z]/g, "");
+      if (!text) return;
+      const slots = allSlots();
+      const idx = slots.indexOf(input);
+      text.split("").forEach((ch, i) => {
+        if (slots[idx + i]) slots[idx + i].value = ch;
+      });
+      const last = slots[Math.min(idx + text.length, slots.length - 1)];
+      last && last.focus();
+    };
+
+    input.addEventListener("input", onInput);
+    input.addEventListener("keydown", onKeydown);
+    input.addEventListener("paste", onPaste);
+    return () => {
+      input.removeEventListener("input", onInput);
+      input.removeEventListener("keydown", onKeydown);
+      input.removeEventListener("paste", onPaste);
+    };
+  });
+</script>
+
+<input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" data-slot="input-otp-slot" data-index="{index}" class="{classes()}" />

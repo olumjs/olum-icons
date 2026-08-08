@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // Same reach-through-the-wrapper fix as TableBody's selector: display:
+  // contents doesn't change what :last-child actually matches against.
+  const classes = () =>
+    twMerge("table-footer-group border-t bg-muted/50 font-medium [&>*:last-child>[data-slot=table-row]]:border-b-0 [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="table-footer" role="rowgroup" class="{classes()}">{children}</div>

@@ -1,0 +1,51 @@
+<script>
+  import Breadcrumb from "../../components/ui/Breadcrumb/Breadcrumb";
+  import BreadcrumbList from "../../components/ui/Breadcrumb/BreadcrumbList";
+  import BreadcrumbItem from "../../components/ui/Breadcrumb/BreadcrumbItem";
+  import BreadcrumbLink from "../../components/ui/Breadcrumb/BreadcrumbLink";
+  import BreadcrumbPage from "../../components/ui/Breadcrumb/BreadcrumbPage";
+  import BreadcrumbSeparator from "../../components/ui/Breadcrumb/BreadcrumbSeparator";
+  import BreadcrumbEllipsis from "../../components/ui/Breadcrumb/BreadcrumbEllipsis";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="breadcrumb" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="breadcrumb" />
+
+  
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="#">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbEllipsis />
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="#">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  </DemoBlock>
+  <InstallBlock id="breadcrumb" />
+  
+  <Pager id="breadcrumb" />
+</div>

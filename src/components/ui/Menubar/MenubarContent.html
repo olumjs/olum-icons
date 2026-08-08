@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import DropdownMenuContent from "../DropdownMenu/DropdownMenuContent";
+
+  const { align = "start", class: className = "", children } = props();
+
+  const classes = () => twMerge("min-w-36", className);
+</script>
+
+<DropdownMenuContent align="{align}" class="{classes()}">{children}</DropdownMenuContent>

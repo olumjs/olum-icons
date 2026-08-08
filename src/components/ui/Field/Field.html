@@ -1,0 +1,17 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { orientation = "vertical", class: className = "", children } = props();
+
+  const base = "group/field flex w-full gap-2 [&>[data-olum]]:contents data-[invalid=true]:text-destructive";
+
+  const orientations = {
+    vertical: "flex-col",
+    horizontal: "flex-row items-center has-[[data-slot=field-content]]:items-start",
+  };
+
+  const classes = () => twMerge(base, orientations[orientation] || orientations.vertical, className);
+</script>
+
+<div role="group" data-slot="field" data-orientation="{orientation}" class="{classes()}">{children}</div>

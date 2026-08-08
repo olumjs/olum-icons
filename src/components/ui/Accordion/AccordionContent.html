@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("pt-0 pb-2.5 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4", className);
+</script>
+
+<div data-slot="accordion-content" class="overflow-hidden text-sm min-h-0"><div class="{classes()}">{children}</div></div>

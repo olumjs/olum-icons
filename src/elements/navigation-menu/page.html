@@ -1,0 +1,51 @@
+<script>
+  import NavigationMenu from "../../components/ui/NavigationMenu/NavigationMenu";
+  import NavigationMenuList from "../../components/ui/NavigationMenu/NavigationMenuList";
+  import NavigationMenuItem from "../../components/ui/NavigationMenu/NavigationMenuItem";
+  import NavigationMenuTrigger from "../../components/ui/NavigationMenu/NavigationMenuTrigger";
+  import NavigationMenuContent from "../../components/ui/NavigationMenu/NavigationMenuContent";
+  import NavigationMenuLink from "../../components/ui/NavigationMenu/NavigationMenuLink";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="navigation-menu" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="navigation-menu" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul class="grid w-64 gap-1 p-2">
+              <li>
+                <NavigationMenuLink href="#">Analytics</NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="#">Dashboards</NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="#" variant="trigger">Docs</NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  </DemoBlock>
+
+  <InstallBlock id="navigation-menu" />
+  <Pager id="navigation-menu" />
+</div>

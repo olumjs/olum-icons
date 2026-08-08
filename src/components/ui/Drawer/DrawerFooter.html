@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("mt-auto flex shrink-0 flex-col gap-2 p-4 pt-0", className);
+</script>
+
+<div data-slot="drawer-footer" class="{classes()}">{children}</div>

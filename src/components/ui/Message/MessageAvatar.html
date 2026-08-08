@@ -1,0 +1,19 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // bg-muted is the placeholder tint for when this wraps a bare <img>. When it
+  // wraps an <Avatar> the tint has to go: min-w-8 keeps this slot 32px wide to
+  // reserve the gutter, but Avatar size="sm" is only 24px, so the wrapper's
+  // grey spilled ~4px past each side of the Avatar's own bordered circle --
+  // reading as a grey blob that doesn't line up with the border ring. The
+  // Avatar already brings its own background and border, so drop ours.
+  const base =
+    "flex w-fit min-w-8 shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted has-data-[slot=avatar]:bg-transparent group-has-data-[slot=message-footer]/message:-translate-y-8";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="message-avatar" class="{classes()}">{children}</div>

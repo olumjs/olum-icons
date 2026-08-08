@@ -1,0 +1,18 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { variant = "default", class: className = "", children } = props();
+
+  const base = "flex shrink-0 items-center justify-center gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start [&_svg]:pointer-events-none";
+
+  const variants = {
+    default: "bg-transparent",
+    icon: "[&_svg:not([class*='size-'])]:size-4",
+    image: "size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover",
+  };
+
+  const classes = () => twMerge(base, variants[variant] || variants.default, className);
+</script>
+
+<div data-slot="item-media" data-variant="{variant}" class="{classes()}">{children}</div>

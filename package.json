@@ -1,32 +1,37 @@
 {
   "name": "olum-icons",
-  "version": "0.2.1",
-  "description": "A framework-agnostic collection of SVG icons as strings.",
-  "main": "dist/index.js",
-  "directories": {
-    "dist": "dist"
-  },
+  "description": "Olum App",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "parse:lucide": "node scripts/parse-lucide.js",
-    "parse:heroicons": "node scripts/parse-heroicons.js",
-    "parse:fontawesome": "node scripts/parse-fontawesome.js",
-    "build": "node scripts/index.js",
-    "clean": "rm -rf svg_out dist"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/olumjs/olum-icons"
+    "dev": "npm run css && concurrently -k -n css,app -c magenta,green \"npm run css:watch\" \"npm run dev:app\"",
+    "build": "rm -rf ./docs && olum-compiler build && mv ./dist ./docs && echo icons.olumjs.top > ./docs/CNAME",
+    "start": "olum-compiler start",
+    "css": "tailwindcss -i src/main.css -o public/main.css",
+    "css:watch": "npm run css -- --watch",
+    "dev:app": "olum-compiler dev",
+    "fonts": "cp node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2 public/fonts/geist-latin-variable.woff2 && cp node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2 public/fonts/geist-mono-latin-variable.woff2"
   },
   "keywords": [
-    "npm",
-    "olum",
-    "olumjs",
-    "icons"
+    "olum"
   ],
   "author": "Eissa Saber",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/olumjs/olum-icons/issues"
+  "license": "ISC",
+  "dependencies": {
+    "olum": "latest",
+    "olum-icons": "latest",
+    "olum-router": "latest",
+    "olum-store": "latest",
+    "olum-transition": "latest",
+    "tailwind-merge": "latest"
   },
-  "homepage": "https://github.com/olumjs/olum-icons#readme"
+  "devDependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@tailwindcss/cli": "latest",
+    "concurrently": "latest",
+    "olum-compiler": "latest",
+    "tailwindcss": "latest",
+    "vite": "^8.2.0"
+  }
 }

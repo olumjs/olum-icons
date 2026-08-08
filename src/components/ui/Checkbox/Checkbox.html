@@ -1,0 +1,46 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const {
+    defaultChecked = false,
+    checked,
+    disabled = false,
+    required = false,
+    invalid = false,
+    id,
+    name,
+    class: className = "",
+    onCheckedChange,
+  } = props();
+
+  const state = { checked: checked !== undefined ? checked : defaultChecked };
+
+  const handleChange = (e) => {
+    state.checked = e.target.checked;
+    onCheckedChange && onCheckedChange(e.target.checked);
+  };
+
+  const base =
+    "peer relative flex size-4 shrink-0 appearance-none items-center justify-center rounded-[4px] border border-border bg-background transition-colors outline-none cursor-pointer focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 checked:border-primary checked:bg-primary checked:text-primary-foreground";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<span class="relative inline-flex size-4 shrink-0 top-0.75">
+  <input
+    data-slot="checkbox"
+    type="checkbox"
+    id="{id}"
+    name="{name}"
+    class="{classes()}"
+    checked="{state.checked}"
+    disabled="{disabled}"
+    required="{required}"
+    aria-invalid="{invalid}"
+    onchange="handleChange()"
+  />
+  <show when="state.checked">
+    <svg class="pointer-events-none absolute inset-0 m-auto size-3.5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+  </show>
+</span>

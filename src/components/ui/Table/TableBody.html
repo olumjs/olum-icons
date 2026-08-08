@@ -1,0 +1,16 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // Reaches through each TableRow's own OlumJS host wrapper explicitly
+  // (&>*:last-child>[data-slot=...], not &_[data-slot=...]:last-child) --
+  // display:contents only collapses box generation for layout, it doesn't
+  // change what the DOM tree actually looks like to :last-child, and every
+  // row's real div is the sole child of its own wrapper, so it would always
+  // match :last-child regardless of its position among sibling rows.
+  const classes = () => twMerge("table-row-group [&>*:last-child>[data-slot=table-row]]:border-0 [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="table-body" role="rowgroup" class="{classes()}">{children}</div>

@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("grid w-full gap-2", className);
+</script>
+
+<div role="radiogroup" data-slot="radio-group" class="{classes()}">{children}</div>

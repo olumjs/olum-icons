@@ -1,0 +1,73 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { wireModal } from "../portal";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="command-dialog"]');
+    const input = root && root.querySelector(":scope > input");
+    const overlay = host.querySelector('[data-slot="command-dialog-overlay"]');
+    const content = host.querySelector('[data-slot="command-dialog-content"]');
+    if (!input || !overlay || !content) return;
+
+    const close = () => {
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape" && input.checked) close();
+    };
+    const onOverlayClick = (e) => {
+      if (e.target === overlay) close();
+    };
+    // Items sit inside Command/CommandList/CommandGroup slots, so a callback
+    // prop on <CommandItem> can't resolve back up here. Delegate instead --
+    // and listen on `content` rather than `host`, because once it's portaled
+    // the items are no longer inside this component's host element.
+    const onItemClick = (e) => {
+      if (e.target.closest("[data-slot=command-item]")) close();
+    };
+
+    overlay.addEventListener("click", onOverlayClick);
+    content.addEventListener("click", onItemClick);
+    document.addEventListener("keydown", onKey);
+
+    // Focus the field on every open -- hotkey or click, both of which land here
+    // through the checkbox -- since a palette you still have to click into is no
+    // palette at all. rAF because the nodes are display:none until sync() runs
+    // and focus() on a hidden element is a no-op. Scoped to `content` rather
+    // than the document: the field has been portaled out of this host by now,
+    // and a page can hold more than one dialog. Clearing the query resets the
+    // filter, which also re-seeds the arrow-key selection to the first item.
+    const focusInput = () =>
+      requestAnimationFrame(() => {
+        const field = content.querySelector('[data-slot="command-input"]');
+        if (!field) return;
+        field.value = "";
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+        field.focus();
+      });
+
+    const unwire = wireModal({ input, nodes: [overlay, content], displays: ["block", "block"], onOpen: focusInput });
+
+    return () => {
+      overlay.removeEventListener("click", onOverlayClick);
+      content.removeEventListener("click", onItemClick);
+      document.removeEventListener("keydown", onKey);
+      unwire();
+    };
+  });
+
+  const classes = () =>
+    twMerge(
+      "fixed top-1/3 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-x-1/2 overflow-hidden rounded-xl bg-background p-0 text-sm text-foreground ring-1 ring-border outline-none sm:max-w-sm",
+      className,
+    );
+</script>
+
+<!-- display:none inline so it beats the display utilities in classes(), and so
+     any copy re-created in this host after a re-render stays invisible. -->
+<div data-slot="command-dialog-overlay" style="display: none" class="fixed inset-0 z-50 bg-black/20"></div>
+<div data-slot="command-dialog-content" style="display: none" class="{classes()}">{children}</div>

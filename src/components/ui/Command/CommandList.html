@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("max-h-72 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none [scrollbar-width:none]", className);
+</script>
+
+<div data-slot="command-list" role="listbox" class="{classes()}">{children}</div>

@@ -1,0 +1,20 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { inset = false, variant = "default", disabled = false, onclick, class: className = "", children } = props();
+
+  const handleClick = (e) => onclick && onclick(e);
+
+  const base =
+    "group/dropdown-menu-item relative flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-none select-none hover:bg-muted disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4";
+
+  const variants = {
+    default: "",
+    destructive: "text-destructive hover:bg-destructive/10 [&_svg]:text-destructive",
+  };
+
+  const classes = () => twMerge(base, variants[variant] || variants.default, inset ? "pl-7" : "", className);
+</script>
+
+<button type="button" data-slot="dropdown-menu-item" data-inset="{inset}" data-variant="{variant}" disabled="{disabled}" class="{classes()}" onclick="handleClick()">{children}</button>

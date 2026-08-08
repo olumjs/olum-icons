@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge("row-span-2 mb-2 inline-flex size-10 items-center justify-center rounded-md bg-muted [&_svg:not([class*='size-'])]:size-6", className);
+</script>
+
+<div data-slot="alert-dialog-media" class="{classes()}">{children}</div>

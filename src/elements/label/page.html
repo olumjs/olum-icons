@@ -1,0 +1,30 @@
+<script>
+  import Checkbox from "../../components/ui/Checkbox/Checkbox";
+  import Label from "../../components/ui/Label/Label";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="label" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="label" />
+  
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <div class="flex items-center gap-2">
+      <Checkbox id="label-demo" />
+      <Label for="label-demo">Label paired with checkbox</Label>
+    </div>
+  </DemoBlock>
+  <InstallBlock id="label" />
+
+  <Pager id="label" />
+</div>

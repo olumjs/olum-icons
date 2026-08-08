@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("flex h-8 items-center gap-0.5 rounded-lg border border-border p-[3px]", className);
+</script>
+
+<div data-slot="menubar" class="{classes()}">{children}</div>

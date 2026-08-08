@@ -1,0 +1,58 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const {
+    defaultChecked = false,
+    checked,
+    disabled = false,
+    size = "default",
+    id,
+    name,
+    class: className = "",
+    onCheckedChange,
+  } = props();
+
+  const state = { checked: checked !== undefined ? checked : defaultChecked };
+
+  const handleChange = (e) => {
+    state.checked = e.target.checked;
+    onCheckedChange && onCheckedChange(e.target.checked);
+  };
+
+  const base =
+    "peer relative inline-flex shrink-0 appearance-none cursor-pointer items-center rounded-full border border-transparent bg-muted-foreground/30 transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 checked:bg-primary";
+
+  const sizes = {
+    default: "h-[18.4px] w-[32px]",
+    sm: "h-[14px] w-[24px]",
+  };
+
+  const thumbSizes = {
+    default: "size-4 left-px peer-checked:translate-x-[calc(100%-2px)]",
+    sm: "size-3 left-px peer-checked:translate-x-[calc(100%-2px)]",
+  };
+
+  const classes = () => twMerge(base, sizes[size] || sizes.default, className);
+  const thumbClasses = () =>
+    twMerge(
+      "pointer-events-none absolute top-1/2 block -translate-y-1/2 translate-x-0 rounded-full bg-background ring-0 transition-transform",
+      thumbSizes[size] || thumbSizes.default,
+    );
+</script>
+
+<span class="relative inline-flex shrink-0 items-center">
+  <input
+    data-slot="switch"
+    data-size="{size}"
+    type="checkbox"
+    role="switch"
+    id="{id}"
+    name="{name}"
+    class="{classes()}"
+    checked="{state.checked}"
+    disabled="{disabled}"
+    onchange="handleChange()"
+  />
+  <span data-slot="switch-thumb" class="{thumbClasses()}"></span>
+</span>

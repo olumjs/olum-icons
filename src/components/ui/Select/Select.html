@@ -1,0 +1,48 @@
+<script>
+  import { props, onMount } from "olum";
+
+  const { defaultValue, onValueChange, children } = props();
+
+  onMount(() => {
+    const root = host.querySelector('[data-slot="select"]');
+    const input = root && root.querySelector(":scope > input");
+
+    const apply = (item) => {
+      root.querySelectorAll('[data-slot="select-item"]').forEach((el) => el.removeAttribute("data-checked"));
+      item.setAttribute("data-checked", "");
+      const valueEl = root.querySelector('[data-slot="select-value"]');
+      if (valueEl) {
+        valueEl.textContent = item.textContent.trim();
+        valueEl.removeAttribute("data-placeholder");
+      }
+    };
+    const close = () => {
+      if (!input) return;
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onClick = (e) => {
+      const item = e.target.closest('[data-slot="select-item"]');
+      if (!item || !root.contains(item)) return;
+      apply(item);
+      close();
+      onValueChange && onValueChange(item.dataset.value);
+    };
+
+    root.addEventListener("click", onClick);
+    const t = setTimeout(() => {
+      if (defaultValue === undefined) return;
+      const item = root.querySelector(`[data-slot="select-item"][data-value="${defaultValue}"]`);
+      if (item) apply(item);
+    });
+    return () => {
+      clearTimeout(t);
+      root.removeEventListener("click", onClick);
+    };
+  });
+</script>
+
+<div data-slot="select" class="relative inline-block [&_[data-slot=select-content]]:hidden has-[>input:checked]:[&_[data-slot=select-content]]:block">
+  <input type="checkbox" class="hidden" />
+  {children}
+</div>

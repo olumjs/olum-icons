@@ -1,0 +1,39 @@
+<script>
+  import { props } from "olum";
+  const { title = "" } = props();
+  const elasticOut = (t) => (t === 0 ? 0 : t === 1 ? 1 : 0.2 * Math.pow(2, -10 * t) * Math.sin(((t - 0.075) * (2 * Math.PI)) / 0.3) + 1);
+  const spin = (node, { duration } = {}) => ({
+    duration,
+    css: (t) => {
+      const eased = elasticOut(t);
+      return `
+          transform: scale(${eased}) rotate(${eased * 1080}deg);
+          color: hsl(
+            ${Math.trunc(t * 360)},
+            ${Math.min(100, 1000 - 1000 * t)}%,
+            ${Math.min(50, 500 - 500 * t)}%
+          );`;
+    },
+  });
+</script>
+
+<transition in="spin({ duration: 8000 })" out="fade">
+  <div class="centered">
+    <a
+      href="https://olumjs.top"
+      target="_blank"
+      rel="noreferrer"
+      class="underline decoration-border underline-offset-8 transition-colors hover:decoration-foreground"
+      >{title}</a
+    >
+  </div>
+</transition>
+
+<style>
+  /* inline-block so the spin transform has a box to act on while the logo still
+     flows with the surrounding text -- absolute positioning here would escape
+     the heading and anchor to the nearest positioned ancestor instead. */
+  .centered {
+    display: inline-block;
+  }
+</style>

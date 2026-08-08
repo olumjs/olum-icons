@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { ratio = 1, class: className = "", children } = props();
+
+  const classes = () => twMerge("relative", className);
+</script>
+
+<div class="{classes()}" style="aspect-ratio: {ratio};">{children}</div>

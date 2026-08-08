@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const base =
+    "flex items-center gap-2 rounded-lg border bg-muted px-2.5 text-sm font-medium [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="button-group-text" class="{classes()}">{children}</div>

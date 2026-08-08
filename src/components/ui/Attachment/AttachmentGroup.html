@@ -1,0 +1,14 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge(
+      "flex min-w-0 snap-x snap-mandatory scroll-px-1 gap-3 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [&>[data-olum]]:contents [&_[data-slot=attachment]]:flex-none [&_[data-slot=attachment]]:snap-start",
+      className,
+    );
+</script>
+
+<div data-slot="attachment-group" class="{classes()}">{children}</div>

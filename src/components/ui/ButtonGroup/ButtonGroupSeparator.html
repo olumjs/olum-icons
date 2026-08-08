@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { orientation = "vertical", class: className = "" } = props();
+
+  const base =
+    "relative shrink-0 self-stretch bg-border data-[orientation=horizontal]:mx-px data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-auto data-[orientation=vertical]:my-px data-[orientation=vertical]:w-px";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div role="separator" aria-orientation="{orientation}" data-slot="separator" data-orientation="{orientation}" class="{classes()}"></div>

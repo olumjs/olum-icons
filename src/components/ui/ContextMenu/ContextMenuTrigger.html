@@ -1,0 +1,32 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="context-menu"]');
+    const input = root && root.querySelector(":scope > input");
+    const content = root && root.querySelector('[data-slot="context-menu-content"]');
+    const el = host.firstElementChild;
+
+    const onContextMenu = (e) => {
+      e.preventDefault();
+      if (!input) return;
+      if (content) {
+        const rect = el.getBoundingClientRect();
+        content.style.left = e.clientX - rect.left + "px";
+        content.style.top = e.clientY - rect.top + "px";
+      }
+      input.checked = true;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+
+    el.addEventListener("contextmenu", onContextMenu);
+    return () => el.removeEventListener("contextmenu", onContextMenu);
+  });
+
+  const classes = () => twMerge("select-none", className);
+</script>
+
+<div data-slot="context-menu-trigger" class="{classes()}">{children}</div>

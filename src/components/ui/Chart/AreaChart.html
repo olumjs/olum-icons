@@ -1,0 +1,126 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { nextChartId } from "./chartId";
+
+  const { data = [], config = {}, xKey = "month", class: className = "" } = props();
+
+  // Gradient fill ids must be unique per instance -- otherwise two AreaCharts
+  // on the same page would share (and stomp) each other's <linearGradient>.
+  const id = nextChartId();
+
+  const state = { hover: -1, x: 0, y: 0 };
+
+  const W = 480;
+  const H = 250;
+  const PT = 10;
+  const PB = 26;
+  const PL = 10;
+  const PR = 10;
+  const plotW = W - PL - PR;
+  const plotH = H - PT - PB;
+  const baseline = PT + plotH;
+
+  const keys = () => Object.keys(config);
+
+  const top = () => {
+    const m = Math.max(1, ...data.flatMap((d) => keys().map((k) => +d[k] || 0)));
+    const pow = Math.pow(10, Math.floor(Math.log10(m)));
+    const n = m / pow;
+    const f = n <= 1 ? 1 : n <= 2 ? 2 : n <= 4 ? 4 : n <= 5 ? 5 : n <= 8 ? 8 : 10;
+    return f * pow;
+  };
+
+  const groupW = () => plotW / Math.max(1, data.length);
+  const pointX = (i) => PL + i * groupW() + groupW() / 2;
+  const pointY = (d, k) => PT + plotH - ((+d[k] || 0) / top()) * plotH;
+  const gridY = (k) => PT + (plotH * (k - 1)) / 4;
+  const color = (k) => (config[k] && config[k].color) || "var(--color-chart-1)";
+  const labelFor = (k) => (config[k] && config[k].label) || k;
+  const linePoints = (k) => data.map((d, i) => `${pointX(i)},${pointY(d, k)}`).join(" ");
+
+  const areaPath = (k) => {
+    if (!data.length) return "";
+    const first = pointX(0);
+    const last = pointX(data.length - 1);
+    return `M ${first} ${baseline} L ${linePoints(k).split(" ").join(" L ")} L ${last} ${baseline} Z`;
+  };
+
+  const hoverIndex = () => Math.max(0, state.hover);
+  const hoverData = () => data[hoverIndex()] || {};
+
+  onMount(() => {
+    const container = host.querySelector('[data-slot="area-chart"]');
+    const svg = host.querySelector("svg");
+    if (!container || !svg) return;
+
+    const HALF_TOOLTIP = 64;
+    const onMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      state.x = Math.min(Math.max(e.clientX - rect.left, HALF_TOOLTIP), Math.max(HALF_TOOLTIP, rect.width - HALF_TOOLTIP));
+      state.y = e.clientY - rect.top;
+    };
+
+    svg.addEventListener("mousemove", onMove);
+    return () => svg.removeEventListener("mousemove", onMove);
+  });
+
+  const classes = () => twMerge("relative flex w-full flex-col justify-center text-xs", className);
+</script>
+
+<div data-slot="area-chart" class="{classes()}">
+  <svg class="min-h-0 w-full flex-1" viewBox="0 0 480 250" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <for each="k of keys()" key="k">
+        <linearGradient id="{id}-{k}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stop-color="{color(k)}" stop-opacity="0.7" />
+          <stop offset="95%" stop-color="{color(k)}" stop-opacity="0.05" />
+        </linearGradient>
+      </for>
+    </defs>
+    <for each="k of 5">
+      <line x1="{PL}" x2="{W - PR}" y1="{gridY(k)}" y2="{gridY(k)}" stroke="var(--olum-border)" stroke-opacity="0.5" />
+    </for>
+    <for each="k of keys()" key="k">
+      <path d="{areaPath(k)}" fill="url(#{id}-{k})" stroke="none" pointer-events="none" />
+      <polyline points="{linePoints(k)}" fill="none" stroke="{color(k)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pointer-events="none" />
+    </for>
+    <for each="(d, i) of data" key="d[xKey]">
+      <!-- Hover hit target, drawn on top (transparent) so it still catches the cursor over the filled areas. -->
+      <rect
+        x="{PL + i * groupW()}"
+        y="{PT}"
+        width="{groupW()}"
+        height="{plotH}"
+        fill="transparent"
+        onmouseenter="() => (state.hover = i)"
+        onmouseleave="() => (state.hover = -1)"
+      />
+      <text x="{pointX(i)}" y="{H - 8}" text-anchor="middle" class="fill-muted-foreground" font-size="12" pointer-events="none">{d[xKey]}</text>
+    </for>
+    <if when="state.hover > -1">
+      <line x1="{pointX(hoverIndex())}" x2="{pointX(hoverIndex())}" y1="{PT}" y2="{PT + plotH}" stroke="var(--olum-border)" stroke-dasharray="3 3" pointer-events="none" />
+    </if>
+  </svg>
+  <div class="flex items-center justify-center gap-4 pt-3">
+    <for each="k of keys()" key="k">
+      <div class="flex items-center gap-1.5">
+        <div class="size-2 shrink-0 rounded-[2px]" style="background:{color(k)}"></div>
+        <span>{labelFor(k)}</span>
+      </div>
+    </for>
+  </div>
+  <div
+    class="pointer-events-none absolute z-10 grid min-w-32 gap-1.5 rounded-lg bg-background px-2.5 py-1.5 text-xs shadow-xl ring-1 ring-border transition-opacity duration-150"
+    style="left:{state.x}px; top:{state.y}px; transform: translate(-50%, calc(-100% - 12px)); opacity:{state.hover > -1 ? 1 : 0};"
+  >
+    <div class="font-medium">{hoverData()[xKey]}</div>
+    <for each="k of keys()" key="k">
+      <div class="flex w-full items-center gap-2">
+        <div class="size-2 shrink-0 rounded-[2px]" style="background:{color(k)}"></div>
+        <span class="text-muted-foreground">{labelFor(k)}</span>
+        <span class="ml-auto font-medium tabular-nums">{hoverData()[k]}</span>
+      </div>
+    </for>
+  </div>
+</div>

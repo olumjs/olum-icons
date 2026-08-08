@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge("table-row border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="table-row" role="row" class="{classes()}">{children}</div>

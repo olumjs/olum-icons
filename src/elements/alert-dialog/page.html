@@ -1,0 +1,71 @@
+<script>
+  import AlertDialog from "../../components/ui/AlertDialog/AlertDialog";
+  import AlertDialogTrigger from "../../components/ui/AlertDialog/AlertDialogTrigger";
+  import AlertDialogContent from "../../components/ui/AlertDialog/AlertDialogContent";
+  import AlertDialogHeader from "../../components/ui/AlertDialog/AlertDialogHeader";
+  import AlertDialogFooter from "../../components/ui/AlertDialog/AlertDialogFooter";
+  import AlertDialogMedia from "../../components/ui/AlertDialog/AlertDialogMedia";
+  import AlertDialogTitle from "../../components/ui/AlertDialog/AlertDialogTitle";
+  import AlertDialogDescription from "../../components/ui/AlertDialog/AlertDialogDescription";
+  import AlertDialogAction from "../../components/ui/AlertDialog/AlertDialogAction";
+  import AlertDialogCancel from "../../components/ui/AlertDialog/AlertDialogCancel";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+
+  const icons = {
+    trash: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /></svg>`,
+  };
+</script>
+
+<Navbar />
+<GalleryNav id="alert-dialog" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="alert-dialog" />
+
+  
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <AlertDialog>
+      <AlertDialogTrigger class="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-background px-2.5 text-sm hover:bg-muted">Delete account</AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogMedia>
+            <div html="icons.trash"></div>
+          </AlertDialogMedia>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>This action cannot be undone. This will permanently delete your account.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </DemoBlock>
+  <InstallBlock id="alert-dialog" />
+
+  <DemoBlock label="size sm" snippet="{snippets['size-sm']}">
+    <AlertDialog>
+      <AlertDialogTrigger class="inline-flex h-7 items-center justify-center rounded-lg border border-border bg-background px-2.5 text-[0.8rem] hover:bg-muted">Sign out</AlertDialogTrigger>
+      <AlertDialogContent size="sm">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Sign out?</AlertDialogTitle>
+          <AlertDialogDescription>You can sign back in anytime.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Sign out</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </DemoBlock>
+
+  <Pager id="alert-dialog" />
+</div>

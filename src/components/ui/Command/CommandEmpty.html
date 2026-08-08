@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("hidden py-6 text-center text-sm", className);
+</script>
+
+<div data-slot="command-empty" class="{classes()}">{children}</div>

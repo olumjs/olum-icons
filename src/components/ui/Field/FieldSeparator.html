@@ -1,0 +1,15 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("relative -my-2 h-5 text-sm", className);
+</script>
+
+<div data-slot="field-separator" class="{classes()}">
+  <div class="absolute inset-0 top-1/2 h-px w-full bg-border"></div>
+  <if when="children">
+    <span data-slot="field-separator-content" class="relative mx-auto block w-fit bg-background px-2 text-muted-foreground">{children}</span>
+  </if>
+</div>

@@ -1,0 +1,17 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { variant = "default", class: className = "", children } = props();
+
+  const base = "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg p-[3px] text-muted-foreground h-8";
+
+  const variants = {
+    default: "bg-muted",
+    line: "gap-1 bg-transparent rounded-none",
+  };
+
+  const classes = () => twMerge(base, variants[variant] || variants.default, className);
+</script>
+
+<div data-slot="tabs-list" data-variant="{variant}" role="tablist" class="{classes()}">{children}</div>

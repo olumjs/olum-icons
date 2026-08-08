@@ -1,0 +1,23 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { orientation = "horizontal", class: className = "", children } = props();
+
+  const base =
+    "flex w-fit items-stretch [&>[data-olum]]:contents [&_*:focus-visible]:relative [&_*:focus-visible]:z-10 [&>input]:flex-1";
+
+  // Logical (start/end) properties, not left/right -- so the rounded ends
+  // and the collapsed shared border correctly flip sides under dir="rtl"
+  // instead of staying pinned to the physical left/right.
+  const orientations = {
+    horizontal:
+      "[&_[data-slot]]:rounded-none [&>*:first-child_[data-slot]]:rounded-s-lg [&>*:last-child_[data-slot]]:rounded-e-lg [&>*:not(:first-child)_[data-slot]]:border-s-0",
+    vertical:
+      "flex-col [&_[data-slot]]:rounded-none [&>*:first-child_[data-slot]]:rounded-t-lg [&>*:last-child_[data-slot]]:rounded-b-lg [&>*:not(:first-child)_[data-slot]]:border-t-0",
+  };
+
+  const classes = () => twMerge(base, orientations[orientation] || orientations.horizontal, className);
+</script>
+
+<div role="group" data-slot="button-group" data-orientation="{orientation}" class="{classes()}">{children}</div>

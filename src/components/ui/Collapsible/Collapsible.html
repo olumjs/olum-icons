@@ -1,0 +1,18 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { defaultOpen = false, disabled = false, class: className = "", children } = props();
+
+  const base =
+    "group/collapsible " +
+    "[&>*:has([data-slot=collapsible-content])]:grid [&>*:has([data-slot=collapsible-content])]:grid-rows-[0fr] [&>*:has([data-slot=collapsible-content])]:transition-[grid-template-rows] " +
+    "has-[>input:checked]:[&>*:has([data-slot=collapsible-content])]:grid-rows-[1fr]";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="collapsible" class="{classes()}">
+  <input type="checkbox" class="peer sr-only" checked="{defaultOpen}" disabled="{disabled}" />
+  {children}
+</div>

@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import Separator from "../Separator/Separator";
+
+  const { class: className = "" } = props();
+
+  const classes = () => twMerge("my-2", className);
+</script>
+
+<Separator orientation="horizontal" class="{classes()}" />

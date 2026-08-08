@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+
+  const { children } = props();
+</script>
+
+<div
+  data-slot="tooltip"
+  class="relative inline-block [&_[data-slot=tooltip-content]]:invisible [&_[data-slot=tooltip-content]]:scale-95 [&_[data-slot=tooltip-content]]:opacity-0 has-[>input:checked]:[&_[data-slot=tooltip-content]]:visible has-[>input:checked]:[&_[data-slot=tooltip-content]]:scale-100 has-[>input:checked]:[&_[data-slot=tooltip-content]]:opacity-100"
+>
+  <input type="checkbox" class="hidden" />
+  {children}
+</div>

@@ -1,0 +1,85 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  // `html` is Shiki output from scripts/gen-snippets.mjs; `code` is the raw text
+  // the copy button puts on the clipboard. Plain-text callers pass only `code`.
+  // `collapsible` hides the snippet behind a "View Code" curtain so a page of
+  // demos reads as previews first -- InstallBlock's one-liners opt out.
+  const { code = "", html = "", class: className = "", collapsible = false } = props();
+
+  const state = { copied: false, expanded: false };
+
+  let timer;
+
+  const icons = {
+    copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>`,
+    check: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>`,
+  };
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(code);
+    state.copied = true;
+    clearTimeout(timer);
+    timer = setTimeout(() => (state.copied = false), 1500);
+  };
+
+  const classes = () => twMerge("group/code relative overflow-hidden rounded-lg border border-border bg-muted/40", className);
+
+  // Only a snippet long enough to be worth hiding gets a curtain -- below this a
+  // two-line example would sit behind a button taller than the code it covers.
+  const COLLAPSE_OVER_LINES = 8;
+
+  const expandable = () => collapsible && code.trim().split("\n").length > COLLAPSE_OVER_LINES;
+
+  // Expanding is one-way: once the code is out, the curtain and its button go
+  // with it rather than hanging over the snippet you asked to read.
+  const collapsed = () => expandable() && !state.expanded;
+
+  const expand = () => (state.expanded = true);
+
+  // Collapsed clips to a teaser; expanded falls back to the scrolling box, so a
+  // ~50-line snippet still can't dominate the page.
+  const viewport = () => (collapsed() ? "max-h-32 overflow-hidden" : "max-h-96 overflow-auto");
+</script>
+
+<div class="{classes()}">
+  <!-- Shiki wraps its own <pre>; the plain branch supplies one. Both scroll
+       horizontally rather than letting a long line widen the page. -->
+  <!-- max-h keeps a long snippet (Sheet's four sides run ~50 lines) from
+       dominating the page; it scrolls inside its own box instead. -->
+  <if when="html">
+    <div class="{viewport()} text-sm [&_pre]:bg-transparent! [&_pre]:p-4" html="html"></div>
+  </if>
+  <else>
+    <pre class="{viewport()} p-4 font-mono text-sm">{code}</pre>
+  </else>
+
+  <!-- The curtain fades into this container's own surface -- bg-muted/40
+       composited over the page, which color-mix reproduces in either theme.
+       pointer-events pass through it so the teaser underneath stays
+       selectable; only the button takes clicks. -->
+  <if when="collapsed()">
+    <div
+      class="pointer-events-none absolute inset-0 flex items-center justify-center bg-linear-to-b from-transparent to-[color-mix(in_oklch,var(--olum-muted)_40%,var(--olum-background))]"
+    >
+      <button
+        type="button"
+        onclick="expand()"
+        aria-expanded="false"
+        class="pointer-events-auto inline-flex h-8 items-center rounded-lg border border-border bg-background px-3 text-sm font-medium shadow-xs transition-colors hover:bg-muted"
+      >
+        View Code
+      </button>
+    </div>
+  </if>
+
+  <button
+    type="button"
+    onclick="copy()"
+    aria-label="Copy code"
+    class="absolute top-2 right-2 inline-flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground opacity-0 transition-all hover:bg-muted hover:text-foreground focus-visible:opacity-100 group-hover/code:opacity-100 [&_svg]:size-3.5"
+  >
+    <div html="state.copied ? icons.check : icons.copy"></div>
+  </button>
+</div>

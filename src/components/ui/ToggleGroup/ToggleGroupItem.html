@@ -1,0 +1,33 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import Toggle from "../Toggle/Toggle";
+  import { toggleGroupStore } from "./toggleGroupStore";
+
+  const { value, variant = "default", size = "default", class: className = "", children } = props();
+
+  const state = { groupId: null, multiple: false };
+
+  onMount(() => {
+    const group = host.closest('[data-slot="toggle-group"]');
+    if (!group) return;
+    state.groupId = group.dataset.groupId;
+    state.multiple = group.dataset.multiple === "true";
+  });
+
+  const isPressed = () => state.groupId != null && toggleGroupStore.isActive(state.groupId, value);
+
+  // Passed to <Toggle> as onPressedChange, a bare identifier defined right
+  // here (not an inline arrow) so the compiler resolves it through the safe
+  // method-reference path instead of JSON.stringify-ing it away, and Toggle
+  // is rendered directly in this component's own template (not through
+  // another component's slot) so that reference actually reaches it.
+  const handlePressedChange = () => {
+    if (state.groupId == null) return;
+    toggleGroupStore.toggle(state.groupId, value, state.multiple);
+  };
+
+  const classes = () => twMerge("shrink-0 focus:z-10 focus-visible:z-10", className);
+</script>
+
+<Toggle variant="{variant}" size="{size}" pressed="{isPressed()}" onPressedChange="{handlePressedChange}" class="{classes()}">{children}</Toggle>

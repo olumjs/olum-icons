@@ -1,0 +1,40 @@
+<script>
+  import Button from "../../components/ui/Button/Button";
+  import Toaster from "../../components/ui/Toast/Toaster";
+  import { toast } from "../../components/ui/Toast/toast";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+
+  const showDefaultToast = () => toast.add({ title: "Event created", description: "Monday, Jan 5 at 4:00pm", autoClose: false });
+  const showSuccessToast = () => toast.add({ title: "Saved successfully", type: "success", autoClose: false });
+  const showErrorToast = () => toast.add({ title: "Something went wrong", type: "error", autoClose: false });
+  const showWarningToast = () => toast.add({ title: "Low disk space", type: "warning", autoClose: false });
+  const showInfoToast = () => toast.add({ title: "New update available", type: "info", autoClose: false });
+</script>
+
+<Navbar />
+<GalleryNav id="toast" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="toast" />
+
+  
+  <DemoBlock label="variants" snippet="{snippets['variants']}">
+    <Button variant="outline" onclick="{showDefaultToast}">Default</Button>
+    <Button variant="outline" onclick="{showSuccessToast}">Success</Button>
+    <Button variant="outline" onclick="{showErrorToast}">Error</Button>
+    <Button variant="outline" onclick="{showWarningToast}">Warning</Button>
+    <Button variant="outline" onclick="{showInfoToast}">Info</Button>
+    <Toaster />
+  </DemoBlock>
+  <InstallBlock id="toast" />
+
+  <Pager id="toast" />
+</div>

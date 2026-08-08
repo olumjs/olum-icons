@@ -1,0 +1,92 @@
+<script>
+  import ContextMenu from "../../components/ui/ContextMenu/ContextMenu";
+  import ContextMenuTrigger from "../../components/ui/ContextMenu/ContextMenuTrigger";
+  import ContextMenuContent from "../../components/ui/ContextMenu/ContextMenuContent";
+  import DropdownMenuGroup from "../../components/ui/DropdownMenu/DropdownMenuGroup";
+  import DropdownMenuLabel from "../../components/ui/DropdownMenu/DropdownMenuLabel";
+  import DropdownMenuItem from "../../components/ui/DropdownMenu/DropdownMenuItem";
+  import DropdownMenuCheckboxItem from "../../components/ui/DropdownMenu/DropdownMenuCheckboxItem";
+  import DropdownMenuRadioGroup from "../../components/ui/DropdownMenu/DropdownMenuRadioGroup";
+  import DropdownMenuRadioItem from "../../components/ui/DropdownMenu/DropdownMenuRadioItem";
+  import DropdownMenuSeparator from "../../components/ui/DropdownMenu/DropdownMenuSeparator";
+  import DropdownMenuShortcut from "../../components/ui/DropdownMenu/DropdownMenuShortcut";
+  import DropdownMenuSub from "../../components/ui/DropdownMenu/DropdownMenuSub";
+  import DropdownMenuSubTrigger from "../../components/ui/DropdownMenu/DropdownMenuSubTrigger";
+  import DropdownMenuSubContent from "../../components/ui/DropdownMenu/DropdownMenuSubContent";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="context-menu" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="context-menu" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <ContextMenu>
+      <ContextMenuTrigger class="flex aspect-video min-h-40 w-full max-w-sm items-center justify-center rounded-xl border border-dashed text-sm">
+        <span class="hidden pointer-fine:inline-block">Right click here</span>
+        <span class="hidden pointer-coarse:inline-block">Long press here</span>
+      </ContextMenuTrigger>
+      <ContextMenuContent class="w-48">
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            Back
+            <DropdownMenuShortcut>⌘[</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled="{true}">
+            Forward
+            <DropdownMenuShortcut>⌘]</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Reload
+            <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>More Tools</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent class="w-44">
+              <DropdownMenuGroup>
+                <DropdownMenuItem>Save Page...</DropdownMenuItem>
+                <DropdownMenuItem>Create Shortcut...</DropdownMenuItem>
+                <DropdownMenuItem>Name Window...</DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>Developer Tools</DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuCheckboxItem defaultChecked="{true}">Show Bookmarks</DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem>Show Full URLs</DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuRadioGroup>
+            <DropdownMenuLabel>People</DropdownMenuLabel>
+            <DropdownMenuRadioItem name="cm-people" value="pedro" defaultChecked="{true}">Pedro Duarte</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem name="cm-people" value="colm">Colm Tuite</DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+      </ContextMenuContent>
+    </ContextMenu>
+  </DemoBlock>
+
+  <InstallBlock id="context-menu" />
+  <Pager id="context-menu" />
+</div>

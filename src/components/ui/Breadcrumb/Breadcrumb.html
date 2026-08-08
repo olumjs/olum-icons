@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge(className);
+</script>
+
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class="{classes()}">{children}</nav>

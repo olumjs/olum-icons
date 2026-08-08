@@ -1,0 +1,91 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  // `data` holds a single snapshot row (e.g. [{ month: "january", desktop: 200,
+  // mobile: 120 }]) -- one concentric ring is drawn per config key, all
+  // sharing the same `max` domain so relative KPI progress reads correctly.
+  const { data = [], config = {}, max: maxProp, centerLabel = "Total", class: className = "" } = props();
+
+  const state = { hover: -1 };
+
+  const W = 250;
+  const H = 250;
+  const CX = W / 2;
+  const CY = H / 2;
+  const OUTER_R = 96;
+  const RING_WIDTH = 14;
+  const RING_STEP = RING_WIDTH + 4;
+  const START_ANGLE = -Math.PI / 2;
+
+  const row = () => data[0] || {};
+  const keys = () => Object.keys(config);
+  const color = (k) => (config[k] && config[k].color) || "var(--color-chart-1)";
+  const labelFor = (k) => (config[k] && config[k].label) || k;
+  const readValue = (k) => +row()[k] || 0;
+
+  const domainMax = () => maxProp || Math.max(1, ...keys().map((k) => readValue(k)));
+  const fraction = (k) => Math.min(0.999, readValue(k) / domainMax());
+  const ringRadius = (j) => OUTER_R - j * RING_STEP;
+
+  const point = (r, a) => [CX + r * Math.cos(a), CY + r * Math.sin(a)];
+
+  const arcPath = (r, frac) => {
+    const end = START_ANGLE + frac * Math.PI * 2;
+    const [x1, y1] = point(r, START_ANGLE);
+    const [x2, y2] = point(r, end);
+    const largeArc = frac > 0.5 ? 1 : 0;
+    return `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
+  };
+
+  const total = () => keys().reduce((sum, k) => sum + readValue(k), 0);
+  const centerName = () => (state.hover > -1 ? labelFor(keys()[state.hover]) : centerLabel);
+  const centerValue = () => (state.hover > -1 ? readValue(keys()[state.hover]) : total());
+  const opacityFor = (j) => (state.hover === -1 || state.hover === j ? 1 : 0.35);
+
+  const classes = () => twMerge("relative flex w-full flex-col items-center justify-center text-xs", className);
+</script>
+
+<div data-slot="radial-bar-chart" class="{classes()}">
+  <div class="relative w-full max-w-56">
+    <svg class="w-full" viewBox="0 0 250 250">
+      <for each="(k, j) of keys()" key="k">
+        <circle cx="{CX}" cy="{CY}" r="{ringRadius(j)}" fill="none" stroke="var(--olum-muted)" stroke-width="{RING_WIDTH}" />
+        <path
+          d="{arcPath(ringRadius(j), fraction(k))}"
+          fill="none"
+          stroke="{color(k)}"
+          stroke-width="{RING_WIDTH}"
+          stroke-linecap="round"
+          opacity="{opacityFor(j)}"
+          class="transition-opacity duration-150"
+          pointer-events="none"
+        />
+        <circle
+          cx="{CX}"
+          cy="{CY}"
+          r="{ringRadius(j)}"
+          fill="none"
+          stroke="transparent"
+          stroke-width="{RING_WIDTH + 8}"
+          onmouseenter="() => (state.hover = j)"
+          onmouseleave="() => (state.hover = -1)"
+        />
+      </for>
+    </svg>
+    <div class="pointer-events-none absolute inset-0 grid place-items-center">
+      <div class="flex flex-col items-center">
+        <span class="text-2xl font-semibold tabular-nums">{centerValue()}</span>
+        <span class="text-muted-foreground capitalize">{centerName()}</span>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-wrap items-center justify-center gap-4 pt-3">
+    <for each="k of keys()" key="k">
+      <div class="flex items-center gap-1.5">
+        <div class="size-2 shrink-0 rounded-[2px]" style="background:{color(k)}"></div>
+        <span>{labelFor(k)}</span>
+      </div>
+    </for>
+  </div>
+</div>

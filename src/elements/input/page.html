@@ -1,0 +1,33 @@
+<script>
+  import Input from "../../components/ui/Input/Input";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="input" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="input" />
+
+  
+  <DemoBlock label="states" snippet="{snippets['states']}">
+    <Input placeholder="Enter text" />
+    <Input placeholder="Error" invalid="{true}" />
+    <Input placeholder="Disabled" disabled="{true}" />
+  </DemoBlock>
+  
+  <InstallBlock id="input" />
+  <DemoBlock label="password" snippet="{snippets['password']}">
+    <Input type="password" placeholder="Password" />
+  </DemoBlock>
+
+  <Pager id="input" />
+</div>

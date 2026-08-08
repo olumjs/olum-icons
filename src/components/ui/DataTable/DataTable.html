@@ -1,0 +1,372 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import Input from "../Input/Input";
+  import Button from "../Button/Button";
+  import DropdownMenu from "../DropdownMenu/DropdownMenu";
+  import DropdownMenuTrigger from "../DropdownMenu/DropdownMenuTrigger";
+  import DropdownMenuContent from "../DropdownMenu/DropdownMenuContent";
+  import DropdownMenuCheckboxItem from "../DropdownMenu/DropdownMenuCheckboxItem";
+  import Table from "../Table/Table";
+  import TableHeader from "../Table/TableHeader";
+  import TableBody from "../Table/TableBody";
+  import TableRow from "../Table/TableRow";
+  import TableHead from "../Table/TableHead";
+  import TableCell from "../Table/TableCell";
+
+  const {
+    data = [], // Row objects to display.
+    columns = [], // Column config: [{ key, label, sortable?, format?, headClass?, cellClass? }].
+    search = false, // Row field the search box matches against; also gates whether the search input renders at all.
+    searchPlaceholder = "Filter...", // Placeholder text for the search input.
+    pageSize = 10, // Rows per page.
+    selectable = false, // Show the row-selection checkboxes and the "X of Y row(s) selected." text. Ignored (forced off) whenever rowLink is set.
+    showPagination = true, // Show the First / page-numbers / Last controls.
+    showPrevNext = false, // Show the Previous/Next buttons alongside the pagination controls.
+    showExport = false, // Show the "Export CSV" button.
+    // Function (row) => { href, text, icon }, replacing the leading checkbox
+    // column with a per-row link instead. Must be passed as a bare
+    // identifier (a named function defined in the consumer's own script),
+    // not an inline arrow -- inline arrow props on a component tag get
+    // JSON.stringify'd along with the rest of the props object, which
+    // silently drops function values.
+    rowLink,
+    class: className = "", // Extra classes merged onto the root element.
+  } = props();
+
+  const state = { q: "", sortKey: null, sortDir: "asc", hidden: {}, page: 0, selected: {} };
+
+  // Must be a named top-level function, not an inline arrow, in the template:
+  // the compiler only resolves bare-identifier function props through its
+  // safe method-reference path; anything else gets JSON.stringify'd along
+  // with the rest of the props object, which silently drops function values.
+  const onSearchInput = (e) => {
+    state.q = e.target.value;
+    // Jump back to the first page of the new results. Filtering shrinks the
+    // list but the page index doesn't follow, so searching from (say) page 3
+    // would slice past the end of a now-shorter list and render "No results."
+    // for a query that actually matched.
+    state.page = 0;
+  };
+
+  // Exports as CSV using the currently visible columns -- a real .xlsx is a
+  // zipped OOXML binary and isn't something to hand-roll without a library;
+  // CSV opens correctly in Excel/Sheets/Numbers with zero deps.
+  const csvEscape = (v) => {
+    const s = v == null ? "" : String(v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+
+  // Selected rows when there are any, otherwise every filtered row (which
+  // also covers selectable=false, where nothing can ever be selected).
+  // Either way it respects the active search and ignores pagination, so
+  // exporting isn't limited to the page currently on screen.
+  const exportRows = () => {
+    const selected = filtered().filter((row) => state.selected[row.id]);
+    return selected.length ? selected : filtered();
+  };
+
+  const exportCsv = () => {
+    const cols = shown();
+    const lines = [
+      cols.map((c) => csvEscape(c.label)).join(","),
+      ...exportRows().map((row) => cols.map((c) => csvEscape(fmt(row, c))).join(",")),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "export.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const filtered = () => {
+    const q = state.q.trim().toLowerCase();
+    if (!q) return data;
+    return data.filter((row) => Object.values(row).some((v) => String(v).toLowerCase().includes(q)));
+  };
+
+  const rows = () => {
+    const out = filtered().slice();
+    if (state.sortKey) {
+      out.sort((a, b) => {
+        const av = a[state.sortKey];
+        const bv = b[state.sortKey];
+        const r = av > bv ? 1 : av < bv ? -1 : 0;
+        return state.sortDir === "desc" ? -r : r;
+      });
+    }
+    const start = safePage() * pageSize;
+    return out.slice(start, start + pageSize);
+  };
+
+  const shown = () => columns.filter((c) => !state.hidden[c.key]);
+
+  const sortBy = (key) => {
+    if (state.sortKey === key) {
+      state.sortDir = state.sortDir === "asc" ? "desc" : "asc";
+    } else {
+      state.sortKey = key;
+      state.sortDir = "asc";
+    }
+  };
+
+  const toggleCol = (key, visible) => {
+    state.hidden = { ...state.hidden, [key]: !visible };
+  };
+
+  const fmt = (row, col) => {
+    if (col.format === "currency") return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(+row[col.key]);
+    return row[col.key];
+  };
+
+  // Everything derived from the page index reads through this rather than
+  // state.page directly. A stale index can outlive the result set it was valid
+  // for -- filtering, a smaller `data`, a changed pageSize -- and slicing past
+  // the end silently renders an empty table. Clamping on read keeps the slice,
+  // the counter and the pager consistent without mutating state mid-render.
+  const safePage = () => Math.min(Math.max(0, state.page), totalPages() - 1);
+
+  const canPrev = () => safePage() > 0;
+  const canNext = () => (safePage() + 1) * pageSize < filtered().length;
+  const prevPage = () => canPrev() && (state.page = safePage() - 1);
+  const nextPage = () => canNext() && (state.page = safePage() + 1);
+
+  // Cumulative count of rows shown through the current page (not just this
+  // page's own row count), e.g. "10 of 30" on page 2 with pageSize 5, not "5".
+  const shownCount = () => Math.min((safePage() + 1) * pageSize, filtered().length);
+
+  const totalPages = () => Math.max(1, Math.ceil(filtered().length / pageSize));
+  const currentPage = () => safePage() + 1;
+  const goToPage = (n) => (state.page = Math.min(Math.max(0, n - 1), totalPages() - 1));
+  const goFirst = () => (state.page = 0);
+  const goLast = () => (state.page = totalPages() - 1);
+
+  // Always includes page 1, the last page, and a window around the current
+  // page; gaps between those get collapsed into a single "..." marker.
+  const pageNumbers = () => {
+    const total = totalPages();
+    const current = currentPage();
+    const keep = new Set([1, total]);
+    for (let n = current - 1; n <= current + 1; n++) if (n >= 1 && n <= total) keep.add(n);
+    const sorted = Array.from(keep).sort((a, b) => a - b);
+    const out = [];
+    sorted.forEach((n, i) => {
+      // Keyed by the page just before the gap so two gaps in the same list
+      // (one before and one after the current-page window) get distinct keys.
+      if (i > 0 && n - sorted[i - 1] > 1) out.push("..." + sorted[i - 1]);
+      out.push(n);
+    });
+    return out;
+  };
+
+  const hasRowLink = () => typeof rowLink === "function";
+  const linkFor = (row) => (hasRowLink() ? rowLink(row) || {} : {});
+
+  const isRowSelected = (id) => !!state.selected[id];
+  const selectedCount = () => filtered().filter((row) => state.selected[row.id]).length;
+  const isPageAllSelected = () => rows().length > 0 && rows().every((row) => state.selected[row.id]);
+
+  const toggleRow = (id, checked) => {
+    const next = { ...state.selected };
+    if (checked) next[id] = true;
+    else delete next[id];
+    state.selected = next;
+  };
+
+  const toggleAllRows = (checked) => {
+    const next = { ...state.selected };
+    rows().forEach((row) => {
+      if (checked) next[row.id] = true;
+      else delete next[row.id];
+    });
+    state.selected = next;
+  };
+
+  // The sort/pagination <Button>s, the column-visibility
+  // <DropdownMenuCheckboxItem>s, and the row-selection checkboxes below are
+  // all slotted through TableHead/TableCell/DropdownMenuContent, so an
+  // onclick/onCheckedChange prop resolves against that slot-owning component
+  // instead of this one and silently never fires. Delegate from here (which
+  // does own its markup) instead: identify the element via data-role/
+  // data-value/aria-checked/data-row-id.
+  onMount(() => {
+    const onClick = (e) => {
+      const sortBtn = e.target.closest('[data-slot="button"][data-role="sort"]');
+      if (sortBtn && sortBtn.dataset.value) {
+        sortBy(sortBtn.dataset.value);
+        return;
+      }
+      const pageBtn = e.target.closest('[data-slot="button"][data-role="page"]');
+      if (pageBtn) {
+        const v = pageBtn.dataset.value;
+        if (v === "first") goFirst();
+        else if (v === "last") goLast();
+        else goToPage(+v);
+        return;
+      }
+      const colItem = e.target.closest('[data-slot="dropdown-menu-checkbox-item"]');
+      if (colItem && colItem.dataset.value) {
+        toggleCol(colItem.dataset.value, colItem.getAttribute("aria-checked") === "true");
+        return;
+      }
+      const selectAll = e.target.closest('input[data-role="select-all"]');
+      if (selectAll) {
+        toggleAllRows(selectAll.checked);
+        return;
+      }
+      const rowCb = e.target.closest("input[data-row-id]");
+      if (rowCb) toggleRow(rowCb.dataset.rowId, rowCb.checked);
+    };
+    host.addEventListener("click", onClick);
+    return () => host.removeEventListener("click", onClick);
+  });
+
+  const classes = () => twMerge("flex w-full flex-col gap-3", className);
+
+  // Matches Checkbox.html's own markup/classes for visual parity, but the
+  // selection checkboxes below are deliberately NATIVE <input> elements --
+  // don't swap them for <Checkbox> or <Input>:
+  //   - <Checkbox> seeds its internal state.checked once from the prop at
+  //     mount, so it won't re-sync when "select all" toggles many
+  //     already-rendered rows from outside.
+  //   - <Input> silently drops everything this feature needs. `checked`
+  //     isn't one of its props, and hyphenated attributes can't survive a
+  //     component tag at all: the compiler's prop-name regex is (\w+)= and
+  //     \w excludes '-', so data-role= parses as role=, aria-label= as
+  //     label=, and data-row-id= as **id=**. The delegated click handler's
+  //     input[data-role=...] / input[data-row-id] selectors then match
+  //     nothing and selection silently stops working.
+  // On a native element attributes pass through verbatim, no prop mapping.
+  const checkboxClasses =
+    "peer relative flex size-4 shrink-0 appearance-none items-center justify-center rounded-[4px] border border-border bg-background transition-colors outline-none cursor-pointer focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 checked:border-primary checked:bg-primary checked:text-primary-foreground";
+  const checkIconClasses = "pointer-events-none absolute inset-0 m-auto size-3.5 text-primary-foreground";
+</script>
+
+<div data-slot="data-table" class="{classes()}">
+  <div class="flex items-center gap-2">
+    <if when="search">
+      <Input placeholder="{searchPlaceholder}" value="{state.q}" oninput="{onSearchInput}" class="max-w-sm" />
+    </if>
+    <div class="ml-auto flex items-center gap-2">
+      <if when="showExport">
+        <Button variant="outline" size="sm" onclick="{exportCsv}">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+          Export CSV
+        </Button>
+      </if>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          class="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-border bg-background px-2.5 text-sm font-medium whitespace-nowrap transition-all outline-none select-none hover:bg-muted [&_svg]:size-4 [&_svg]:shrink-0"
+        >
+          Columns
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <for each="col of columns" key="col.key">
+            <DropdownMenuCheckboxItem value="{col.key}" defaultChecked="{true}" class="capitalize">{col.key}</DropdownMenuCheckboxItem>
+          </for>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  </div>
+  <div class="rounded-lg border border-border">
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <if when="hasRowLink()">
+            <TableHead class="w-10"></TableHead>
+          </if>
+          <if when="!hasRowLink() && selectable">
+            <TableHead class="w-10">
+              <span class="relative inline-flex size-4 shrink-0 top-0.75">
+                <input type="checkbox" data-role="select-all" checked="{isPageAllSelected()}" aria-label="Select all" class="{checkboxClasses}" />
+                <show when="isPageAllSelected()">
+                  <svg class="{checkIconClasses}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                </show>
+              </span>
+            </TableHead>
+          </if>
+          <for each="col of shown()" key="col.key">
+            <TableHead class="{col.headClass || ''}">
+              <if when="col.sortable">
+                <Button variant="ghost" size="sm" value="{col.key}" role="sort">
+                  {col.label}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4" /><path d="M17 20V4" /><path d="m3 8 4-4 4 4" /><path d="M7 4v16" /></svg>
+                </Button>
+              </if>
+              <else>{col.label}</else>
+            </TableHead>
+          </for>
+        </TableRow>
+      </TableHeader>
+      <TableBody class="[&>*:last-child>[data-slot=table-row]]:border-b">
+        <for each="row of rows()" key="row.id">
+          <TableRow data-state="{isRowSelected(row.id) ? 'selected' : ''}">
+            <if when="hasRowLink()">
+              <TableCell>
+                <a href="{linkFor(row).href}" class="inline-flex items-center gap-1.5 text-sm text-foreground hover:underline [&_svg]:size-4 [&_svg]:shrink-0">
+                  <if when="linkFor(row).icon">
+                    <span html="linkFor(row).icon"></span>
+                  </if>
+                  <if when="linkFor(row).text">{linkFor(row).text}</if>
+                </a>
+              </TableCell>
+            </if>
+            <if when="!hasRowLink() && selectable">
+              <TableCell>
+                <span class="relative inline-flex size-4 shrink-0 top-0.75">
+                  <input type="checkbox" data-row-id="{row.id}" checked="{isRowSelected(row.id)}" aria-label="Select row" class="{checkboxClasses}" />
+                  <show when="isRowSelected(row.id)">
+                    <svg class="{checkIconClasses}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                  </show>
+                </span>
+              </TableCell>
+            </if>
+            <for each="col of shown()" key="col.key">
+              <TableCell class="{col.cellClass || ''}">{fmt(row, col)}</TableCell>
+            </for>
+          </TableRow>
+        </for>
+        <if when="rows().length === 0">
+          <TableRow>
+            <TableCell colspan="{shown().length + (hasRowLink() || selectable ? 1 : 0)}" class="h-24 text-center">No results.</TableCell>
+          </TableRow>
+        </if>
+      </TableBody>
+    </Table>
+  </div>
+  <div class="grid grid-cols-3 items-center gap-2">
+    <if when="!hasRowLink() && selectable">
+      <div class="col-start-1 text-sm text-muted-foreground">{selectedCount()} of {filtered().length} row(s) selected.</div>
+    </if>
+    <div class="col-start-2 text-center text-sm text-muted-foreground">{shownCount()} of {filtered().length} entries</div>
+    <if when="showPagination">
+      <div class="col-start-3 flex items-center justify-end gap-1">
+        <Button variant="outline" size="sm" role="page" value="first" disabled="{!canPrev()}">First</Button>
+        <if when="showPrevNext">
+          <Button variant="outline" size="sm" disabled="{!canPrev()}" onclick="{prevPage}">Previous</Button>
+        </if>
+        <for each="p of pageNumbers()" key="p">
+          <if when="typeof p === 'string'">
+            <span class="flex size-7 items-center justify-center text-sm text-muted-foreground">…</span>
+          </if>
+          <else>
+            <Button
+              variant="ghost"
+              size="sm"
+              role="page"
+              value="{p}"
+              class="{p === currentPage() ? 'size-7 p-0 bg-black text-white hover:bg-black hover:text-white' : 'size-7 p-0'}"
+            >{p}</Button>
+          </else>
+        </for>
+        <if when="showPrevNext">
+          <Button variant="outline" size="sm" disabled="{!canNext()}" onclick="{nextPage}">Next</Button>
+        </if>
+        <Button variant="outline" size="sm" role="page" value="last" disabled="{!canNext()}">Last</Button>
+      </div>
+    </if>
+  </div>
+</div>

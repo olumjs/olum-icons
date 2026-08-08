@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import DropdownMenuTrigger from "../DropdownMenu/DropdownMenuTrigger";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("flex items-center rounded-sm px-1.5 py-[2px] text-sm font-medium outline-none select-none hover:bg-muted", className);
+</script>
+
+<DropdownMenuTrigger class="{classes()}">{children}</DropdownMenuTrigger>

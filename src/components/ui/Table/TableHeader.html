@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("table-header-group [&_[data-slot=table-row]]:border-b [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="table-header" role="rowgroup" class="{classes()}">{children}</div>

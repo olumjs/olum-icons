@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge("font-heading text-base font-medium group-has-data-[slot=alert-dialog-media]/alert-dialog-header:col-start-2", className);
+</script>
+
+<div data-slot="alert-dialog-title" class="{classes()}">{children}</div>

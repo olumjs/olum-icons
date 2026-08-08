@@ -1,0 +1,59 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { withHandle = false, class: className = "" } = props();
+
+  onMount(() => {
+    const el = host.querySelector('[data-slot="resizable-handle"]');
+    const group = host.closest('[data-slot="resizable-panel-group"]');
+    if (!el || !group) return;
+
+    const onPointerDown = (e) => {
+      const vertical = group.dataset.orientation === "vertical";
+      const handles = Array.from(group.querySelectorAll('[data-slot="resizable-handle"]'));
+      const panels = Array.from(group.querySelectorAll('[data-slot="resizable-panel"]'));
+      const i = handles.indexOf(el);
+      const prev = panels[i];
+      const next = panels[i + 1];
+      if (!prev || !next) return;
+
+      const rect = group.getBoundingClientRect();
+      const total = vertical ? rect.height : rect.width;
+      const startPos = vertical ? e.clientY : e.clientX;
+      const startPrev = parseFloat(prev.style.flexGrow || "50");
+      const startNext = parseFloat(next.style.flexGrow || "50");
+      const sum = startPrev + startNext;
+
+      const onMove = (ev) => {
+        const pos = vertical ? ev.clientY : ev.clientX;
+        const delta = ((pos - startPos) / total) * (startPrev + startNext + (100 - sum));
+        let a = Math.min(Math.max(startPrev + delta, sum * 0.1), sum * 0.9);
+        prev.style.flex = `${a} 1 0px`;
+        next.style.flex = `${sum - a} 1 0px`;
+      };
+      const onUp = () => {
+        document.removeEventListener("pointermove", onMove);
+        document.removeEventListener("pointerup", onUp);
+      };
+      document.addEventListener("pointermove", onMove);
+      document.addEventListener("pointerup", onUp);
+      e.preventDefault();
+    };
+
+    el.addEventListener("pointerdown", onPointerDown);
+    return () => el.removeEventListener("pointerdown", onPointerDown);
+  });
+
+  const classes = () =>
+    twMerge(
+      "relative flex w-px shrink-0 cursor-col-resize touch-none items-center justify-center bg-border select-none after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring group-data-[orientation=vertical]/resizable:h-px group-data-[orientation=vertical]/resizable:w-full group-data-[orientation=vertical]/resizable:cursor-row-resize group-data-[orientation=vertical]/resizable:after:inset-x-0 group-data-[orientation=vertical]/resizable:after:left-0 group-data-[orientation=vertical]/resizable:after:top-1/2 group-data-[orientation=vertical]/resizable:after:h-1 group-data-[orientation=vertical]/resizable:after:w-full group-data-[orientation=vertical]/resizable:after:-translate-y-1/2 group-data-[orientation=vertical]/resizable:after:translate-x-0",
+      className,
+    );
+</script>
+
+<div data-slot="resizable-handle" role="separator" class="{classes()}">
+  <if when="withHandle">
+    <div class="z-10 flex h-6 w-1 shrink-0 rounded-lg bg-border group-data-[orientation=vertical]/resizable:h-1 group-data-[orientation=vertical]/resizable:w-6"></div>
+  </if>
+</div>

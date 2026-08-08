@@ -1,0 +1,43 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="navigation-menu-item"]');
+    const input = root && root.querySelector(":scope > input");
+
+    const close = () => {
+      if (!input) return;
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onDocClick = (e) => {
+      if (root && !root.contains(e.target)) close();
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape" && input && input.checked) close();
+    };
+    const onLinkClick = (e) => {
+      if (e.target.closest("[data-slot=navigation-menu-link]")) close();
+    };
+
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onKey);
+    host.addEventListener("click", onLinkClick);
+    return () => {
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("keydown", onKey);
+      host.removeEventListener("click", onLinkClick);
+    };
+  });
+
+  const classes = () =>
+    twMerge(
+      "absolute top-full left-0 z-50 mt-2 w-max rounded-lg bg-background p-1 text-foreground shadow ring-1 ring-border outline-none",
+      className,
+    );
+</script>
+
+<div data-slot="navigation-menu-content" class="{classes()}">{children}</div>

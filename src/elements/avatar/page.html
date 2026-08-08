@@ -1,0 +1,65 @@
+<script>
+  import Avatar from "../../components/ui/Avatar/Avatar";
+  import AvatarFallback from "../../components/ui/Avatar/AvatarFallback";
+  import AvatarBadge from "../../components/ui/Avatar/AvatarBadge";
+  import AvatarGroup from "../../components/ui/Avatar/AvatarGroup";
+  import AvatarGroupCount from "../../components/ui/Avatar/AvatarGroupCount";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="avatar" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="avatar" />
+
+  
+  <DemoBlock label="sizes" snippet="{snippets['sizes']}">
+    <div class="flex items-center gap-2">
+      <Avatar size="sm">
+        <AvatarFallback>SM</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg">
+        <AvatarFallback>LG</AvatarFallback>
+      </Avatar>
+    </div>
+  </DemoBlock>
+  <InstallBlock id="avatar" />
+
+  <DemoBlock label="with badge" snippet="{snippets['with-badge']}">
+    <Avatar>
+      <AvatarFallback>JD</AvatarFallback>
+      <AvatarBadge>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+      </AvatarBadge>
+    </Avatar>
+  </DemoBlock>
+
+  <DemoBlock label="group" snippet="{snippets['group']}">
+    <AvatarGroup>
+      <Avatar>
+        <AvatarFallback>A</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>B</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>C</AvatarFallback>
+      </Avatar>
+      <AvatarGroupCount>+4</AvatarGroupCount>
+    </AvatarGroup>
+  </DemoBlock>
+
+  <Pager id="avatar" />
+</div>

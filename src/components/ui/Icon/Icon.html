@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { icon, class: className = "" } = props();
+
+  const classes = () =>
+    twMerge("inline-flex items-center justify-center", "[&_svg]:w-full [&_svg]:h-full [&_svg]:text-current [&_svg]:stroke-current", className);
+</script>
+
+<span html="icon" class="{classes()}"></span>

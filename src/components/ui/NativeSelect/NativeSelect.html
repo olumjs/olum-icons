@@ -1,0 +1,18 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { size = "default", disabled = false, value, defaultValue, name, id, class: className = "", onchange, children } = props();
+
+  const handleChange = (e) => onchange && onchange(e);
+
+  const wrapperClasses = () => twMerge("group/native-select relative w-fit has-[select:disabled]:opacity-50", className);
+
+  const base =
+    "h-8 w-full min-w-0 appearance-none rounded-lg border border-border bg-background py-1 pr-8 pl-2.5 text-sm transition-colors outline-none select-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5";
+</script>
+
+<div class="{wrapperClasses()}" data-slot="native-select-wrapper" data-size="{size}">
+  <select data-slot="native-select" data-size="{size}" name="{name}" id="{id}" disabled="{disabled}" value="{value}" class="{base}" onchange="handleChange()">{children}</select>
+  <svg class="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground select-none" aria-hidden="true" data-slot="native-select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+</div>

@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="message-scroller" class="{classes()}">{children}</div>

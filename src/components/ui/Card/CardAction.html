@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className);
+</script>
+
+<div data-slot="card-action" class="{classes()}">{children}</div>

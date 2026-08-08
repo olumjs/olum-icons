@@ -1,0 +1,45 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="context-menu"]');
+    const input = root && root.querySelector(":scope > input");
+
+    const close = () => {
+      if (!input) return;
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onDocClick = (e) => {
+      const content = host.querySelector('[data-slot="context-menu-content"]');
+      if (content && !content.contains(e.target)) close();
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape" && input && input.checked) close();
+    };
+    const onItemClick = (e) => {
+      const item = e.target.closest("[data-slot=dropdown-menu-item]");
+      if (item) close();
+    };
+
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onKey);
+    host.addEventListener("click", onItemClick);
+    return () => {
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("keydown", onKey);
+      host.removeEventListener("click", onItemClick);
+    };
+  });
+
+  const classes = () =>
+    twMerge(
+      "absolute z-50 min-w-36 rounded-lg bg-background p-1 text-foreground shadow-md ring-1 ring-border outline-none",
+      className,
+    );
+</script>
+
+<div data-slot="context-menu-content" class="{classes()}">{children}</div>

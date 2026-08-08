@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // No snap-start: with the track moved by transform:translateX (not native
+  // scroll), CSS scroll-snap has nothing to attach to -- it only applies
+  // inside a genuine overflow-auto/scroll container.
+  const classes = () => twMerge("min-w-0 shrink-0 grow-0 basis-full", className);
+</script>
+
+<div data-slot="carousel-item" role="group" aria-roledescription="slide" class="{classes()}">{children}</div>

@@ -1,0 +1,89 @@
+<script>
+  import Button from "../../components/ui/Button/Button";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+  const icons = {
+    circleFadingArrowUp: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 7.38 16.75" /><path d="m16 12-4-4-4 4" /><path d="M12 16V8" /><path d="M2.5 8.875a10 10 0 0 0-.5 3" /><path d="M2.83 16a10 10 0 0 0 2.43 3.4" /><path d="M4.636 5.235a10 10 0 0 1 .891-.857" /><path d="M8.644 21.42a10 10 0 0 0 7.631-.38" /></svg>`,
+    gitBranch: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="18" r="2" /><circle cx="7" cy="6" r="2" /><circle cx="17" cy="18" r="2" /><path d="M7 8v8" /><path d="M7 8a4 4 0 0 0 4 4h4" /></svg>`,
+    gitFork: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="2" /><circle cx="6" cy="6" r="2" /><circle cx="18" cy="6" r="2" /><path d="M12 16v-4" /><path d="M6 8v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8" /></svg>`,
+    arrowUp: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></svg>`,
+    spinner: `<svg xmlns="http://www.w3.org/2000/svg" class="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>`,
+  };
+</script>
+
+<Navbar />
+<GalleryNav id="button" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="button" />
+
+  
+  <DemoBlock label="variants" snippet="{snippets['variants']}">
+    <Button>Button</Button>
+    <Button variant="outline">Outline</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="destructive">Destructive</Button>
+    <Button variant="link">Link</Button>
+  </DemoBlock>
+  <InstallBlock id="button" />
+
+  <DemoBlock label="icon" snippet="{snippets['icon']}">
+    <Button variant="outline" size="icon">
+      <div html="icons.circleFadingArrowUp"></div>
+    </Button>
+  </DemoBlock>
+
+  <DemoBlock label="sizes" snippet="{snippets['sizes']}">
+    <div class="flex items-center gap-2">
+      <Button size="xs">xs</Button>
+      <Button size="sm">sm</Button>
+      <Button size="default">default</Button>
+      <Button size="lg">lg</Button>
+    </div>
+  </DemoBlock>
+
+  <DemoBlock label="with icon" snippet="{snippets['with-icon']}">
+    <div class="flex gap-2">
+      <Button variant="outline">
+        <div data-icon="inline-start" html="icons.gitBranch"></div>
+        New Branch
+      </Button>
+      <Button variant="outline">
+        Fork
+        <div data-icon="inline-end" html="icons.gitFork"></div>
+      </Button>
+    </div>
+  </DemoBlock>
+
+  <DemoBlock label="pill" snippet="{snippets['pill']}">
+    <div class="flex gap-2">
+      <Button class="rounded-full">Get Started</Button>
+      <Button variant="outline" size="icon" class="rounded-full">
+        <div html="icons.arrowUp"></div>
+      </Button>
+    </div>
+  </DemoBlock>
+
+  <DemoBlock label="loading" snippet="{snippets['loading']}">
+    <div class="flex gap-2">
+      <Button variant="outline" disabled="{true}">
+        <div data-icon="inline-start" html="icons.spinner"></div>
+        Generating
+      </Button>
+      <Button variant="secondary" disabled="{true}">
+        Downloading
+        <div data-icon="inline-start" html="icons.spinner"></div>
+      </Button>
+    </div>
+  </DemoBlock>
+
+  <Pager id="button" />
+</div>

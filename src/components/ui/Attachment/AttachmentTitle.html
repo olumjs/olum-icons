@@ -1,0 +1,14 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge(
+      "block max-w-full min-w-0 truncate font-medium group-data-[state=processing]/attachment:animate-pulse group-data-[state=uploading]/attachment:animate-pulse",
+      className,
+    );
+</script>
+
+<span data-slot="attachment-title" class="{classes()}">{children}</span>

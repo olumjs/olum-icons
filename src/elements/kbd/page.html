@@ -1,0 +1,37 @@
+<script>
+  import Kbd from "../../components/ui/Kbd/Kbd";
+  import KbdGroup from "../../components/ui/Kbd/KbdGroup";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="kbd" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="kbd" />
+
+
+  <DemoBlock label="shortcuts" snippet="{snippets['shortcuts']}">
+    <KbdGroup>
+      <Kbd>Ctrl</Kbd>
+      <Kbd>Alt</Kbd>
+      <Kbd>Del</Kbd>
+    </KbdGroup>
+    <KbdGroup>
+      <Kbd>⌘</Kbd>
+      <Kbd>Shift</Kbd>
+      <Kbd>P</Kbd>
+    </KbdGroup>
+  </DemoBlock>
+  <InstallBlock id="kbd" />
+
+  <Pager id="kbd" />
+</div>

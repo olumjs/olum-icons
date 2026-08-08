@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import Input from "../Input/Input";
+
+  const { class: className = "", placeholder, value, id, name, disabled = false } = props();
+
+  const classes = () => twMerge("flex-1 rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent", className);
+</script>
+
+<Input slot="input-group-control" placeholder="{placeholder}" value="{value}" id="{id}" name="{name}" disabled="{disabled}" class="{classes()}" />

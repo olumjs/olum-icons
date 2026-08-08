@@ -1,0 +1,63 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  // `commands` maps package manager name -> the full command for that manager,
+  // e.g. { npm: "npm i -g olum-cli", pnpm: "pnpm add -g olum-cli", ... }.
+  // `tabs=false` hides the switcher and just shows the active manager's command.
+  const { commands, tabs = true, class: className = "" } = props();
+
+  const managers = Object.keys(commands);
+
+  const state = { active: managers[0], copied: false };
+
+  let timer;
+
+  const icons = {
+    terminal: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19h8" /><path d="m4 17 6-6-6-6" /></svg>`,
+    copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>`,
+    check: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>`,
+  };
+
+  const select = pm => (state.active = pm);
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(commands[state.active]);
+    state.copied = true;
+    clearTimeout(timer);
+    timer = setTimeout(() => (state.copied = false), 1500);
+  };
+
+  const triggerClass = pm =>
+    twMerge(
+      "rounded-md px-2 py-1 text-sm font-medium capitalize transition-colors",
+      state.active === pm ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+    );
+
+  const classes = () => twMerge("overflow-hidden rounded-lg bg-muted/40", className);
+</script>
+
+<div class="{classes()}">
+  <div class="flex items-center gap-3 px-3 py-2">
+    <div class="text-muted-foreground [&_svg]:size-4" html="icons.terminal"></div>
+
+    <if when="tabs">
+      <div class="flex items-center gap-1 rounded-lg bg-muted p-[3px]">
+        <for each="pm of managers" key="pm">
+          <button type="button" onclick="select(pm)" class="{triggerClass(pm)}">{pm}</button>
+        </for>
+      </div>
+    </if>
+
+    <button
+      type="button"
+      onclick="copy()"
+      aria-label="Copy command"
+      class="ml-auto inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&_svg]:size-3.5"
+    >
+      <div html="state.copied ? icons.check : icons.copy"></div>
+    </button>
+  </div>
+
+  <pre class="overflow-x-auto border-t border-border px-3 py-2.5 font-mono text-sm">{commands[state.active]}</pre>
+</div>

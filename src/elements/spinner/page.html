@@ -1,0 +1,29 @@
+<script>
+  import Spinner from "../../components/ui/Spinner/Spinner";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="spinner" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="spinner" />
+
+  
+  <DemoBlock label="sizes" snippet="{snippets['sizes']}">
+    <Spinner />
+    <Spinner class="size-6" />
+    <Spinner class="size-8 text-primary" />
+  </DemoBlock>
+  <InstallBlock id="spinner" />
+
+  <Pager id="spinner" />
+</div>

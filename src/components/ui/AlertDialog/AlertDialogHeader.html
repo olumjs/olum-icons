@@ -1,0 +1,22 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // Icon-aside layout: media spans both rows (col 1), title lands in col 2
+  // (its own class requests col-start-2), description auto-flows into the
+  // remaining col-2/row-2 cell. Kept unconditional (no sm:/size gating) since
+  // this project only ever pairs a media icon with the default-size dialog.
+  // [&>[data-olum]]:contents is required here: Media/Title/Description are each
+  // their own OlumJS component, so Header's real direct children are their host
+  // wrapper divs, not their data-slot divs -- row-span-2/col-start-2 do nothing
+  // unless the element carrying them is an actual grid item (direct child).
+  const classes = () =>
+    twMerge(
+      "group/alert-dialog-header grid grid-rows-[auto_1fr] place-items-center gap-1.5 text-center [&>[data-olum]]:contents has-data-[slot=alert-dialog-media]:place-items-start has-data-[slot=alert-dialog-media]:gap-x-4 has-data-[slot=alert-dialog-media]:text-left",
+      className,
+    );
+</script>
+
+<div data-slot="alert-dialog-header" class="{classes()}">{children}</div>

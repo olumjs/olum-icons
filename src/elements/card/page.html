@@ -1,0 +1,58 @@
+<script>
+  import Button from "../../components/ui/Button/Button";
+  import Card from "../../components/ui/Card/Card";
+  import CardHeader from "../../components/ui/Card/CardHeader";
+  import CardTitle from "../../components/ui/Card/CardTitle";
+  import CardDescription from "../../components/ui/Card/CardDescription";
+  import CardAction from "../../components/ui/Card/CardAction";
+  import CardContent from "../../components/ui/Card/CardContent";
+  import CardFooter from "../../components/ui/Card/CardFooter";
+  import Input from "../../components/ui/Input/Input";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+
+  const icons = {
+    settings: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></svg>`,
+  };
+</script>
+
+<Navbar />
+<GalleryNav id="card" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="card" />
+
+  
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <Card class="w-80">
+      <CardHeader>
+        <CardTitle>Team members</CardTitle>
+        <CardDescription>Invite people to your workspace.</CardDescription>
+        <CardAction>
+          <Button variant="ghost" size="icon-sm">
+            <div html="icons.settings"></div>
+          </Button>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        <div class="flex items-center gap-2">
+          <Input placeholder="Email address" />
+          <Button>Invite</Button>
+        </div>
+      </CardContent>
+      <CardFooter>
+        <p class="text-xs text-muted-foreground">3 members already invited.</p>
+      </CardFooter>
+    </Card>
+  </DemoBlock>
+  <InstallBlock id="card" />
+
+  <Pager id="card" />
+</div>

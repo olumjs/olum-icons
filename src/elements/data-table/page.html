@@ -1,0 +1,78 @@
+<script>
+  import DataTable from "../../components/ui/DataTable/DataTable";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+
+  const payments = [
+    { id: "728ed52f", amount: 100, status: "pending", email: "m@example.com" },
+    { id: "489e1d42", amount: 125, status: "processing", email: "ada@example.com" },
+    { id: "5c3e1d42", amount: 250, status: "success", email: "jane@example.com" },
+    { id: "8f2e1d42", amount: 75, status: "failed", email: "john@example.com" },
+    { id: "1a2b3c4d", amount: 300, status: "success", email: "alex@example.com" },
+    { id: "9d8f7a61", amount: 180, status: "pending", email: "emma@example.com" },
+    { id: "3b7c9e25", amount: 420, status: "processing", email: "oliver@example.com" },
+    { id: "6e4a2b91", amount: 95, status: "failed", email: "liam@example.com" },
+    { id: "7c1d5f38", amount: 510, status: "success", email: "sophia@example.com" },
+    { id: "2f8a4c76", amount: 140, status: "pending", email: "noah@example.com" },
+    { id: "4d9b6e13", amount: 275, status: "processing", email: "mia@example.com" },
+    { id: "1e7c5a84", amount: 60, status: "failed", email: "ethan@example.com" },
+    { id: "8b3f2d19", amount: 390, status: "success", email: "isabella@example.com" },
+    { id: "5a6d1e47", amount: 220, status: "processing", email: "lucas@example.com" },
+    { id: "0c9e8b32", amount: 130, status: "pending", email: "amelia@example.com" },
+    { id: "2a5f7d91", amount: 470, status: "success", email: "charlotte@example.com" },
+    { id: "6c8b1f54", amount: 85, status: "failed", email: "henry@example.com" },
+    { id: "3d2e9a77", amount: 310, status: "success", email: "evelyn@example.com" },
+    { id: "7f4c8b20", amount: 155, status: "pending", email: "benjamin@example.com" },
+    { id: "1b9d6e43", amount: 205, status: "processing", email: "harper@example.com" },
+    { id: "4a7e2c88", amount: 540, status: "success", email: "jack@example.com" },
+    { id: "9c5f1a62", amount: 110, status: "failed", email: "ella@example.com" },
+    { id: "8e2b4d15", amount: 260, status: "processing", email: "daniel@example.com" },
+    { id: "5f1c9a70", amount: 145, status: "pending", email: "grace@example.com" },
+    { id: "2d7a8e36", amount: 680, status: "success", email: "william@example.com" },
+    { id: "2d7a8e36", amount: 680, status: "success", email: "william@example.com" },
+  ];
+
+  const paymentRowLink = (row) => ({ href: `mailto:${row.email}`, text: "", icon: icons.arrowRight });
+
+  const paymentColumns = [
+    { key: "status", label: "Status", cellClass: "capitalize" },
+    { key: "email", label: "Email", sortable: true },
+    { key: "amount", label: "Amount", format: "currency", headClass: "text-right", cellClass: "text-right font-medium" },
+  ];
+
+  const icons = {
+    arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>`,
+  };
+</script>
+
+<Navbar />
+<GalleryNav id="data-table" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="data-table" />
+
+  
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <div class="w-full">
+      <DataTable
+      columns="{paymentColumns}"
+      data="{payments}"
+      search="{true}"
+      searchPlaceholder="Filter rows…"
+      pageSize="{10}"
+      showExport="{true}"
+      rowLink="{paymentRowLink}"
+      />
+    </div>
+  </DemoBlock>
+  <InstallBlock id="data-table" />
+
+  <Pager id="data-table" />
+</div>

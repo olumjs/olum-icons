@@ -1,0 +1,14 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { value = 0, class: className = "" } = props();
+
+  const classes = () => twMerge("flex flex-wrap gap-3", className);
+</script>
+
+<div data-slot="progress" class="{classes()}">
+  <div data-slot="progress-track" class="relative flex h-1 w-full items-center overflow-x-hidden rounded-full bg-muted">
+    <div data-slot="progress-indicator" class="h-full bg-primary transition-all" style="width: {value}%;"></div>
+  </div>
+</div>

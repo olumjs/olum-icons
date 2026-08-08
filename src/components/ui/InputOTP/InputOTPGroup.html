@@ -1,0 +1,20 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // [&>[data-olum]]:contents collapses each InputOTPSlot's own host wrapper
+  // div down to display:contents so the flex layout treats the real <input>s
+  // as the actual flex items -- but display:contents only affects box
+  // generation, not the DOM tree, so :first-child/:last-child selectors
+  // still have to be written through that wrapper level explicitly
+  // (&>*:first-child>input, not &>input:first-child) rather than assuming
+  // contents collapses the tree for selector-matching purposes too.
+  const base =
+    "flex items-center rounded-lg has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 [&>[data-olum]]:contents [&>*:first-child>input]:rounded-l-lg [&>*:first-child>input]:border-l [&>*:last-child>input]:rounded-r-lg";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="input-otp-group" class="{classes()}">{children}</div>

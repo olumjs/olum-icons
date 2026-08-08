@@ -1,0 +1,30 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { variant = "default", size = "default", class: className = "", children } = props();
+
+  // [&>[data-olum]]:contents collapses ItemMedia/ItemContent/ItemActions'
+  // own OlumJS host wrapper divs so they aren't the actual flex items --
+  // otherwise ItemContent's flex-1 grows its own inner div but not the bare
+  // wrapper div Item is really laying out, so ItemActions never gets pushed
+  // all the way to the end.
+  const base =
+    "group/item flex w-full flex-wrap items-center rounded-lg border text-sm transition-colors duration-100 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 [a]:transition-colors [a]:hover:bg-muted [&>[data-olum]]:contents";
+
+  const variants = {
+    default: "border-transparent",
+    outline: "border-border",
+    muted: "border-transparent bg-muted/50",
+  };
+
+  const sizes = {
+    default: "gap-2.5 px-3 py-2.5",
+    sm: "gap-2.5 px-3 py-2.5",
+    xs: "gap-2 px-2.5 py-2 in-data-[slot=dropdown-menu-content]:p-0",
+  };
+
+  const classes = () => twMerge(base, variants[variant] || variants.default, sizes[size] || sizes.default, className);
+</script>
+
+<div data-slot="item" data-variant="{variant}" data-size="{size}" class="{classes()}">{children}</div>

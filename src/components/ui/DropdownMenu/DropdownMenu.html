@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+
+  const { children } = props();
+</script>
+
+<div data-slot="dropdown-menu" class="relative inline-block [&_[data-slot=dropdown-menu-content]]:hidden has-[>input:checked]:[&_[data-slot=dropdown-menu-content]]:block">
+  <input type="checkbox" class="hidden" />
+  {children}
+</div>

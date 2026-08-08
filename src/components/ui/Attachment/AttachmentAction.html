@@ -1,0 +1,8 @@
+<script>
+  import { props } from "olum";
+  import Button from "../Button/Button";
+
+  const { variant = "ghost", size = "icon-xs", onclick, value, ariaLabel, class: className = "", children } = props();
+</script>
+
+<Button variant="{variant}" size="{size}" onclick="{onclick}" value="{value}" ariaLabel="{ariaLabel}" class="{className}">{children}</Button>

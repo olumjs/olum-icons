@@ -1,0 +1,19 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // [&>[data-olum]]:contents collapses each OlumJS host wrapper around
+  // AlertDialogCancel/Action so the <button> itself becomes the direct grid/flex
+  // item -- needed for group-data-[size=sm]:grid-cols-2 to actually stretch the
+  // buttons to 50% each, since a plain wrapper div stretching wouldn't carry
+  // the button inside it along with it.
+  const classes = () =>
+    twMerge(
+      "-mx-4 -mb-4 flex flex-col-reverse gap-2 rounded-b-xl border-t bg-muted/50 p-4 [&>[data-olum]]:contents group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end",
+      className,
+    );
+</script>
+
+<div data-slot="alert-dialog-footer" class="{classes()}">{children}</div>

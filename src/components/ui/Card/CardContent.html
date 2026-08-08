@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("px-(--card-spacing)", className);
+</script>
+
+<div data-slot="card-content" class="{classes()}">{children}</div>

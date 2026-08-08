@@ -1,0 +1,58 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const {
+    variant = "default",
+    size = "default",
+    defaultPressed = false,
+    pressed,
+    disabled = false,
+    class: className = "",
+    onPressedChange,
+    children,
+  } = props();
+
+  // When `pressed` is explicitly passed, this becomes a fully controlled
+  // component: isPressed() always reflects the live prop (read fresh on
+  // every call, not just seeded once at mount like defaultPressed), and a
+  // click only reports the intended new value via onPressedChange -- the
+  // caller (e.g. ToggleGroupItem, coordinating several of these against
+  // shared group state) owns deciding what actually happens. Uncontrolled
+  // usage (no `pressed` prop) is unaffected: it still just flips its own
+  // local state.
+  const isControlled = () => pressed !== undefined;
+  const state = { pressed: defaultPressed };
+  const isPressed = () => (isControlled() ? pressed : state.pressed);
+
+  const handleClick = () => {
+    const next = !isPressed();
+    if (!isControlled()) state.pressed = next;
+    onPressedChange && onPressedChange(next);
+  };
+
+  const base =
+    "group/toggle inline-flex items-center justify-center gap-1 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-pressed:bg-muted [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4";
+
+  const variants = {
+    default: "bg-transparent",
+    outline: "border border-border bg-transparent hover:bg-muted",
+  };
+
+  const sizes = {
+    default: "h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+    sm: "h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+    lg: "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+  };
+
+  const classes = () => twMerge(base, variants[variant] || variants.default, sizes[size] || sizes.default, className);
+</script>
+
+<button
+  data-slot="toggle"
+  type="button"
+  aria-pressed="{isPressed()}"
+  disabled="{disabled}"
+  class="{classes()}"
+  onclick="handleClick()"
+>{children}</button>

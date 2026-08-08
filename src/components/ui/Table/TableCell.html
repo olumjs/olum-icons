@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { colspan, class: className = "", children } = props();
+
+  const classes = () => twMerge("table-cell p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0", className);
+</script>
+
+<div data-slot="table-cell" role="cell" colspan="{colspan}" class="{classes()}">{children}</div>

@@ -1,0 +1,39 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="navigation-menu-item"]');
+    const input = root && root.querySelector(":scope > input");
+    const btn = host.querySelector("button");
+    const onClick = () => {
+      if (!input) return;
+      input.checked = !input.checked;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    btn.addEventListener("click", onClick);
+    return () => btn.removeEventListener("click", onClick);
+  });
+
+  const classes = () =>
+    twMerge(
+      "inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all outline-none select-none hover:bg-muted focus:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 group-has-[>input:checked]/nav-item:bg-muted/50 group-has-[>input:checked]/nav-item:hover:bg-muted",
+      className,
+    );
+</script>
+
+<button type="button" data-slot="navigation-menu-trigger" class="{classes()}">
+  {children}
+  <svg
+    class="relative top-px ml-1 size-3 transition duration-300 group-has-[>input:checked]/nav-item:rotate-180"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  ><path d="m6 9 6 6 6-6" /></svg>
+</button>

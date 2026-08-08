@@ -1,0 +1,20 @@
+<script>
+  import { props } from "olum";
+
+  const { defaultOpen = false, children } = props();
+</script>
+
+<!--
+  Open/closed hangs off this hidden checkbox rather than a reactive `open`
+  prop, matching Dialog/Sheet/Drawer/AlertDialog. That's what makes the portal
+  possible: a prop change would re-render this component, and renderChildren
+  does placeholder.replaceWith(elm), which drags the host -- and anything moved
+  out of it -- straight back inside #app. A checkbox toggle re-renders nothing,
+  so CommandDialogContent can move the overlay/panel into <body> once and have
+  them stay there, letting #app take a real filter: blur() while the dialog
+  itself, now outside it, stays sharp.
+-->
+<div data-slot="command-dialog" class="contents">
+  <input type="checkbox" class="hidden" checked="{defaultOpen}" />
+  {children}
+</div>

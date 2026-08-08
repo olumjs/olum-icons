@@ -1,0 +1,62 @@
+<script>
+  import Bubble from "../../components/ui/Bubble/Bubble";
+  import BubbleContent from "../../components/ui/Bubble/BubbleContent";
+  import Message from "../../components/ui/Message/Message";
+  import MessageContent from "../../components/ui/Message/MessageContent";
+  import MessageScroller from "../../components/ui/MessageScroller/MessageScroller";
+  import MessageScrollerProvider from "../../components/ui/MessageScroller/MessageScrollerProvider";
+  import MessageScrollerViewport from "../../components/ui/MessageScroller/MessageScrollerViewport";
+  import MessageScrollerContent from "../../components/ui/MessageScroller/MessageScrollerContent";
+  import MessageScrollerItem from "../../components/ui/MessageScroller/MessageScrollerItem";
+  import MessageScrollerButton from "../../components/ui/MessageScroller/MessageScrollerButton";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+
+  const chatMessages = [
+    { id: "1", align: "start", text: "Hey, do you have the Q3 report ready?" },
+    { id: "2", align: "end", text: "Almost — just polishing the charts now." },
+    { id: "3", align: "start", text: "No rush, end of day is fine." },
+    { id: "4", align: "end", text: "Sounds good, I'll ping you when it's up." },
+  ];
+</script>
+
+<Navbar />
+<GalleryNav id="message-scroller" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="message-scroller" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <MessageScrollerProvider>
+      <MessageScroller class="h-64 w-96 rounded-xl border border-border">
+        <MessageScrollerViewport>
+          <MessageScrollerContent class="p-4">
+            <for each="m of chatMessages" key="m.id">
+              <MessageScrollerItem>
+                <Message align="{m.align}">
+                  <MessageContent>
+                    <Bubble align="{m.align}" variant="{m.align === 'end' ? 'default' : 'muted'}">
+                      <BubbleContent>{m.text}</BubbleContent>
+                    </Bubble>
+                  </MessageContent>
+                </Message>
+              </MessageScrollerItem>
+            </for>
+          </MessageScrollerContent>
+        </MessageScrollerViewport>
+        <MessageScrollerButton />
+      </MessageScroller>
+    </MessageScrollerProvider>
+  </DemoBlock>
+
+  <InstallBlock id="message-scroller" />
+  <Pager id="message-scroller" />
+</div>

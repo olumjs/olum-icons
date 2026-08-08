@@ -1,0 +1,28 @@
+<script>
+  import Progress from "../../components/ui/Progress/Progress";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="progress" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="progress" />
+
+
+  <DemoBlock label="values" snippet="{snippets['values']}">
+    <Progress value="{66}" class="w-64" />
+    <Progress value="{33}" class="w-64" />
+  </DemoBlock>
+  <InstallBlock id="progress" />
+
+  <Pager id="progress" />
+</div>

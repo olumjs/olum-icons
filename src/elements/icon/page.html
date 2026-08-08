@@ -1,0 +1,27 @@
+<script>
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import Icon from "../../components/ui/Icon/Icon";
+  import { snippets } from "./snippets";
+  import { Bot } from "olum-icons";
+</script>
+
+<Navbar />
+<GalleryNav id="icon" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="icon" />
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <Icon icon="{Bot}" class="w-20 h-auto text-green-300" />
+  </DemoBlock>
+  <InstallBlock id="icon" />
+
+  <Pager id="icon" />
+</div>

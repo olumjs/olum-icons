@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("w-full text-sm", className);
+</script>
+
+<div data-slot="sidebar-group-content" class="{classes()}">{children}</div>

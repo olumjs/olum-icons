@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("scroll-my-1 p-1", className);
+</script>
+
+<div data-slot="select-group" class="{classes()}">{children}</div>

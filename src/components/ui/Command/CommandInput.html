@@ -1,0 +1,20 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { placeholder = "", class: className = "" } = props();
+
+  const classes = () => twMerge("w-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground", className);
+</script>
+
+<div data-slot="command-input-wrapper" class="p-1 pb-0">
+  <!-- The ring sits on the wrapper, not the input: the input is the borderless
+       flex child, so a ring on it would trace the text box inside the frame.
+       focus-within because the thing that actually takes focus is that child. -->
+  <div
+    class="flex h-8 items-center gap-2 rounded-lg border border-border/40 bg-muted/50 px-2 transition-all focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50"
+  >
+    <svg class="size-4 shrink-0 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+    <input data-slot="command-input" type="text" placeholder="{placeholder}" class="{classes()}" />
+  </div>
+</div>

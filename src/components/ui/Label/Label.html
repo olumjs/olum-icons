@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { for: htmlFor, class: className = "", children } = props();
+
+  const base =
+    "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 group-has-disabled:cursor-not-allowed group-has-disabled:opacity-50";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<label for="{htmlFor}" class="{classes()}">{children}</label>

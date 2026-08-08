@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { inset = false, class: className = "", children } = props();
+
+  const classes = () => twMerge("px-1.5 py-1 text-xs font-medium text-muted-foreground", inset ? "pl-7" : "", className);
+</script>
+
+<div data-slot="dropdown-menu-label" data-inset="{inset}" class="{classes()}">{children}</div>

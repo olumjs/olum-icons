@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("group/menu-item relative", className);
+</script>
+
+<div data-slot="sidebar-menu-item" class="{classes()}">{children}</div>

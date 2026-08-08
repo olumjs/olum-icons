@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("flex flex-1 list-none items-center justify-center gap-0", className);
+</script>
+
+<div data-slot="navigation-menu-list" class="{classes()}">{children}</div>

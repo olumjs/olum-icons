@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+
+  const { children } = props();
+</script>
+
+<div data-slot="hover-card" class="relative inline-block [&_[data-slot=hover-card-content]]:hidden has-[>input:checked]:[&_[data-slot=hover-card-content]]:block">
+  <input type="checkbox" class="hidden" />
+  {children}
+</div>

@@ -1,0 +1,35 @@
+<script>
+  import { props } from "olum";
+  import CodeBlock from "../CodeBlock/CodeBlock";
+  import PackageManagerCommand from "./PackageManagerCommand";
+
+  const { id } = props();
+
+  // Global install differs per package manager, unlike `olum add` below.
+  const CLI = {
+    npm: "npm i -g olum-cli",
+    pnpm: "pnpm add -g olum-cli",
+    yarn: "yarn global add olum-cli",
+    bun: "bun add -g olum-cli",
+  };
+
+  const command = { bash: `olum add ${id}` };
+</script>
+
+<section id="installation" class="flex scroll-mt-20 flex-col gap-3">
+  <h2 class="text-lg font-semibold tracking-tight">Installation</h2>
+
+  <!-- Two blocks rather than one: the CLI is a one-time global install, so it
+       shouldn't end up on the clipboard every time someone copies the add
+       command. -->
+  <p class="text-sm text-muted-foreground">
+    <code class="rounded-sm bg-muted px-1 py-0.5 font-mono text-xs">olum add</code>
+    needs the CLI installed globally, once:
+  </p>
+
+  <PackageManagerCommand commands="{CLI}" />
+
+  <p class="text-sm text-muted-foreground">Then add the component:</p>
+
+  <PackageManagerCommand commands="{command}" tabs="{false}" />
+</section>

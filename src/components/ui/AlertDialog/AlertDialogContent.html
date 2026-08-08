@@ -1,0 +1,37 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { wireModal } from "../portal";
+
+  const { size = "default", class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="alert-dialog"]');
+    const input = root && root.querySelector(":scope > input");
+    const overlay = host.querySelector('[data-slot="alert-dialog-overlay"]');
+    const content = host.querySelector('[data-slot="alert-dialog-content"]');
+    if (!input || !overlay || !content) return;
+
+    // AlertDialogCancel/Action render inside `content`, so once it's portaled
+    // they can't reach the checkbox by walking up the tree any more. Hand it
+    // to them directly; they read it lazily on click.
+    content.__olumModalInput = input;
+
+    return wireModal({ input, nodes: [overlay, content], displays: ["block", "grid"] });
+  });
+
+  const classes = () =>
+    twMerge(
+      "group/alert-dialog-content top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-background p-4 text-popover-foreground ring-1 ring-border outline-none data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm fixed",
+      className,
+    );
+</script>
+
+<!--
+  display:none is set inline rather than via a `hidden` class so it always
+  beats the display utilities in `classes()`, and so any copy the framework
+  re-creates in this host after a parent re-render stays invisible (the real
+  nodes have been moved to <body> by then).
+-->
+<div data-slot="alert-dialog-overlay" style="display: none" class="fixed inset-0 z-50 bg-black/20"></div>
+<div data-slot="alert-dialog-content" data-size="{size}" style="display: none" class="{classes()}">{children}</div>

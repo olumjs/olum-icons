@@ -1,0 +1,24 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { errors, class: className = "", children } = props();
+
+  const list = () => (Array.isArray(errors) ? errors.filter((e) => e && e.message) : []);
+
+  const classes = () => twMerge("text-sm font-normal text-destructive", className);
+</script>
+
+<if when="children || list().length">
+  <div role="alert" data-slot="field-error" class="{classes()}">
+    <if when="children">{children}</if>
+    <else-if when="list().length === 1">{list()[0].message}</else-if>
+    <else>
+      <ul class="ml-4 flex list-disc flex-col gap-1">
+        <for each="err of list()" key="err.message">
+          <li>{err.message}</li>
+        </for>
+      </ul>
+    </else>
+  </div>
+</if>

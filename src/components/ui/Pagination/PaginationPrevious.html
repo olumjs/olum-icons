@@ -1,0 +1,14 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import PaginationLink from "./PaginationLink";
+
+  const { href = "#", text = "Previous", class: className = "" } = props();
+
+  const classes = () => twMerge("gap-1.5 pl-1.5!", className);
+</script>
+
+<PaginationLink href="{href}" size="default" aria-label="Go to previous page" class="{classes()}">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+  <span class="hidden sm:block">{text}</span>
+</PaginationLink>

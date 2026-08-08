@@ -1,0 +1,12 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("relative", className);
+</script>
+
+<div data-slot="scroll-area" class="{classes()}">
+  <div data-slot="scroll-area-viewport" class="size-full overflow-auto rounded-[inherit] outline-none [scrollbar-width:thin] [scrollbar-color:var(--olum-border)_transparent] focus-visible:ring-3 focus-visible:ring-ring/50">{children}</div>
+</div>

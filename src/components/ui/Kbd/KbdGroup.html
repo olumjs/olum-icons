@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("inline-flex items-center gap-1", className);
+</script>
+
+<kbd data-slot="kbd-group" class="{classes()}">{children}</kbd>

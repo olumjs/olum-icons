@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { label, class: className = "", children } = props();
+
+  const classes = () => twMerge("bg-[Canvas] text-[CanvasText]", className);
+</script>
+
+<optgroup data-slot="native-select-optgroup" label="{label}" class="{classes()}">{children}</optgroup>

@@ -1,0 +1,14 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // AccordionItem can't style its own not-last:border-b: each instance mounts
+  // inside its own OlumJS host wrapper div, so :not(:last-child) only ever sees
+  // that item's wrapper's own (single) child -- never its sibling items. Applying
+  // it here, one level up, targets the actual sibling wrappers instead.
+  const classes = () => twMerge("flex w-full flex-col [&>*:not(:last-child)>[data-slot=accordion-item]]:border-b", className);
+</script>
+
+<div data-slot="accordion" class="{classes()}">{children}</div>

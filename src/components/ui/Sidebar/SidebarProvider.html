@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge("group/sidebar-wrapper relative flex min-h-svh w-full [--sidebar-width:16rem] [--sidebar-width-icon:3rem] [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="sidebar-wrapper" data-state="expanded" class="{classes()}">{children}</div>

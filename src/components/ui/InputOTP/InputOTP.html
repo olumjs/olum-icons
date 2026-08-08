@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", containerClass = "", children } = props();
+
+  const containerClasses = () => twMerge("flex items-center has-disabled:opacity-50", className, containerClass);
+</script>
+
+<div data-slot="input-otp" class="{containerClasses()}">{children}</div>

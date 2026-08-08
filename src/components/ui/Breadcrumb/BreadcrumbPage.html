@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("font-normal text-foreground", className);
+</script>
+
+<span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="{classes()}">{children}</span>

@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("flex items-center rounded-b-xl border-t bg-muted/50 p-(--card-spacing)", className);
+</script>
+
+<div data-slot="card-footer" class="{classes()}">{children}</div>

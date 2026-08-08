@@ -1,0 +1,23 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { href = "#", isActive = false, size = "icon", class: className = "", children } = props();
+
+  const base =
+    "group/button inline-flex shrink-0 items-center justify-center rounded-lg border bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px";
+
+  const variants = {
+    active: "border-border bg-background hover:bg-muted hover:text-foreground",
+    inactive: "border-transparent hover:bg-muted hover:text-foreground",
+  };
+
+  const sizes = {
+    default: "h-8 gap-1.5 px-2.5",
+    icon: "size-8",
+  };
+
+  const classes = () => twMerge(base, isActive ? variants.active : variants.inactive, sizes[size] || sizes.icon, className);
+</script>
+
+<a data-slot="pagination-link" data-active="{isActive}" href="{href}" aria-current="{isActive ? 'page' : undefined}" class="{classes()}">{children}</a>

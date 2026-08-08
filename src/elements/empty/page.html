@@ -1,0 +1,49 @@
+<script>
+  import Button from "../../components/ui/Button/Button";
+  import Empty from "../../components/ui/Empty/Empty";
+  import EmptyHeader from "../../components/ui/Empty/EmptyHeader";
+  import EmptyMedia from "../../components/ui/Empty/EmptyMedia";
+  import EmptyTitle from "../../components/ui/Empty/EmptyTitle";
+  import EmptyDescription from "../../components/ui/Empty/EmptyDescription";
+  import EmptyContent from "../../components/ui/Empty/EmptyContent";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+
+  const icons = {
+    inbox: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /></svg>`,
+  };
+</script>
+
+<Navbar />
+<GalleryNav id="empty" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="empty" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <Empty class="w-96 border border-border">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <div html="icons.inbox"></div>
+        </EmptyMedia>
+        <EmptyTitle>No messages yet</EmptyTitle>
+        <EmptyDescription>When you get messages, they will show up here.</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button size="sm">Compose message</Button>
+      </EmptyContent>
+    </Empty>
+  </DemoBlock>
+
+  <InstallBlock id="empty" />
+
+  <Pager id="empty" />
+</div>

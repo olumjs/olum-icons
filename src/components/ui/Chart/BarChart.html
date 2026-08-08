@@ -1,0 +1,121 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { data = [], config = {}, xKey = "month", class: className = "" } = props();
+
+  const state = { hover: -1, x: 0, y: 0 };
+
+  const W = 480;
+  const H = 250;
+  const PT = 10;
+  const PB = 26;
+  const PL = 10;
+  const PR = 10;
+  const plotW = W - PL - PR;
+  const plotH = H - PT - PB;
+
+  const keys = () => Object.keys(config);
+
+  const top = () => {
+    const m = Math.max(1, ...data.flatMap((d) => keys().map((k) => +d[k] || 0)));
+    const pow = Math.pow(10, Math.floor(Math.log10(m)));
+    const n = m / pow;
+    const f = n <= 1 ? 1 : n <= 2 ? 2 : n <= 4 ? 4 : n <= 5 ? 5 : n <= 8 ? 8 : 10;
+    return f * pow;
+  };
+
+  const groupW = () => plotW / Math.max(1, data.length);
+  const barW = () => Math.min(24, (groupW() - 16) / Math.max(1, keys().length));
+  const barX = (i, j) => PL + i * groupW() + groupW() / 2 - (keys().length * barW() + (keys().length - 1) * 4) / 2 + j * (barW() + 4);
+  const barH = (d, k) => ((+d[k] || 0) / top()) * plotH;
+  const barY = (d, k) => PT + plotH - barH(d, k);
+  const gridY = (k) => PT + (plotH * (k - 1)) / 4;
+  const color = (k) => (config[k] && config[k].color) || "var(--color-chart-1)";
+  const labelFor = (k) => (config[k] && config[k].label) || k;
+
+  // Clamped to a real index (0 when nothing's hovered yet) so the tooltip can
+  // stay permanently in the DOM -- reading data[-1] would throw. Its content
+  // is simply invisible (opacity:0) whenever nothing's actually hovered.
+  const hoverIndex = () => Math.max(0, state.hover);
+  const hoverData = () => data[hoverIndex()] || {};
+
+  // Follows the actual cursor (pixels relative to the container), not the
+  // hovered bar's data -- clamped so the min-w-32 (128px) tooltip never
+  // overflows the container's left/right edges. Updated on every mousemove
+  // in onMount below; the template just reads state.x/state.y.
+  onMount(() => {
+    const container = host.querySelector('[data-slot="bar-chart"]');
+    const svg = host.querySelector("svg");
+    if (!container || !svg) return;
+
+    const HALF_TOOLTIP = 64;
+    const onMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      state.x = Math.min(Math.max(e.clientX - rect.left, HALF_TOOLTIP), Math.max(HALF_TOOLTIP, rect.width - HALF_TOOLTIP));
+      state.y = e.clientY - rect.top;
+    };
+
+    svg.addEventListener("mousemove", onMove);
+    return () => svg.removeEventListener("mousemove", onMove);
+  });
+
+  const classes = () => twMerge("relative flex w-full flex-col justify-center text-xs", className);
+</script>
+
+<div data-slot="bar-chart" class="{classes()}">
+  <svg class="min-h-0 w-full flex-1" viewBox="0 0 480 250" preserveAspectRatio="xMidYMid meet">
+    <for each="k of 5">
+      <line x1="{PL}" x2="{W - PR}" y1="{gridY(k)}" y2="{gridY(k)}" stroke="var(--olum-border)" stroke-opacity="0.5" />
+    </for>
+    <for each="(d, i) of data" key="d[xKey]">
+      <!--
+        Drawn first (behind the bars) so the hover highlight doesn't paint
+        over them. Bars get pointer-events="none" so hover/leave still fire
+        on this rect even while the cursor is directly over a bar.
+      -->
+      <rect
+        x="{PL + i * groupW()}"
+        y="{PT}"
+        width="{groupW()}"
+        height="{plotH}"
+        rx="4"
+        fill="{state.hover === i ? 'var(--olum-muted)' : 'transparent'}"
+        onmouseenter="() => (state.hover = i)"
+        onmouseleave="() => (state.hover = -1)"
+      />
+      <for each="(k, j) of keys()" key="k">
+        <rect x="{barX(i, j)}" y="{barY(d, k)}" width="{barW()}" height="{barH(d, k)}" rx="4" fill="{color(k)}" pointer-events="none" />
+      </for>
+      <text x="{PL + i * groupW() + groupW() / 2}" y="{H - 8}" text-anchor="middle" class="fill-muted-foreground" font-size="12">{d[xKey]}</text>
+    </for>
+  </svg>
+  <div class="flex items-center justify-center gap-4 pt-3">
+    <for each="k of keys()" key="k">
+      <div class="flex items-center gap-1.5">
+        <div class="size-2 shrink-0 rounded-[2px]" style="background:{color(k)}"></div>
+        <span>{labelFor(k)}</span>
+      </div>
+    </for>
+  </div>
+  <!--
+    Always rendered (no <if>/<show>) so opacity can actually transition -- an
+    <if>-toggled element is added/removed from the DOM each time, giving CSS
+    nothing to animate from. Content reads the clamped hoverIndex(), so it's
+    always valid data, just invisible when nothing's hovered. left/top track
+    the cursor directly (no transition) so the tooltip doesn't lag the mouse.
+  -->
+  <div
+    class="pointer-events-none absolute z-10 grid min-w-32 gap-1.5 rounded-lg bg-background px-2.5 py-1.5 text-xs shadow-xl ring-1 ring-border transition-opacity duration-150"
+    style="left:{state.x}px; top:{state.y}px; transform: translate(-50%, calc(-100% - 12px)); opacity:{state.hover > -1 ? 1 : 0};"
+  >
+    <div class="font-medium">{hoverData()[xKey]}</div>
+    <for each="k of keys()" key="k">
+      <div class="flex w-full items-center gap-2">
+        <div class="size-2 shrink-0 rounded-[2px]" style="background:{color(k)}"></div>
+        <span class="text-muted-foreground">{labelFor(k)}</span>
+        <span class="ml-auto font-medium tabular-nums">{hoverData()[k]}</span>
+      </div>
+    </for>
+  </div>
+</div>

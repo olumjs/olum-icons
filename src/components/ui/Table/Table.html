@@ -1,0 +1,17 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  // The parts are <div>s carrying CSS table display roles rather than real
+  // <table>/<tr>/<td> tags: each component's template is parsed on its own, and
+  // the HTML parser drops table-only tags outside table context, so real <tr>/<td>
+  // never survive. `contents` on the OlumJS host wrappers keeps the row/cell
+  // boxes as direct layout children of their group.
+  const classes = () => twMerge("table w-full caption-bottom border-collapse text-sm [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="table-container" class="relative w-full overflow-x-auto">
+  <div data-slot="table" role="table" class="{classes()}">{children}</div>
+</div>

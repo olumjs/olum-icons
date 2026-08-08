@@ -1,0 +1,38 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="popover"]');
+    const input = root && root.querySelector(":scope > input");
+
+    const close = () => {
+      if (!input) return;
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onDocClick = (e) => {
+      if (root && !root.contains(e.target)) close();
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape" && input && input.checked) close();
+    };
+
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  });
+
+  const classes = () =>
+    twMerge(
+      "absolute top-full left-1/2 z-50 mt-1 w-72 -translate-x-1/2 flex-col gap-2.5 rounded-lg bg-background p-2.5 text-sm text-foreground shadow-md ring-1 ring-border outline-none",
+      className,
+    );
+</script>
+
+<div data-slot="popover-content" class="{classes()}">{children}</div>

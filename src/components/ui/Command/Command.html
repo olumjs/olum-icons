@@ -1,0 +1,104 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    // Only items that survived the current filter can be reached with the arrow
+    // keys, and a disabled one is skipped rather than selected-but-inert.
+    const items = () =>
+      [...host.querySelectorAll('[data-slot="command-item"]')].filter((it) => !it.classList.contains("hidden") && !it.hasAttribute("disabled"));
+
+    const selected = () => host.querySelector('[data-slot="command-item"][data-selected="true"]');
+
+    // The highlight is an attribute rather than a class so the styling can live
+    // with the item (data-[selected=true]:*) and cover both <CommandItem> and
+    // the plain anchors pages use when an item has to carry its own href.
+    const select = (el, scroll) => {
+      const cur = selected();
+      if (cur === el) return;
+      if (cur) cur.removeAttribute("data-selected");
+      if (!el) return;
+      el.setAttribute("data-selected", "true");
+      if (scroll) el.scrollIntoView({ block: "nearest" });
+    };
+
+    const apply = () => {
+      const inputEl = host.querySelector('[data-slot="command-input"]');
+      const q = inputEl ? inputEl.value.trim().toLowerCase() : "";
+      let any = false;
+      host.querySelectorAll('[data-slot="command-item"]').forEach((it) => {
+        const show = !q || it.textContent.toLowerCase().includes(q);
+        it.classList.toggle("hidden", !show);
+        if (show) any = true;
+      });
+      host.querySelectorAll('[data-slot="command-group"]').forEach((g) => {
+        g.classList.toggle("hidden", !g.querySelector('[data-slot="command-item"]:not(.hidden)'));
+      });
+      host.querySelectorAll('[data-slot="command-separator"]').forEach((s) => s.classList.toggle("hidden", !!q));
+      host.querySelectorAll('[data-slot="command-empty"]').forEach((e) => e.classList.toggle("hidden", any));
+
+      // Re-filtering can hide whatever was highlighted, and leaving Enter aimed
+      // at an invisible row is worse than no highlight at all -- so the first
+      // match takes it, which also makes Enter-on-open pick the obvious result.
+      const list = items();
+      if (!list.includes(selected())) select(list[0], true);
+    };
+
+    // Wraps at both ends: with a short list the alternative is an arrow key that
+    // silently does nothing once you reach the edge.
+    const move = (dir) => {
+      const list = items();
+      if (!list.length) return;
+      const i = list.indexOf(selected());
+      const next = i === -1 ? (dir > 0 ? 0 : list.length - 1) : (i + dir + list.length) % list.length;
+      select(list[next], true);
+    };
+
+    const onInput = (e) => {
+      if (e.target.matches('[data-slot="command-input"]')) apply();
+    };
+
+    // Bound to the host, so it only sees keys typed while the palette's own
+    // field has focus -- the list itself is never the focus target.
+    const onKey = (e) => {
+      if (e.key === "ArrowDown") move(1);
+      else if (e.key === "ArrowUp") move(-1);
+      else if (e.key === "Home") select(items()[0], true);
+      else if (e.key === "End") select(items().at(-1), true);
+      else if (e.key === "Enter") {
+        const el = selected();
+        if (!el) return;
+        // click() rather than a direct handler call: it's what the router's own
+        // [to] listener and CommandDialogContent's close-on-select both wait for.
+        el.click();
+      } else return;
+      e.preventDefault();
+    };
+
+    // Keeps the two pointers in agreement -- without this a moused-over row and
+    // an arrowed-to row light up at once and Enter takes the one you're not
+    // looking at. mousemove, not mouseover: scrolling a row under a parked
+    // cursor must not steal the selection from the keyboard.
+    const onMouseMove = (e) => {
+      const it = e.target.closest('[data-slot="command-item"]');
+      if (it && host.contains(it) && !it.hasAttribute("disabled")) select(it, false);
+    };
+
+    host.addEventListener("input", onInput);
+    host.addEventListener("keydown", onKey);
+    host.addEventListener("mousemove", onMouseMove);
+    const t = setTimeout(apply);
+    return () => {
+      clearTimeout(t);
+      host.removeEventListener("input", onInput);
+      host.removeEventListener("keydown", onKey);
+      host.removeEventListener("mousemove", onMouseMove);
+    };
+  });
+
+  const classes = () => twMerge("flex size-full flex-col overflow-hidden rounded-xl bg-background p-1 text-foreground", className);
+</script>
+
+<div data-slot="command" class="{classes()}">{children}</div>

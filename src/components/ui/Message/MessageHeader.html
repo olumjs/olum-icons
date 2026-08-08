@@ -1,0 +1,12 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const base = "flex max-w-full min-w-0 items-center px-3 text-xs font-medium text-muted-foreground group-has-data-[variant=ghost]/message:px-0";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="message-header" class="{classes()}">{children}</div>

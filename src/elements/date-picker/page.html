@@ -1,0 +1,27 @@
+<script>
+  import DatePicker from "../../components/ui/DatePicker/DatePicker";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="date-picker" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="date-picker" />
+
+  
+  <DemoBlock label="default" snippet="{snippets['default']}" previewClass="min-h-[15rem] items-start">
+    <DatePicker />
+  </DemoBlock>
+  <InstallBlock id="date-picker" />
+
+  <Pager id="date-picker" />
+</div>

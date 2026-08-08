@@ -1,0 +1,96 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { items = [], placeholder = "", emptyText = "No results found.", showClear = false, class: className = "" } = props();
+
+  const state = { query: "", open: false, value: null };
+
+  const filtered = () => items.filter((it) => it.toLowerCase().includes(state.query.trim().toLowerCase()));
+
+  const pick = (it) => {
+    state.value = it;
+    state.query = it;
+    state.open = false;
+  };
+
+  const clear = () => {
+    state.value = null;
+    state.query = "";
+  };
+
+  onMount(() => {
+    const onDocClick = (e) => {
+      if (!host.contains(e.target)) state.open = false;
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") state.open = false;
+    };
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  });
+
+  const classes = () => twMerge("relative w-64", className);
+</script>
+
+<div data-slot="combobox" class="{classes()}">
+  <div class="flex h-8 w-full min-w-0 items-center rounded-lg border border-border bg-background transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50">
+    <input
+      data-slot="combobox-input"
+      type="text"
+      class="h-full min-w-0 flex-1 bg-transparent px-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+      placeholder="{placeholder}"
+      value="{state.query}"
+      oninput="(e) => { state.query = e.target.value; state.open = true; }"
+      onfocus="() => (state.open = true)"
+    />
+    <if when="showClear && state.query">
+      <button
+        type="button"
+        data-slot="combobox-clear"
+        class="mr-1 inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+        onclick="clear()"
+      >
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      </button>
+    </if>
+    <else>
+      <button
+        type="button"
+        data-slot="combobox-trigger"
+        class="mr-1 inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+        onclick="() => (state.open = !state.open)"
+      >
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+      </button>
+    </else>
+  </div>
+  <if when="state.open">
+    <div data-slot="combobox-content" class="absolute top-full left-0 z-50 mt-1.5 w-full overflow-hidden rounded-lg bg-background text-foreground shadow-md ring-1 ring-border">
+      <div data-slot="combobox-list" class="max-h-64 scroll-py-1 overflow-y-auto overscroll-contain p-1">
+        <if when="filtered().length === 0">
+          <div data-slot="combobox-empty" class="flex w-full justify-center py-2 text-center text-sm text-muted-foreground">{emptyText}</div>
+        </if>
+        <for each="item of filtered()" key="item">
+          <button
+            type="button"
+            data-slot="combobox-item"
+            class="relative flex w-full cursor-default items-center gap-2 rounded-md py-1 pr-8 pl-1.5 text-left text-sm outline-none select-none hover:bg-muted"
+            onclick="pick(item)"
+          >
+            {item}
+            <if when="state.value === item">
+              <span class="pointer-events-none absolute right-2 flex size-4 items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+              </span>
+            </if>
+          </button>
+        </for>
+      </div>
+    </div>
+  </if>
+</div>

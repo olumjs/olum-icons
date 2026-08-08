@@ -1,0 +1,27 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import Button from "../Button/Button";
+  import { findModalInput } from "../portal";
+
+  const { class: className = "", onclick, children } = props();
+
+  onMount(() => {
+    const btn = host.querySelector("button");
+    const onClick = () => {
+      onclick && onclick();
+      // Resolved per click, not at mount: this button is portaled into <body>
+      // with the content, so it can't rely on walking up to the root.
+      const input = findModalInput(host, "alert-dialog", "alert-dialog-content");
+      if (!input) return;
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    btn.addEventListener("click", onClick);
+    return () => btn.removeEventListener("click", onClick);
+  });
+
+  const classes = () => twMerge("group-data-[size=sm]/alert-dialog-content:w-full", className);
+</script>
+
+<Button data-slot="alert-dialog-action" class="{classes()}">{children}</Button>

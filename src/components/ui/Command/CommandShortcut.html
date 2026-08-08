@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("ml-auto text-xs tracking-widest text-muted-foreground", className);
+</script>
+
+<span data-slot="command-shortcut" class="{classes()}">{children}</span>

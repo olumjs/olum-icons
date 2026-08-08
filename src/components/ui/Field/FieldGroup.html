@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("group/field-group flex w-full flex-col gap-5 [&>[data-olum]]:contents", className);
+</script>
+
+<div data-slot="field-group" class="{classes()}">{children}</div>

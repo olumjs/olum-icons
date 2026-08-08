@@ -1,0 +1,11 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import Label from "../Label/Label";
+
+  const { for: htmlFor, class: className = "", children } = props();
+
+  const classes = () => twMerge("group/field-label flex w-fit gap-2 leading-snug", className);
+</script>
+
+<Label for="{htmlFor}" class="{classes()}">{children}</Label>

@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("font-heading text-sm font-medium tracking-tight", className);
+</script>
+
+<div data-slot="empty-title" class="{classes()}">{children}</div>

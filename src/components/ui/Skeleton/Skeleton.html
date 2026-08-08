@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "" } = props();
+
+  const classes = () => twMerge("animate-pulse rounded-md bg-muted", className);
+</script>
+
+<div class="{classes()}"></div>

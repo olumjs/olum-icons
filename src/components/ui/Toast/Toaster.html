@@ -1,0 +1,120 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  import { toast } from "./toast";
+
+  const { position = "bottom-right", class: className = "" } = props();
+
+  const isTop = () => position.indexOf("top") === 0;
+  const isLeft = () => position.indexOf("left") !== -1;
+
+  // Stack grows away from its anchor edge: down from a top anchor, up from a
+  // bottom one. +1 means "growing distance moves toasts down the page".
+  const growDir = () => (isTop() ? 1 : -1);
+
+  const state = { hovering: false };
+
+  // mouseenter/mouseleave don't bubble, but they DO fire on ancestors of the
+  // actual hit target, so attaching directly to host still works regardless
+  // of which descendant the cursor is actually over.
+  onMount(() => {
+    const onEnter = () => (state.hovering = true);
+    const onLeave = () => (state.hovering = false);
+    host.addEventListener("mouseenter", onEnter);
+    host.addEventListener("mouseleave", onLeave);
+    return () => {
+      host.removeEventListener("mouseenter", onEnter);
+      host.removeEventListener("mouseleave", onLeave);
+    };
+  });
+
+  const icons = {
+    success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>`,
+    info: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>`,
+    warning: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>`,
+    error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16h.01" /><path d="M12 8v4" /><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z" /></svg>`,
+  };
+  const iconFor = (type) => icons[type] || "";
+
+  // Only the most recent MAX_VISIBLE toasts are actually rendered, stacked
+  // frontmost-on-top via the shared grid cell below (all placed at col/row
+  // 1, overlapping) -- each older one behind is nudged back and scaled down
+  // a touch to read as a physical stack of cards, similar to the reference
+  // app's toast stack.
+  const MAX_VISIBLE = 3;
+  const visibleItems = () => toast.items.slice(-MAX_VISIBLE);
+
+  // Index counting back from the frontmost (newest) toast: 0 = frontmost.
+  const distanceFor = (id) => {
+    const items = visibleItems();
+    const idx = items.findIndex((t) => t.id === id);
+    return items.length - 1 - idx;
+  };
+
+  // No per-toast height measurement, so the expanded gap is a fixed value
+  // generous enough to clear a typical (one/two-line) toast without
+  // overlapping -- same "fixed offset" approximation the collapsed stack
+  // already uses, just applied at a much larger, non-overlapping spacing.
+  const EXPANDED_GAP = 88;
+
+  const styleFor = (t) => {
+    const dir = growDir();
+    if (t.entering || t.leaving) return `opacity:0; transform: translateY(${-dir * 16}px) scale(0.95);`;
+    const d = distanceFor(t.id);
+    if (state.hovering) return `opacity:1; transform: translateY(${dir * d * EXPANDED_GAP}px) scale(1); z-index: ${100 - d};`;
+    return `opacity:1; transform: translateY(${dir * d * 10}px) scale(${1 - d * 0.05}); z-index: ${100 - d};`;
+  };
+
+  // transform moves the toasts, but it never changes the viewport's own
+  // layout box -- so once expanded, the toasts (and the gaps between them)
+  // sit beyond where the (still un-grown) box actually ends. The cursor
+  // drifting into one of those gaps was landing on nothing this element
+  // owns, firing a spurious mouseleave -> collapse -> the toast slides back
+  // under the cursor -> mouseenter -> expand again, flickering in a loop.
+  // Growing padding on the side the stack expands toward keeps the whole
+  // visual stack inside this element's real hoverable box.
+  const expandPadding = () => (state.hovering ? Math.max(0, visibleItems().length - 1) * EXPANDED_GAP : 0);
+  const paddingStyle = () => `${isTop() ? "padding-bottom" : "padding-top"}: ${expandPadding()}px;`;
+
+  // Mobile: centered near-full-width regardless of position (inset-x-4 +
+  // mx-auto + max-w-sm), matching the reference app. From sm: up, pinned to
+  // the requested corner instead.
+  const anchorClasses = () =>
+    [
+      isTop() ? "top-4" : "bottom-4",
+      isLeft() ? "sm:left-4 sm:right-auto" : "sm:right-4 sm:left-auto",
+      "transition-[padding-top,padding-bottom]",
+    ].join(" ");
+
+  const classes = () =>
+    twMerge(
+      visibleItems().length ? "pointer-events-auto" : "pointer-events-none",
+      "fixed inset-x-4 z-50 mx-auto grid w-auto max-w-sm duration-300 ease-out sm:mx-0 sm:w-full",
+      anchorClasses(),
+      className,
+    );
+</script>
+
+<div data-slot="toast-viewport" data-position="{position}" class="{classes()}" style="{paddingStyle()}">
+  <for each="t of visibleItems()" key="t.id">
+    <div
+      data-slot="toast"
+      class="pointer-events-auto col-start-1 row-start-1 flex items-center gap-3 rounded-2xl border border-border bg-background p-4 text-sm text-foreground shadow-lg transition-all duration-300 ease-out"
+      style="{styleFor(t)}"
+    >
+      <if when="iconFor(t.type)">
+        <span class="shrink-0 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4" html="iconFor(t.type)"></span>
+      </if>
+      <div class="flex min-w-0 flex-1 flex-col gap-1">
+        <div class="text-sm font-medium">{t.title}</div>
+        <if when="t.description">
+          <div class="text-sm text-muted-foreground">{t.description}</div>
+        </if>
+      </div>
+      <button type="button" aria-label="Close toast" class="relative flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground" onclick="toast.requestDismiss(t.id)">
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      </button>
+    </div>
+  </for>
+</div>

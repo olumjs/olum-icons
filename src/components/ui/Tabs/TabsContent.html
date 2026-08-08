@@ -1,0 +1,25 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { value, class: className = "", children } = props();
+
+  const state = { active: false };
+
+  onMount(() => {
+    const root = host.closest('[data-slot="tabs"]');
+    const check = () => {
+      const checked = root && root.querySelector("input[type=radio]:checked");
+      state.active = !!checked && checked.value === value;
+    };
+    check();
+    root && root.addEventListener("change", check);
+    return () => root && root.removeEventListener("change", check);
+  });
+
+  const classes = () => twMerge("flex-1 text-sm outline-none", className);
+</script>
+
+<show when="state.active">
+  <div data-slot="tabs-content" class="{classes()}">{children}</div>
+</show>

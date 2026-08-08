@@ -1,0 +1,17 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { nextCarouselId } from "./carouselStore";
+
+  const { class: className = "", children } = props();
+
+  // Stamped onto the DOM so CarouselContent/Next/Previous (separate sibling
+  // components) can find "their" key in the shared carouselStore via
+  // host.closest('[data-slot="carousel"]') -- the same DOM-lookup pattern
+  // used throughout this library for cross-sibling coordination.
+  const id = nextCarouselId();
+
+  const classes = () => twMerge("relative", className);
+</script>
+
+<div data-slot="carousel" data-carousel-id="{id}" role="region" aria-roledescription="carousel" class="{classes()}">{children}</div>

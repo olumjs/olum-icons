@@ -1,0 +1,12 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const base = "flex flex-wrap items-center gap-1.5 text-sm wrap-break-word text-muted-foreground";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<ol data-slot="breadcrumb-list" class="{classes()}">{children}</ol>

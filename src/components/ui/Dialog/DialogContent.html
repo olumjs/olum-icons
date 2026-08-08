@@ -1,0 +1,63 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { wireModal } from "../portal";
+
+  const { showCloseButton = true, class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="dialog"]');
+    const input = root && root.querySelector(":scope > input");
+    const overlay = host.querySelector('[data-slot="dialog-overlay"]');
+    const content = host.querySelector('[data-slot="dialog-content"]');
+    const closeBtn = host.querySelector("[data-builtin-close]");
+    if (!input || !overlay || !content) return;
+
+    // DialogClose renders inside `content`, so once it's portaled it can't
+    // reach the checkbox by walking up the tree. Hand it over directly.
+    content.__olumModalInput = input;
+
+    const close = () => {
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape" && input.checked) close();
+    };
+    const onOverlayClick = (e) => {
+      if (e.target === overlay) close();
+    };
+
+    closeBtn && closeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", onOverlayClick);
+    document.addEventListener("keydown", onKey);
+
+    const unwire = wireModal({ input, nodes: [overlay, content], displays: ["block", "grid"] });
+
+    return () => {
+      closeBtn && closeBtn.removeEventListener("click", close);
+      overlay.removeEventListener("click", onOverlayClick);
+      document.removeEventListener("keydown", onKey);
+      unwire();
+    };
+  });
+
+  const classes = () =>
+    twMerge(
+      "top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-background p-4 text-sm text-foreground ring-1 ring-border outline-none sm:max-w-sm fixed",
+      className,
+    );
+</script>
+
+<!-- display:none inline so it beats the display utilities in classes(), and so
+     any copy re-created in this host after a re-render stays invisible. -->
+<div data-slot="dialog-overlay" style="display: none" class="fixed inset-0 z-50 bg-black/20"></div>
+<div data-slot="dialog-content" style="display: none" class="{classes()}">
+  {children}
+  <if when="showCloseButton">
+    <button type="button" data-builtin-close class="absolute top-2 right-2 inline-flex size-7 items-center justify-center rounded-lg hover:bg-muted">
+      <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+      <span class="sr-only">Close</span>
+    </button>
+  </if>
+</div>

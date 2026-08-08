@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "" } = props();
+
+  const classes = () => twMerge("pointer-events-none -mx-1 my-1 h-px bg-border", className);
+</script>
+
+<div data-slot="select-separator" class="{classes()}"></div>

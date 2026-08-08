@@ -1,0 +1,18 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { orientation = "horizontal", class: className = "", children } = props();
+
+  // [&>[data-olum]]:contents collapses TabsList/TabsContent's own OlumJS
+  // host wrapper divs so only genuinely visible content counts as a flex
+  // item here. Without it, an inactive TabsContent's bare wrapper div still
+  // sits in the flex row/column (even though its inner content is hidden),
+  // so gap-2 still reserves space around it -- and since which tab is
+  // "the hidden one before the visible one" changes depending on which tab
+  // is active, the visible gap before the active tab's content would
+  // inconsistently double up depending on tab order.
+  const classes = () => twMerge("group/tabs flex gap-2 [&>[data-olum]]:contents", orientation === "horizontal" ? "flex-col" : "", className);
+</script>
+
+<div data-slot="tabs" data-orientation="{orientation}" class="{classes()}">{children}</div>

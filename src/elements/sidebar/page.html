@@ -1,0 +1,100 @@
+<script>
+  import Sidebar from "../../components/ui/Sidebar/Sidebar";
+  import SidebarProvider from "../../components/ui/Sidebar/SidebarProvider";
+  import SidebarHeader from "../../components/ui/Sidebar/SidebarHeader";
+  import SidebarContent from "../../components/ui/Sidebar/SidebarContent";
+  import SidebarFooter from "../../components/ui/Sidebar/SidebarFooter";
+  import SidebarGroup from "../../components/ui/Sidebar/SidebarGroup";
+  import SidebarGroupLabel from "../../components/ui/Sidebar/SidebarGroupLabel";
+  import SidebarGroupContent from "../../components/ui/Sidebar/SidebarGroupContent";
+  import SidebarMenu from "../../components/ui/Sidebar/SidebarMenu";
+  import SidebarMenuItem from "../../components/ui/Sidebar/SidebarMenuItem";
+  import SidebarMenuButton from "../../components/ui/Sidebar/SidebarMenuButton";
+  import SidebarSeparator from "../../components/ui/Sidebar/SidebarSeparator";
+  import SidebarInset from "../../components/ui/Sidebar/SidebarInset";
+  import SidebarTrigger from "../../components/ui/Sidebar/SidebarTrigger";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+
+  const icons = {
+    home: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>`,
+    inbox: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /></svg>`,
+    settings: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></svg>`,
+    user: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>`,
+  };
+</script>
+
+<Navbar />
+<GalleryNav id="sidebar" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="sidebar" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <div class="relative isolate h-96 w-full overflow-hidden rounded-xl border border-border">
+      <SidebarProvider class="h-full min-h-0">
+        <Sidebar collapsible="icon">
+          <SidebarHeader>
+            <div class="px-2 text-sm font-semibold">Acme Inc</div>
+          </SidebarHeader>
+          <SidebarSeparator />
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>Platform</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton tooltip="Home" isActive="{true}">
+                      <div html="icons.home"></div>
+                      <span>Home</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton tooltip="Inbox">
+                      <div html="icons.inbox"></div>
+                      <span>Inbox</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton tooltip="Settings">
+                      <div html="icons.settings"></div>
+                      <span>Settings</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <div html="icons.user"></div>
+                  <span>Account</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+        </Sidebar>
+        <SidebarInset class="flex-1">
+          <div class="flex items-center gap-2 border-b border-border p-2">
+            <SidebarTrigger />
+            <span class="text-sm text-muted-foreground">Toggle the sidebar</span>
+          </div>
+          <div class="p-4 text-sm text-muted-foreground">Main content area.</div>
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
+  </DemoBlock>
+
+  <InstallBlock id="sidebar" />
+  <Pager id="sidebar" />
+</div>

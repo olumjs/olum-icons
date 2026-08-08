@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "" } = props();
+
+  const classes = () => twMerge("mx-2 h-px w-auto shrink-0 bg-border", className);
+</script>
+
+<div data-slot="sidebar-separator" class="{classes()}"></div>

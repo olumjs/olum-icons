@@ -1,0 +1,34 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const el = host.querySelector('[data-slot="message-scroller-viewport"]');
+    const root = host.closest('[data-slot="message-scroller"]');
+    if (!el) return;
+
+    const update = () => {
+      const btn = root && root.querySelector('[data-slot="message-scroller-button"]');
+      if (!btn) return;
+      const atEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - 8;
+      btn.setAttribute("data-active", atEnd ? "false" : "true");
+    };
+
+    el.addEventListener("scroll", update, { passive: true });
+    const t = setTimeout(() => {
+      el.scrollTop = el.scrollHeight;
+      update();
+    });
+    return () => {
+      clearTimeout(t);
+      el.removeEventListener("scroll", update);
+    };
+  });
+
+  const classes = () =>
+    twMerge("size-full min-h-0 min-w-0 overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:var(--olum-border)_transparent]", className);
+</script>
+
+<div data-slot="message-scroller-viewport" class="{classes()}">{children}</div>

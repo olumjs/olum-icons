@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("min-w-0 shrink-0", className);
+</script>
+
+<div data-slot="message-scroller-item" class="{classes()}">{children}</div>

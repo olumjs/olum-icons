@@ -1,0 +1,118 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { carouselStore, applyOffset } from "./carouselStore";
+  import { animateValue } from "./animate";
+
+  const { class: className = "", children } = props();
+
+  // Matches the reference app's actual (embla-based) structure: an outer
+  // viewport that clips overflow -- overflow-hidden means there is never a
+  // scrollbar and no native scroll capability at all, unlike overflow-auto --
+  // wrapping an inner track that's a long flex row (each CarouselItem has
+  // shrink-0, so the row is free to exceed the viewport's width) moved via
+  // transform:translateX.
+  //
+  // The transform itself is always set directly on the track element -- not
+  // through a reactive template expression -- from whichever component is
+  // driving a given change (the drag handlers below, or CarouselNext/
+  // Previous's go()). carouselStore only carries the offset for cross-
+  // component reads (CarouselNext/Previous deriving their `disabled` state);
+  // it doesn't drive the visual update.
+  const state = { id: null };
+
+  onMount(() => {
+    const root = host.closest('[data-slot="carousel"]');
+    const viewport = host.querySelector('[data-slot="carousel-content"]');
+    const track = host.querySelector('[data-slot="carousel-track"]');
+    if (!root || !viewport || !track) return;
+    state.id = root.dataset.carouselId;
+
+    let dragging = false;
+    let startX = 0;
+    let startOffset = 0;
+
+    const maxOffset = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+    const set = (value) => applyOffset(state.id, value);
+
+    // Rubber-band only past the LAST card: the track still follows most of
+    // the drag there (RESISTANCE close to 1 so it clearly moves, not a
+    // barely-visible nudge) but is capped at CAP px of peek so it can't
+    // stretch forever. The first card hard-stops at 0 instead, no give.
+    // endDrag() below snaps the last-card overshoot firmly back once released.
+    const RESISTANCE = 0.6;
+    const dampen = (value) => {
+      const max = maxOffset();
+      const cap = viewport.clientWidth * 0.4;
+      // To also make the first card flexible/draggable (mirroring the last
+      // card below), swap the line above for:
+      //   if (value < 0) return -Math.min(-value * RESISTANCE, cap);
+      // Same shape, just the negative side: -value flips the overshoot to a
+      // positive magnitude, RESISTANCE/cap apply identically, and the
+      // leading "-" flips the damped result back to negative for translateX.
+      if (value < 0) return 0;
+      if (value > max) return max + Math.min((value - max) * RESISTANCE, cap);
+      return value;
+    };
+    const apply = (value) => set(dampen(value));
+
+    const onPointerDown = (e) => {
+      dragging = true;
+      startX = e.clientX;
+      startOffset = carouselStore.getOffset(state.id);
+      viewport.classList.remove("cursor-grab");
+      viewport.classList.add("cursor-grabbing");
+      viewport.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    };
+    const onPointerMove = (e) => {
+      if (!dragging) return;
+      apply(startOffset - (e.clientX - startX));
+    };
+    // Dragging tracks the pointer 1:1 with no easing (a real drag shouldn't
+    // lag behind the mouse) -- but releasing mid-drag left the track frozen
+    // at whatever arbitrary position the pointer let go at, no follow-up
+    // animation at all. Snap to the nearest slide boundary on release instead,
+    // matching the "step" (one viewport width + gap) CarouselNext/Previous
+    // already advance by.
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      viewport.classList.remove("cursor-grabbing");
+      viewport.classList.add("cursor-grab");
+
+      const step = viewport.clientWidth + 16;
+      const current = carouselStore.getOffset(state.id);
+      const target = Math.min(maxOffset(), Math.max(0, Math.round(current / step) * step));
+      animateValue(current, target, 400, set);
+    };
+
+    viewport.addEventListener("pointerdown", onPointerDown);
+    viewport.addEventListener("pointermove", onPointerMove);
+    viewport.addEventListener("pointerup", endDrag);
+    viewport.addEventListener("pointercancel", endDrag);
+
+    return () => {
+      viewport.removeEventListener("pointerdown", onPointerDown);
+      viewport.removeEventListener("pointermove", onPointerMove);
+      viewport.removeEventListener("pointerup", endDrag);
+      viewport.removeEventListener("pointercancel", endDrag);
+    };
+  });
+
+  // touch-pan-y (touch-action: pan-y) tells the browser to keep handling
+  // vertical touch panning itself but leave horizontal gestures to this
+  // component's own pointer handlers, instead of the browser's native swipe/
+  // scroll gesture recognizer competing with the drag logic above.
+  //
+  // overscroll-x-contain (overscroll-behavior-x: contain) stops the browser's
+  // own "swipe right near the left edge = navigate back" gesture (Chrome/
+  // Edge/Safari, especially on trackpads/touch) from hijacking the exact
+  // rightward drag used to rubber-band past the first card.
+  const classes = () => twMerge("cursor-grab touch-pan-y overscroll-x-contain overflow-hidden select-none", className);
+</script>
+
+<div data-slot="carousel-content" class="{classes()}">
+  <div data-slot="carousel-track" class="flex gap-4 [&>[data-olum]]:contents">{children}</div>
+</div>

@@ -1,0 +1,16 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { isActive = false, tooltip, onclick, class: className = "", children } = props();
+
+  const handleClick = (e) => onclick && onclick(e);
+
+  const classes = () =>
+    twMerge(
+      "peer/menu-button flex h-8 w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none transition-[width,height,padding] hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 active:bg-muted disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-muted data-[active=true]:font-medium group-data-[state=collapsed]/sidebar-wrapper:size-8! group-data-[state=collapsed]/sidebar-wrapper:p-2! [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
+      className,
+    );
+</script>
+
+<button type="button" data-slot="sidebar-menu-button" data-active="{isActive}" title="{tooltip}" class="{classes()}" onclick="handleClick()">{children}</button>

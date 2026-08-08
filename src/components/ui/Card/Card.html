@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { size = "default", class: className = "", children } = props();
+
+  const base =
+    "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-background py-(--card-spacing) text-sm text-foreground ring-1 ring-border [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 [&>img:first-child]:rounded-t-xl [&>img:last-child]:rounded-b-xl";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="card" data-size="{size}" class="{classes()}">{children}</div>

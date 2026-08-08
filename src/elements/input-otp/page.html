@@ -1,0 +1,42 @@
+<script>
+  import InputOTP from "../../components/ui/InputOTP/InputOTP";
+  import InputOTPGroup from "../../components/ui/InputOTP/InputOTPGroup";
+  import InputOTPSlot from "../../components/ui/InputOTP/InputOTPSlot";
+  import InputOTPSeparator from "../../components/ui/InputOTP/InputOTPSeparator";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="input-otp" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="input-otp" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <InputOTP maxLength="{6}">
+      <InputOTPGroup>
+        <InputOTPSlot index="{0}" />
+        <InputOTPSlot index="{1}" />
+        <InputOTPSlot index="{2}" />
+      </InputOTPGroup>
+      <InputOTPSeparator />
+      <InputOTPGroup>
+        <InputOTPSlot index="{3}" />
+        <InputOTPSlot index="{4}" />
+        <InputOTPSlot index="{5}" />
+      </InputOTPGroup>
+    </InputOTP>
+  </DemoBlock>
+
+  <InstallBlock id="input-otp" />
+  <Pager id="input-otp" />
+</div>

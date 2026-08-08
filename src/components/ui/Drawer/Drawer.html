@@ -1,0 +1,17 @@
+<script>
+  import { props } from "olum";
+
+  const { children } = props();
+</script>
+
+<!--
+  Visibility is no longer driven from here by has-[>input:checked] descendant
+  selectors: DrawerContent moves the overlay/panel into <body> (see
+  portal.js) so the page can be blurred with a real filter, and once
+  portaled they're no longer descendants for CSS to reach. The checkbox stays
+  the source of truth; DrawerContent syncs off its change event.
+-->
+<div data-slot="drawer" class="contents">
+  <input type="checkbox" class="hidden" />
+  {children}
+</div>

@@ -1,0 +1,14 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge(
+      "flex min-h-0 flex-1 flex-col gap-0 overflow-auto [scrollbar-width:none] group-data-[state=collapsed]/sidebar-wrapper:overflow-hidden",
+      className,
+    );
+</script>
+
+<div data-slot="sidebar-content" class="{classes()}">{children}</div>

@@ -1,0 +1,82 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { data = [], label = "Total", class: className = "" } = props();
+
+  const state = { hover: -1 };
+
+  const W = 250;
+  const H = 250;
+  const CX = W / 2;
+  const CY = H / 2;
+  const OUTER_R = 100;
+  const INNER_R = 62;
+  const PAD_ANGLE = 0.025;
+
+  const total = () => data.reduce((sum, d) => sum + (+d.value || 0), 0);
+
+  // Slices start at 12 o'clock (-90deg) and go clockwise, each sized
+  // proportionally to its share of the total, with a small gap between them.
+  const angles = () => {
+    const t = Math.max(1, total());
+    let cursor = -Math.PI / 2;
+    return data.map((d) => {
+      const span = ((+d.value || 0) / t) * Math.PI * 2;
+      const start = cursor;
+      const end = cursor + span;
+      cursor = end;
+      return { start: start + PAD_ANGLE / 2, end: Math.max(start + PAD_ANGLE / 2, end - PAD_ANGLE / 2) };
+    });
+  };
+
+  const point = (r, a) => [CX + r * Math.cos(a), CY + r * Math.sin(a)];
+
+  const slicePath = (start, end) => {
+    const largeArc = end - start > Math.PI ? 1 : 0;
+    const [x1, y1] = point(OUTER_R, start);
+    const [x2, y2] = point(OUTER_R, end);
+    const [x3, y3] = point(INNER_R, end);
+    const [x4, y4] = point(INNER_R, start);
+    return `M ${x1} ${y1} A ${OUTER_R} ${OUTER_R} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${INNER_R} ${INNER_R} 0 ${largeArc} 0 ${x4} ${y4} Z`;
+  };
+
+  const color = (d, i) => d.color || `var(--color-chart-${(i % 5) + 1})`;
+  const opacityFor = (i) => (state.hover === -1 || state.hover === i ? 1 : 0.35);
+
+  const centerName = () => (state.hover > -1 ? data[state.hover].name : label);
+  const centerValue = () => (state.hover > -1 ? data[state.hover].value : total());
+
+  const classes = () => twMerge("relative flex w-full flex-col items-center justify-center text-xs", className);
+</script>
+
+<div data-slot="donut-chart" class="{classes()}">
+  <div class="relative w-full max-w-56">
+    <svg class="w-full" viewBox="0 0 250 250">
+      <for each="(d, i) of data" key="d.name">
+        <path
+          d="{slicePath(angles()[i].start, angles()[i].end)}"
+          fill="{color(d, i)}"
+          opacity="{opacityFor(i)}"
+          class="transition-opacity duration-150"
+          onmouseenter="() => (state.hover = i)"
+          onmouseleave="() => (state.hover = -1)"
+        />
+      </for>
+    </svg>
+    <div class="pointer-events-none absolute inset-0 grid place-items-center">
+      <div class="flex flex-col items-center">
+        <span class="text-2xl font-semibold tabular-nums">{centerValue()}</span>
+        <span class="text-muted-foreground capitalize">{centerName()}</span>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-wrap items-center justify-center gap-4 pt-3">
+    <for each="(d, i) of data" key="d.name">
+      <div class="flex items-center gap-1.5">
+        <div class="size-2 shrink-0 rounded-[2px]" style="background:{color(d, i)}"></div>
+        <span>{d.name}</span>
+      </div>
+    </for>
+  </div>
+</div>

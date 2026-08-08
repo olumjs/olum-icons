@@ -1,0 +1,42 @@
+<script>
+  import Button from "../../components/ui/Button/Button";
+  import Kbd from "../../components/ui/Kbd/Kbd";
+  import Tooltip from "../../components/ui/Tooltip/Tooltip";
+  import TooltipTrigger from "../../components/ui/Tooltip/TooltipTrigger";
+  import TooltipContent from "../../components/ui/Tooltip/TooltipContent";
+  import TooltipProvider from "../../components/ui/Tooltip/TooltipProvider";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="tooltip" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="tooltip" />
+
+  
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button variant="outline">Hover me</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          Add to library
+          <Kbd>⌘L</Kbd>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  </DemoBlock>
+  <InstallBlock id="tooltip" />
+
+  <Pager id="tooltip" />
+</div>

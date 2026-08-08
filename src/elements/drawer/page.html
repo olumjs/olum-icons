@@ -1,0 +1,49 @@
+<script>
+  import Button from "../../components/ui/Button/Button";
+  import Drawer from "../../components/ui/Drawer/Drawer";
+  import DrawerTrigger from "../../components/ui/Drawer/DrawerTrigger";
+  import DrawerContent from "../../components/ui/Drawer/DrawerContent";
+  import DrawerHeader from "../../components/ui/Drawer/DrawerHeader";
+  import DrawerFooter from "../../components/ui/Drawer/DrawerFooter";
+  import DrawerTitle from "../../components/ui/Drawer/DrawerTitle";
+  import DrawerDescription from "../../components/ui/Drawer/DrawerDescription";
+  import Slider from "../../components/ui/Slider/Slider";
+  import Navbar from "../../components/Navbar/Navbar";
+  import GalleryNav from "../../components/GalleryNav/GalleryNav";
+  import PageToc from "../../components/PageToc/PageToc";
+  import Pager from "../../components/Pager/Pager";
+  import DemoBlock from "../../components/DemoBlock/DemoBlock";
+  import InstallBlock from "../../components/InstallBlock/InstallBlock";
+  import PageHeader from "../../components/PageHeader/PageHeader";
+  import { snippets } from "./snippets";
+</script>
+
+<Navbar />
+<GalleryNav id="drawer" />
+<PageToc snippets="{snippets}" />
+
+<div class="mx-auto flex max-w-4xl flex-col gap-10 p-6 sm:p-10">
+  <PageHeader id="drawer" />
+
+
+  <DemoBlock label="default" snippet="{snippets['default']}">
+    <Drawer>
+      <DrawerTrigger class="inline-flex h-8 items-center justify-center rounded-lg border border-border bg-background px-2.5 text-sm hover:bg-muted">Open drawer</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Move goal</DrawerTitle>
+          <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+        </DrawerHeader>
+        <div class="px-4 pt-4 pb-4">
+          <Slider defaultValue="{[350]}" max="{1000}" step="{50}" />
+        </div>
+        <DrawerFooter>
+          <Button size="lg" class="w-full">Submit</Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  </DemoBlock>
+
+  <InstallBlock id="drawer" />
+  <Pager id="drawer" />
+</div>

@@ -1,0 +1,55 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { wireModal } from "../portal";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="drawer"]');
+    const input = root && root.querySelector(":scope > input");
+    const overlay = host.querySelector('[data-slot="drawer-overlay"]');
+    const content = host.querySelector('[data-slot="drawer-content"]');
+    if (!input || !overlay || !content) return;
+
+    // DrawerClose renders inside `content`, so once it's portaled it can't
+    // reach the checkbox by walking up the tree. Hand it over directly.
+    content.__olumModalInput = input;
+
+    const close = () => {
+      input.checked = false;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape" && input.checked) close();
+    };
+    const onOverlayClick = (e) => {
+      if (e.target === overlay) close();
+    };
+
+    overlay.addEventListener("click", onOverlayClick);
+    document.addEventListener("keydown", onKey);
+
+    const unwire = wireModal({ input, nodes: [overlay, content], displays: ["block", "flex"] });
+
+    return () => {
+      overlay.removeEventListener("click", onOverlayClick);
+      document.removeEventListener("keydown", onKey);
+      unwire();
+    };
+  });
+
+  const classes = () =>
+    twMerge(
+      "group/drawer-popup fixed inset-x-0 bottom-0 z-50 flex h-auto max-h-[80vh] flex-col rounded-t-xl border-t bg-background text-sm text-foreground",
+      className,
+    );
+</script>
+
+<!-- display:none inline so it beats the display utilities in classes(), and so
+     any copy re-created in this host after a re-render stays invisible. -->
+<div data-slot="drawer-overlay" style="display: none" class="fixed inset-0 z-50 bg-black/20"></div>
+<div data-slot="drawer-content" style="display: none" class="{classes()}">
+  <div class="mx-auto mt-2 h-1.5 w-10 shrink-0 rounded-full bg-muted"></div>
+  {children}
+</div>

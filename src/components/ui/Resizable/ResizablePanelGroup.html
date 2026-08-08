@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { orientation = "horizontal", class: className = "", children } = props();
+
+  const classes = () => twMerge("group/resizable flex h-full w-full [&>[data-olum]]:contents", orientation === "vertical" ? "flex-col" : "", className);
+</script>
+
+<div data-slot="resizable-panel-group" data-orientation="{orientation}" class="{classes()}">{children}</div>

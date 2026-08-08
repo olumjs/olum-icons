@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" data-olum>
+  <head>
+    <title>olum/ui — shadcn/ui, rebuilt for OlumJS</title>
+    <meta
+      name="description"
+      content="The whole shadcn/ui component set ported to plain OlumJS files — same markup, same behaviour, no React. Copy a folder into your project and edit it like code you wrote yourself."
+    />
+    <meta charset="UTF-8" />
+    <meta name="generator" content="OlumJS">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <!-- Both are used on first paint (body text and code blocks), and being
+         self-hosted they're only discovered once main.css parses -- preloading
+         skips the swap from the fallback stack. -->
+    <link rel="preload" href="/fonts/geist-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-mono-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <script>
+      // Runs before first paint so a dark-theme reload doesn't flash white.
+      // The Navbar owns the toggle and writes the same localStorage key.
+      (() => {
+        const saved = localStorage.getItem("theme");
+        const dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-ByEtSWGm.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CQkvHgBq.css">
+  </head>
+  <body>
+<div id="app"></div>
+</body>
+</html>

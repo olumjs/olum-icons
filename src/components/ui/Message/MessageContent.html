@@ -1,0 +1,13 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const base =
+    "flex w-full min-w-0 flex-col gap-2.5 wrap-break-word group-data-[align=end]/message:[&>*]:flex group-data-[align=end]/message:[&>*]:justify-end";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div data-slot="message-content" class="{classes()}">{children}</div>

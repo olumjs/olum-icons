@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("size-4 shrink-0 [&_svg:not([class*='size-'])]:size-4", className);
+</script>
+
+<span data-slot="marker-icon" aria-hidden="true" class="{classes()}">{children}</span>

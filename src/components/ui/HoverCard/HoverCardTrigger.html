@@ -1,0 +1,31 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="hover-card"]');
+    const input = root && root.querySelector(":scope > input");
+    const el = host.firstElementChild;
+
+    const set = (val) => {
+      if (!input) return;
+      input.checked = val;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onEnter = () => set(true);
+    const onLeave = () => set(false);
+
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  });
+
+  const classes = () => twMerge(className);
+</script>
+
+<span data-slot="hover-card-trigger" class="{classes()}">{children}</span>

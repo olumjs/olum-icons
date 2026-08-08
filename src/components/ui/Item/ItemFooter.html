@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge("flex basis-full items-center justify-between gap-2", className);
+</script>
+
+<div data-slot="item-footer" class="{classes()}">{children}</div>

@@ -1,0 +1,23 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "" } = props();
+
+  const go = () => {
+    const root = host.closest('[data-slot="message-scroller"]');
+    const viewport = root && root.querySelector('[data-slot="message-scroller-viewport"]');
+    if (viewport) viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+  };
+
+  const classes = () =>
+    twMerge(
+      "absolute bottom-4 left-1/2 z-10 inline-flex size-7 -translate-x-1/2 items-center justify-center rounded-lg border border-border bg-background text-foreground shadow-sm transition-[translate,scale,opacity] duration-200 hover:bg-muted data-[active=false]:pointer-events-none data-[active=false]:translate-y-full data-[active=false]:scale-95 data-[active=false]:opacity-0 data-[active=true]:translate-y-0 data-[active=true]:scale-100 data-[active=true]:opacity-100 [&_svg]:size-4",
+      className,
+    );
+</script>
+
+<button type="button" data-slot="message-scroller-button" data-active="false" class="{classes()}" onclick="go()">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14" /><path d="m19 12-7 7-7-7" /></svg>
+  <span class="sr-only">Scroll to end</span>
+</button>

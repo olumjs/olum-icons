@@ -1,0 +1,22 @@
+<script>
+  import Anchor from "../ui/Anchor/Anchor";
+
+  const REPO = "https://github.com/olumjs/olum-ui";
+  const SITE = "https://olumjs.top";
+</script>
+
+<!-- Shadow instead of a border-t: reads as the page lifting away from the
+     footer rather than a hard rule cutting the two apart. -->
+<footer data-slot="footer" class="relative bg-background">
+  <div class="absolute inset-x-0 top-0 z-20 h-48 bg-linear-to-t from-background via-muted/80 to-transparent lg:h-80 xl:h-64 dark:via-background/80 -translate-y-full"></div>
+  <div class="mx-auto max-w-[1500px] px-6 py-8 text-center text-sm text-balance text-muted-foreground">
+    <!-- Anchor's own host wrapper is a block div, which would break the sentence
+         onto a second line -- collapse it so the anchors flow with the text. -->
+    <p class="[&>[data-olum]]:contents">
+      Built with
+      <Anchor variant="link" href="{SITE}" target="_blank" class="h-auto px-0 text-foreground">OlumJS</Anchor>.
+      The source code is available on
+      <Anchor variant="link" href="{REPO}" target="_blank" class="h-auto px-0 text-foreground">GitHub</Anchor>.
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,10 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  const classes = () => twMerge(className);
+</script>
+
+<div data-slot="collapsible-content" class="overflow-hidden min-h-0"><div class="{classes()}">{children}</div></div>

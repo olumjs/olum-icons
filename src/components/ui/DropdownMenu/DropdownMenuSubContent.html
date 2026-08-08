@@ -1,0 +1,35 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { class: className = "", children } = props();
+
+  onMount(() => {
+    const root = host.closest('[data-slot="dropdown-menu-sub"]');
+    const input = root && root.querySelector(":scope > input");
+    const el = host.querySelector('[data-slot="dropdown-menu-sub-content"]');
+
+    const set = (val) => {
+      if (!input) return;
+      input.checked = val;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    const onEnter = () => set(true);
+    const onLeave = () => set(false);
+
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  });
+
+  const classes = () =>
+    twMerge(
+      "absolute top-0 left-full z-50 ml-1 min-w-32 rounded-lg bg-background p-1 text-foreground shadow-md ring-1 ring-border outline-none",
+      className,
+    );
+</script>
+
+<div data-slot="dropdown-menu-sub-content" class="{classes()}">{children}</div>

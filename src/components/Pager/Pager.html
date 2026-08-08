@@ -1,0 +1,35 @@
+<script>
+  import { props } from "olum";
+  import { BASE, label, nextOf, prevOf } from "../../utils/components";
+  import Anchor from "../ui/Anchor/Anchor";
+
+  const { id } = props();
+
+  const prev = () => prevOf(id);
+  const next = () => nextOf(id);
+  const icons = {
+    chevronLeft: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-arrow-left "><path d="M5 12l14 0"></path><path d="M5 12l6 6"></path><path d="M5 12l6 -6"></path></svg>`,
+    chevronRight: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-arrow-right "><path d="M5 12l14 0"></path><path d="M13 18l6 -6"></path><path d="M13 6l6 6"></path></svg>`,
+  };
+
+  // Router `to` anchors must hold plain text -- a nested icon element swallows
+  // the click -- so the arrows are text, not svg.
+</script>
+
+<!-- Last item in the page's flex column, so it inherits that column's width and
+     padding and scrolls away with the content instead of covering it. The empty
+     divs are load-bearing: justify-between needs both ends present to keep a
+     lone "next" on the right at the start of the list. -->
+<nav data-slot="pager" class="flex items-center justify-between gap-4 mb-14">
+  <div>
+    <if when="prev()">
+      <Anchor to="{BASE}/{prev()}" variant="secondary" class="capitalize"><span html="icons.chevronLeft"></span> {label(prev())}</Anchor>
+    </if>
+  </div>
+
+  <div>
+    <if when="next()">
+      <Anchor to="{BASE}/{next()}" variant="secondary" class="capitalize">{label(next())} <span html="icons.chevronRight"></span></Anchor>
+    </if>
+  </div>
+</nav>

@@ -1,0 +1,18 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { side = "left", collapsible = "icon", class: className = "", children } = props();
+
+  const classes = () =>
+    twMerge(
+      "absolute inset-y-0 left-0 z-10 flex h-full w-(--sidebar-width) flex-col border-r border-border bg-background text-foreground transition-[width] duration-200 ease-linear group-data-[state=collapsed]/sidebar-wrapper:w-(--sidebar-width-icon)",
+      className,
+    );
+</script>
+
+<div
+  data-slot="sidebar-gap"
+  class="relative w-(--sidebar-width) shrink-0 bg-transparent transition-[width] duration-200 ease-linear group-data-[state=collapsed]/sidebar-wrapper:w-(--sidebar-width-icon)"
+></div>
+<div data-slot="sidebar" data-side="{side}" data-collapsible="{collapsible}" class="{classes()}">{children}</div>

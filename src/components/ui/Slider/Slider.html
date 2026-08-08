@@ -1,0 +1,59 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { defaultValue, value, min = 0, max = 100, step = 1, disabled = false, class: className = "" } = props();
+
+  const initial = Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max];
+  const state = { values: initial.slice() };
+
+  const pct = (v) => ((v - min) / (max - min)) * 100;
+  const rangeStart = () => (state.values.length > 1 ? pct(Math.min(...state.values)) : 0);
+  const rangeEnd = () => pct(Math.max(...state.values));
+
+  const handleInput = (i, e) => {
+    state.values[i] = +e.target.value;
+  };
+
+  const isRange = () => state.values.length > 1;
+
+  // Single-thumb: the native input just stays pointer-events-auto across its
+  // full width -- the plain, maximally reliable range-input drag behavior.
+  // Multi-thumb (range) sliders stack two overlapping full-width inputs, so
+  // the whole input has to be pointer-events-none with only the
+  // ::-webkit-slider-thumb/::-moz-range-thumb pseudo-elements re-enabling
+  // pointer-events -- otherwise the two stacked inputs fight over clicks.
+  // That pseudo-element override is also the more fragile of the two across
+  // browsers, so it's only used where it's actually needed.
+  const inputClasses = () =>
+    twMerge(
+      "peer absolute inset-0 h-4 w-full cursor-pointer appearance-none bg-transparent opacity-0 [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-moz-range-thumb]:size-3",
+      isRange() ? "pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto" : "",
+    );
+
+  const classes = () => twMerge("relative flex w-full touch-none items-center select-none", className);
+</script>
+
+<div class="{classes()}" data-slot="slider">
+  <div data-slot="slider-track" class="relative grow overflow-hidden rounded-full bg-muted select-none h-1 w-full">
+    <div data-slot="slider-range" class="absolute inset-y-0 bg-primary select-none" style="left: {rangeStart()}%; right: {100 - rangeEnd()}%;"></div>
+  </div>
+  <for each="(v, i) of state.values" key="i">
+    <div class="contents">
+      <input
+        type="range"
+        min="{min}"
+        max="{max}"
+        step="{step}"
+        value="{v}"
+        disabled="{disabled}"
+        oninput="(e) => handleInput(i, e)"
+        class="{inputClasses()}"
+      />
+      <div
+        class="pointer-events-none absolute top-1/2 block size-3 shrink-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] peer-hover:ring-4"
+        style="left: {pct(v)}%;"
+      ></div>
+    </div>
+  </for>
+</div>

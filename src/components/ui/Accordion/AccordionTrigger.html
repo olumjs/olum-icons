@@ -1,0 +1,38 @@
+<script>
+  import { props, onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { disabled = false, class: className = "", children } = props();
+
+  onMount(() => {
+    const item = host.closest('[data-slot="accordion-item"]');
+    const input = item && item.querySelector(":scope > input");
+    const btn = host.querySelector("button");
+
+    const onClick = () => {
+      if (!input || input.disabled) return;
+      // Toggle for both types: unchecking a radio is not something a user can
+      // do by clicking it (native radios only ever get checked by a click), but
+      // "single, collapsible" needs exactly that, so it's done here in JS.
+      // Checking a radio still auto-unchecks its same-name siblings natively.
+      input.checked = !input.checked;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+
+    btn.addEventListener("click", onClick);
+    return () => btn.removeEventListener("click", onClick);
+  });
+
+  const base =
+    "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent py-2.5 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 w-full [&_svg]:size-4 [&_svg]:text-muted-foreground [&_svg]:ml-auto";
+
+  const classes = () => twMerge(base, className);
+</script>
+
+<div class="flex">
+  <button type="button" data-slot="accordion-trigger" disabled="{disabled}" class="{classes()}">
+    {children}
+    <svg data-slot="accordion-trigger-icon-down" class="pointer-events-none shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+    <svg data-slot="accordion-trigger-icon-up" class="pointer-events-none hidden shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6" /></svg>
+  </button>
+</div>
