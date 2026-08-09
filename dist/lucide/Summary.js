@@ -1,18 +1,1 @@
-export const Summary = `<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M15 4H7" />
-  <path d="m18 16 3 3-3 3" />
-  <path d="M3 4v13a2 2 0 0 0 2 2h16" />
-  <path d="M7 14h7" />
-  <path d="M7 9h12" />
-</svg>
-`;
+export const Summary = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M15 4H7m11 12 3 3-3 3"/><path d="M3 4v13a2 2 0 0 0 2 2h16M7 14h7M7 9h12"/></svg>`;

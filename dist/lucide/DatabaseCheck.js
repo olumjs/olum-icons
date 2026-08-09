@@ -1,18 +1,1 @@
-export const DatabaseCheck = `<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="m16 19 2 2 4-4" />
-  <path d="M21 13.127V5" />
-  <path d="M3 12A9 3 0 0 0 21 12" />
-  <path d="M3 5V19A9 3 0 0 0 13.318 21.968" />
-  <ellipse cx="12" cy="5" rx="9" ry="3" />
-</svg>
-`;
+export const DatabaseCheck = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="m16 19 2 2 4-4m-1-3.873V5M3 12a9 3 0 0 0 18 0"/><path d="M3 5v14a9 3 0 0 0 10.318 2.968"/><ellipse cx="12" cy="5" rx="9" ry="3"/></svg>`;

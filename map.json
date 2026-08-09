@@ -1,0 +1,5 @@
+{
+  "fontawesome": "./repos/fontawesome/svgs",
+  "heroicons": "./repos/heroicons/optimized/24",
+  "lucide": "./repos/lucide/icons"
+}

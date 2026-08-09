@@ -1,16 +1,1 @@
-export const ListSortDescending = `<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M15 12H3" />
-  <path d="M3 5h18" />
-  <path d="M9 19H3" />
-</svg>
-`;
+export const ListSortDescending = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12H3m0-7h18M9 19H3"/></svg>`;

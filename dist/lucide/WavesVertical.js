@@ -1,16 +1,1 @@
-export const WavesVertical = `<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M12 2q2 2.5 0 5t0 5 0 5 0 5" />
-  <path d="M19 2q2 2.5 0 5t0 5 0 5 0 5" />
-  <path d="M5 2q2 2.5 0 5t0 5 0 5 0 5" />
-</svg>
-`;
+export const WavesVertical = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2q2 2.5 0 5t0 5 0 5 0 5m7-20q2 2.5 0 5t0 5 0 5 0 5M5 2q2 2.5 0 5t0 5 0 5 0 5"/></svg>`;

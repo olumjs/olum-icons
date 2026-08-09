@@ -1,0 +1,1 @@
+export const StackExchange = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M18.1 332.3h412.7v22c0 37.7-29.3 68-65.3 68h-19L259.7 512v-89.7H83.4c-36 0-65.3-30.3-65.3-68zm0-23.6h412.7v-85H18.1zm0-109.4h412.7v-85H18.1zM365.4 0h-282c-36 0-65.3 30.3-65.3 67.7V90h412.7V67.7C430.7 30.3 401.4 0 365.4 0"/></svg>`;

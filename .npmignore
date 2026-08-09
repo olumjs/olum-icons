@@ -4,8 +4,6 @@ node_modules
 .editorconfig
 babel.config.json
 package-lock.json
-svg
-svg_out
-src
-public
-scripts
+svgs
+svgs_out
+repos

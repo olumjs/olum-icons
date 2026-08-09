@@ -1,0 +1,1 @@
+export const RobloxCreatorStudio = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="m330.3 329.5 18.7-69.8 149.9 40.2L440 519.5 24 408l40.2-149.8zm221.2-226-40.2 149.8L245.2 182l-18.7 69.8-149.9-40.1L135.5-8z"/></svg>`;

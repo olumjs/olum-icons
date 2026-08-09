@@ -1,17 +1,1 @@
-export const FaceExpressionless = `<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M14 10h2" />
-  <path d="M8 10h2" />
-  <path d="M8 16h8" />
-  <circle cx="12" cy="12" r="10" />
-</svg>
-`;
+export const FaceExpressionless = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M14 10h2m-8 0h2m-2 6h8"/><circle cx="12" cy="12" r="10"/></svg>`;

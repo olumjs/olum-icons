@@ -1,4 +1,1 @@
-export const Slash = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M9 20.2475L15 3.74707" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-`;
+export const Slash = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" data-slot="icon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 20.247 6-16.5"/></svg>`;

@@ -2,16 +2,31 @@
   "name": "olum-icons",
   "version": "0.3.0",
   "description": "A framework-agnostic collection of SVG icons as strings.",
-  "main": "dist/index.js",
-  "directories": {
-    "dist": "dist"
+  "type": "module",
+  "exports": {
+    "./lucide": "./dist/lucide/index.js",
+    "./heroicons/solid": "./dist/heroicons/solid/index.js",
+    "./heroicons/outline": "./dist/heroicons/outline/index.js",
+    "./fontawesome/solid": "./dist/fontawesome/solid/index.js",
+    "./fontawesome/regular": "./dist/fontawesome/regular/index.js",
+    "./fontawesome/brands": "./dist/fontawesome/brands/index.js"
   },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "attribution.md"
+  ],
   "scripts": {
-    "parse:lucide": "node scripts/parse-lucide.js",
-    "parse:heroicons": "node scripts/parse-heroicons.js",
-    "parse:fontawesome": "node scripts/parse-fontawesome.js",
-    "build": "node scripts/index.js",
-    "clean": "rm -rf svg_out dist"
+    "clean": "rm -rf svgs svgs_out dist",
+    "clone": "./downloader.sh",
+    "extract": "node scripts/extract-icons.cjs",
+    "parse:lucide": "node scripts/parse-lucide.cjs",
+    "parse:heroicons": "node scripts/parse-heroicons.cjs",
+    "parse:fontawesome": "node scripts/parse-fontawesome.cjs",
+    "parse": "npm run parse:lucide && npm run parse:heroicons && npm run parse:fontawesome",
+    "optimize": "node scripts/optimize-icons.cjs",
+    "build": "node scripts/build.cjs",
+    "start": "node scripts/index.cjs"
   },
   "repository": {
     "type": "git",
@@ -28,5 +43,8 @@
   "bugs": {
     "url": "https://github.com/olumjs/olum-icons/issues"
   },
-  "homepage": "https://github.com/olumjs/olum-icons#readme"
+  "homepage": "https://github.com/olumjs/olum-icons#readme",
+  "devDependencies": {
+    "svgo": "^4.0.2"
+  }
 }

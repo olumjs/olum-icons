@@ -1,522 +1,171 @@
 {
-  "design": {
-    "tags": [
-      "magnifying glass",
-      "plus"
-    ],
-    "name": "Design"
-  },
   "text": {
-    "tags": [
-      "magnifying glass",
-      "plus"
-    ],
-    "name": "Text formatting"
+    "name": "Text formatting",
+    "total": 261
+  },
+  "design": {
+    "name": "Design",
+    "total": 157
   },
   "accessibility": {
-    "tags": [
-      "magnifying glass",
-      "plus"
-    ],
-    "name": "Accessibility"
+    "name": "Accessibility",
+    "total": 32
   },
   "medical": {
-    "tags": [
-      "gender",
-      "sex",
-      "female",
-      "feminine",
-      "woman",
-      "girl"
-    ],
-    "name": "Medical"
+    "name": "Medical",
+    "total": 43
   },
   "account": {
-    "tags": [
-      "account",
-      "settings",
-      "spanner",
-      "diy",
-      "toolbox",
-      "build",
-      "construction"
-    ],
-    "name": "Accounts & access"
-  },
-  "multimedia": {
-    "tags": [
-      "water",
-      "sea",
-      "sound",
-      "hertz",
-      "wavelength",
-      "vibrate",
-      "ocean",
-      "swimming",
-      "frequency"
-    ],
-    "name": "Multimedia"
-  },
-  "science": {
-    "tags": [
-      "tubes",
-      "vials",
-      "phials",
-      "flasks",
-      "ampoules",
-      "ampules",
-      "lab",
-      "chemistry",
-      "experiment",
-      "test"
-    ],
-    "name": "Science"
+    "name": "Accounts & access",
+    "total": 148
   },
   "social": {
-    "tags": [
-      "virgin",
-      "maiden",
-      "harvest",
-      "precision",
-      "earth",
-      "analysis",
-      "astrology",
-      "star sign",
-      "horoscope",
-      "constellation",
-      "celestial"
-    ],
-    "name": "Social"
+    "name": "Social",
+    "total": 137
+  },
+  "science": {
+    "name": "Science",
+    "total": 37
+  },
+  "multimedia": {
+    "name": "Multimedia",
+    "total": 151
   },
   "notifications": {
-    "tags": [
-      "cancel",
-      "close",
-      "cross",
-      "delete",
-      "ex",
-      "remove",
-      "times",
-      "clear",
-      "math",
-      "multiply",
-      "multiplication"
-    ],
-    "name": "Notification"
+    "name": "Notification",
+    "total": 42
   },
   "home": {
-    "tags": [
-      "swimming",
-      "water",
-      "pool",
-      "lifeguard",
-      "ocean",
-      "🌊",
-      "🏊‍♂️",
-      "🏊‍♀️",
-      "🏊",
-      "🥽"
-    ],
-    "name": "Home"
+    "name": "Home",
+    "total": 64
   },
   "connectivity": {
-    "tags": [
-      "flash",
-      "camera",
-      "lightning",
-      "electricity",
-      "energy",
-      "power",
-      "quick"
-    ],
-    "name": "Connectivity"
+    "name": "Connectivity",
+    "total": 95
   },
   "devices": {
-    "tags": [
-      "flash",
-      "camera",
-      "lightning",
-      "electricity",
-      "energy",
-      "power",
-      "quick"
-    ],
-    "name": "Devices"
+    "name": "Devices",
+    "total": 182
   },
   "time": {
-    "tags": [
-      "clock",
-      "time"
-    ],
-    "name": "Time & calendar"
+    "name": "Time & calendar",
+    "total": 63
   },
   "travel": {
-    "tags": [
-      "tumble dryer",
-      "amenities",
-      "electronics",
-      "cycle",
-      "clothes",
-      "rinse",
-      "spin",
-      "drum"
-    ],
-    "name": "Travel"
+    "name": "Travel",
+    "total": 72
   },
   "photography": {
-    "tags": [
-      "magnifying glass",
-      "plus"
-    ],
-    "name": "Photography"
+    "name": "Photography",
+    "total": 78
   },
   "layout": {
-    "tags": [
-      "magnifying glass",
-      "plus"
-    ],
-    "name": "Layout"
+    "name": "Layout",
+    "total": 149
   },
   "transportation": {
-    "tags": [
-      "minivan",
-      "cart",
-      "wagon",
-      "truck",
-      "lorry",
-      "trailer",
-      "camper",
-      "vehicle",
-      "drive",
-      "trip",
-      "journey",
-      "van",
-      "transport",
-      "carriage",
-      "delivery",
-      "travel"
-    ],
-    "name": "Transportation"
+    "name": "Transportation",
+    "total": 64
   },
   "development": {
-    "tags": [
-      "account",
-      "settings",
-      "spanner",
-      "diy",
-      "toolbox",
-      "build",
-      "construction"
-    ],
-    "name": "Coding & development"
+    "name": "Coding & development",
+    "total": 255
   },
   "food-beverage": {
-    "tags": [
-      "alcohol",
-      "beverage",
-      "bar",
-      "drink",
-      "glass",
-      "sommelier",
-      "vineyard",
-      "winery"
-    ],
-    "name": "Food & beverage"
+    "name": "Food & beverage",
+    "total": 74
   },
   "gaming": {
-    "tags": [
-      "magic",
-      "selection"
-    ],
-    "name": "Gaming"
-  },
-  "communication": {
-    "tags": [
-      "camera",
-      "security"
-    ],
-    "name": "Communication"
-  },
-  "buildings": {
-    "tags": [
-      "storage",
-      "storehouse",
-      "depot",
-      "depository",
-      "repository",
-      "stockroom",
-      "logistics",
-      "building"
-    ],
-    "name": "Buildings"
-  },
-  "tools": {
-    "tags": [
-      "account",
-      "settings",
-      "spanner",
-      "diy",
-      "toolbox",
-      "build",
-      "construction"
-    ],
-    "name": "Tools"
-  },
-  "files": {
-    "tags": [
-      "connection",
-      "signal",
-      "wireless",
-      "directory",
-      "settings",
-      "control",
-      "preferences",
-      "cog",
-      "edit",
-      "gear"
-    ],
-    "name": "File icons"
-  },
-  "mail": {
-    "tags": [
-      "empty",
-      "deletion",
-      "cleanup",
-      "junk",
-      "clear",
-      "garbage",
-      "delete",
-      "remove",
-      "bin",
-      "waste",
-      "recycle",
-      "discard",
-      "binoculars",
-      "rubbish"
-    ],
-    "name": "Mail"
-  },
-  "arrows": {
-    "tags": [
-      "person",
-      "assign",
-      "move",
-      "give",
-      "setup",
-      "self",
-      "me",
-      "myself",
-      "profile",
-      "avatar",
-      "incoming",
-      "recipient",
-      "assignee",
-      "inbound"
-    ],
-    "name": "Arrows"
+    "name": "Gaming",
+    "total": 157
   },
   "math": {
-    "tags": [
-      "cancel",
-      "close",
-      "cross",
-      "delete",
-      "ex",
-      "remove",
-      "times",
-      "clear",
-      "math",
-      "multiply",
-      "multiplication"
-    ],
-    "name": "Mathematics"
+    "name": "Mathematics",
+    "total": 78
+  },
+  "communication": {
+    "name": "Communication",
+    "total": 60
+  },
+  "buildings": {
+    "name": "Buildings",
+    "total": 25
+  },
+  "tools": {
+    "name": "Tools",
+    "total": 75
+  },
+  "files": {
+    "name": "File icons",
+    "total": 167
+  },
+  "mail": {
+    "name": "Mail",
+    "total": 27
+  },
+  "arrows": {
+    "name": "Arrows",
+    "total": 215
   },
   "shapes": {
-    "tags": [
-      "shape",
-      "geometry",
-      "art",
-      "width",
-      "height",
-      "size",
-      "calculate",
-      "measure",
-      "select",
-      "graphics",
-      "box"
-    ],
-    "name": "Shapes"
+    "name": "Shapes",
+    "total": 62
   },
   "sports": {
-    "tags": [
-      "swimming",
-      "water",
-      "pool",
-      "lifeguard",
-      "ocean",
-      "🌊",
-      "🏊‍♂️",
-      "🏊‍♀️",
-      "🏊",
-      "🥽"
-    ],
-    "name": "Sports"
+    "name": "Sports",
+    "total": 16
   },
   "people": {
-    "tags": [
-      "user",
-      "shield",
-      "admin",
-      "protected",
-      "guard",
-      "profile",
-      "security",
-      "privacy",
-      "permissions",
-      "role"
-    ],
-    "name": "People"
-  },
-  "finance": {
-    "tags": [
-      "money",
-      "finance",
-      "pocket"
-    ],
-    "name": "Finance"
+    "name": "People",
+    "total": 6
   },
   "shopping": {
-    "tags": [
-      "discount",
-      "reduced",
-      "offer",
-      "voucher",
-      "entry",
-      "pass",
-      "event",
-      "concert",
-      "show",
-      "book",
-      "purchase",
-      "%"
-    ],
-    "name": "Shopping"
+    "name": "Shopping",
+    "total": 30
+  },
+  "finance": {
+    "name": "Finance",
+    "total": 58
   },
   "emoji": {
-    "tags": [
-      "virgin",
-      "maiden",
-      "harvest",
-      "precision",
-      "earth",
-      "analysis",
-      "astrology",
-      "star sign",
-      "horoscope",
-      "constellation",
-      "celestial"
-    ],
-    "name": "Emoji"
+    "name": "Emoji",
+    "total": 45
   },
   "navigation": {
-    "tags": [
-      "indirection",
-      "vpn",
-      "virtual private network",
-      "proxy",
-      "connections",
-      "bounce",
-      "reroute",
-      "path",
-      "journey",
-      "planner",
-      "stops",
-      "stations",
-      "shared",
-      "spread",
-      "viral"
-    ],
-    "name": "Navigation & Places"
+    "name": "Navigation & Places",
+    "total": 89
   },
   "nature": {
-    "tags": [
-      "tree",
-      "forest",
-      "park",
-      "nature"
-    ],
-    "name": "Nature"
+    "name": "Nature",
+    "total": 24
   },
   "animals": {
-    "tags": [
-      "invertebrate",
-      "grub",
-      "larva",
-      "snake",
-      "crawl",
-      "wiggle",
-      "slither",
-      "pest control",
-      "computer virus",
-      "malware"
-    ],
-    "name": "Animals"
+    "name": "Animals",
+    "total": 25
   },
   "security": {
-    "tags": [
-      "invertebrate",
-      "grub",
-      "larva",
-      "snake",
-      "crawl",
-      "wiggle",
-      "slither",
-      "pest control",
-      "computer virus",
-      "malware"
-    ],
-    "name": "Security"
+    "name": "Security",
+    "total": 63
   },
   "weather": {
-    "tags": [
-      "flash",
-      "camera",
-      "lightning",
-      "electricity",
-      "energy",
-      "power",
-      "quick"
-    ],
-    "name": "Weather"
+    "name": "Weather",
+    "total": 51
   },
   "charts": {
-    "tags": [
-      "statistics"
-    ],
-    "name": "Charts"
+    "name": "Charts",
+    "total": 31
   },
   "cursors": {
-    "tags": [
-      "magic",
-      "selection"
-    ],
-    "name": "Cursors"
+    "name": "Cursors",
+    "total": 34
   },
   "sustainability": {
-    "tags": [
-      "weather",
-      "air",
-      "blow"
-    ],
-    "name": "Sustainability"
+    "name": "Sustainability",
+    "total": 25
   },
   "seasons": {
-    "tags": [
-      "brightness",
-      "weather",
-      "light",
-      "summer"
-    ],
-    "name": "Seasons"
-  }
+    "name": "Seasons",
+    "total": 5
+  },
+  "total": 1766
 }

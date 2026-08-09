@@ -1,4 +1,1 @@
-export const ArrowTurnRightDown = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.9899 16.4996L15.7402 20.2495M15.7402 20.2495L19.4906 16.4996M15.7402 20.2495L15.7402 3.75L4.48926 3.75" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-`;
+export const ArrowTurnRightDown = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" data-slot="icon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m11.99 16.5 3.75 3.75m0 0 3.75-3.75m-3.75 3.75V3.75H4.49"/></svg>`;

@@ -1,0 +1,1 @@
+export const Unsplash = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448 230.2V480H0V230.2h141.1v124.9h165.7V230.2h141.1zM306.9 32H141.2v124.9h165.7z"/></svg>`;

@@ -1,0 +1,1 @@
+export const Substack = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448 512 224 386.4 0 512V230.7h448zm0-336.2H0v-60.5h448zM448 0v60.5H0V0z"/></svg>`;
