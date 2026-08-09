@@ -17,7 +17,7 @@ for repo in "${repos[@]}"; do
   echo "📁 Folder: repos/$folder"
   echo "========================================"
 
-  if git clone "$url" "repos/$folder"; then
+  if git clone --depth 1 "$url" "repos/$folder"; then
     echo "✅ Successfully downloaded: $folder"
   else
     echo "❌ Failed to download: $folder"
