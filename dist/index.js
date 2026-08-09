@@ -1,2 +1,2 @@
 export { OlumCircle } from "./OlumCircle.js";
-export { Olum } from "./Olum.js";
+export { OlumLogo } from "./OlumLogo.js";
