@@ -1,3 +1,9 @@
+This license covers the olum-icons wrapper code and the Olum icons in `src/icons`.
+The bundled Lucide, Heroicons and Font Awesome icons remain under their own licenses,
+reproduced in full in `attribution.md`.
+
+---
+
 MIT License
 
 Copyright 2026 Eissa Saber

@@ -31,6 +31,14 @@ License. They are provided as-is, without warranties or conditions of any kind,
 either express or implied. See the license linked above for the full terms,
 including the disclaimer of warranties and limitation of liability.
 
+### Brand icons and trademarks
+
+The `fontawesome/brands` set contains company logos. CC BY 4.0 grants copyright
+permissions only — section 2(b)(2) of the license explicitly does not grant any
+trademark rights. Those logos remain trademarks of their respective owners, and
+using them means complying with each owner's own brand guidelines. Neither this
+package nor Font Awesome can grant permission on their behalf.
+
 ## Heroicons
 
 - Version: 2.2.0
