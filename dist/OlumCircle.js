@@ -1,0 +1,1 @@
+export const OlumCircle = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 750 750"><path fill-rule="evenodd" d="M0 375a375 375 0 1 0 750 0 375 375 0 1 0-750 0m375 273.782L125 214h500z"/></svg>`;

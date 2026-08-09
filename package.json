@@ -3,7 +3,9 @@
   "version": "0.3.0",
   "description": "A framework-agnostic collection of SVG icons as strings.",
   "type": "module",
+  "main": "./dist/index.js",
   "exports": {
+    ".": "./dist/index.js",
     "./lucide": "./dist/lucide/index.js",
     "./heroicons/solid": "./dist/heroicons/solid/index.js",
     "./heroicons/outline": "./dist/heroicons/outline/index.js",
@@ -23,7 +25,8 @@
     "parse:lucide": "node scripts/parse-lucide.cjs",
     "parse:heroicons": "node scripts/parse-heroicons.cjs",
     "parse:fontawesome": "node scripts/parse-fontawesome.cjs",
-    "parse": "npm run parse:lucide && npm run parse:heroicons && npm run parse:fontawesome",
+    "parse:olum": "node scripts/parse-olum.cjs",
+    "parse": "npm run parse:lucide && npm run parse:heroicons && npm run parse:fontawesome && npm run parse:olum",
     "optimize": "node scripts/optimize-icons.cjs",
     "build": "node scripts/build.cjs",
     "start": "node scripts/index.cjs"

@@ -53,6 +53,19 @@ const reset = (collection) => {
   return destDir;
 };
 
+// olum's own icons sit in dist itself, so they import from "olum-icons" directly
+const rootLevel = (collection) => {
+  fs.mkdirSync(distRoot, { recursive: true });
+
+  // only the generated modules go, the collection dirs and meta json stay put
+  fs.readdirSync(distRoot, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && path.extname(entry.name) == ".js")
+    .forEach((entry) => fs.rmSync(path.join(distRoot, entry.name)));
+
+  const srcDir = path.join(srcRoot, collection);
+  counter[collection] = writeModules(srcDir, svgsIn(srcDir), distRoot);
+};
+
 // lucide ships flat, its category dirs only exist to build the meta file
 const flat = (collection) => {
   const srcDir = path.join(srcRoot, collection);
@@ -78,10 +91,9 @@ const byVariant = (collection) => {
     });
 };
 
-fs.rmSync(path.join(distRoot, "index.js"), { force: true }); // no root barrel, names collide across collections
-
 flat("lucide");
 byVariant("heroicons");
 byVariant("fontawesome");
+rootLevel("olum"); // last, so dist only holds our own icons at its root
 
 console.log(counter);
