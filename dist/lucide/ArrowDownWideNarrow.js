@@ -1,1 +1,1 @@
-export const ArrowDownWideNarrow = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="m3 16 4 4 4-4m-4 4V4m4 0h10M11 8h7m-7 4h4"/></svg>`;
+export const ArrowDownWideNarrow = `<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="m3 16 4 4 4-4m-4 4V4m4 0h10M11 8h7m-7 4h4"/></svg>`;

@@ -1,1 +1,1 @@
-export const MoveRight = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="m18 8 4 4-4 4M2 12h20"/></svg>`;
+export const MoveRight = `<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="m18 8 4 4-4 4M2 12h20"/></svg>`;

@@ -1,1 +1,1 @@
-export const LocationPin = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M192 0C86 0 0 84.4 0 188.6c0 119.3 120.2 262.3 170.4 316.8 11.8 12.8 31.4 12.8 43.2 0C263.8 450.9 384 307.9 384 188.6 384 84.4 298 0 192 0"/></svg>`;
+export const LocationPin = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 384 512"><path fill="currentColor" d="M192 0C86 0 0 84.4 0 188.6c0 119.3 120.2 262.3 170.4 316.8 11.8 12.8 31.4 12.8 43.2 0C263.8 450.9 384 307.9 384 188.6 384 84.4 298 0 192 0"/></svg>`;

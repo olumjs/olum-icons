@@ -75,17 +75,30 @@ from the surrounding text:
 </span>
 ```
 
-Sizing differs by collection, because each upstream ships its icons differently. Olum and
-Lucide icons declare `width="24" height="24"`; Heroicons and Font Awesome declare only a
-`viewBox` and therefore expand to fill their container. To get consistent sizing, set it
-in CSS:
+Every icon is normalised to `height="24"` with no `width`, so the browser derives the
+width from the `viewBox` and nothing is ever distorted. Square icons render 24×24, while
+Font Awesome's variable width icons keep their proportions:
+
+| Icon                                   | Rendered |
+| -------------------------------------- | -------- |
+| `Search` (Lucide, 24×24 viewBox)        | 24 × 24  |
+| `Heart` (Font Awesome, 512×512 viewBox) | 24 × 24  |
+| `_500px` (Font Awesome, 384×512 viewBox)| 18 × 24  |
+
+Font Awesome draws every icon 512 units tall with a variable width, so matching on height
+is what keeps them optically consistent with the rest.
+
+To resize, set only the height and let the width follow:
 
 ```css
 svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  height: 1.5rem; /* or 1.5em to scale with the surrounding text */
 }
 ```
+
+Setting both `width` and `height` is fine too, but a non-square icon is then centred
+inside that box rather than filling it — useful when icons must occupy identical cells in
+a grid.
 
 ### OlumJS
 

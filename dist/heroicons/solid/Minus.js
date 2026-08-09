@@ -1,1 +1,1 @@
-export const Minus = `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" data-slot="icon" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M4.25 12a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/></svg>`;
+export const Minus = `<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="currentColor" aria-hidden="true" data-slot="icon" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M4.25 12a.75.75 0 0 1 .75-.75h14a.75.75 0 0 1 0 1.5H5a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/></svg>`;

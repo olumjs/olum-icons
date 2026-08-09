@@ -1,1 +1,1 @@
-export const Flutter = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M429.5 236.3 291.7 374.1 429.5 512H272L134.1 374.1 272 236.3zM272 0 16 256l78.8 78.8L429.5 0z"/></svg>`;
+export const Flutter = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 448 512"><path fill="currentColor" d="M429.5 236.3 291.7 374.1 429.5 512H272L134.1 374.1 272 236.3zM272 0 16 256l78.8 78.8L429.5 0z"/></svg>`;

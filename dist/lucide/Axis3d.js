@@ -1,1 +1,1 @@
-export const Axis3d = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M13.5 10.5 15 9M4 4v15a1 1 0 0 0 1 1h15m-15.707-.293L6 18m3-3 1.5-1.5"/></svg>`;
+export const Axis3d = `<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M13.5 10.5 15 9M4 4v15a1 1 0 0 0 1 1h15m-15.707-.293L6 18m3-3 1.5-1.5"/></svg>`;

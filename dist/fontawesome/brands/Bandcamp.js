@@ -1,1 +1,1 @@
-export const Bandcamp = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m48.2 326.1h-181L207.9 178h181z"/></svg>`;
+export const Bandcamp = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m48.2 326.1h-181L207.9 178h181z"/></svg>`;

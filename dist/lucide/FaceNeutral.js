@@ -1,1 +1,1 @@
-export const FaceNeutral = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10V9m-7 7h8m-7-6V9"/><circle cx="12" cy="12" r="10"/></svg>`;
+export const FaceNeutral = `<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10V9m-7 7h8m-7-6V9"/><circle cx="12" cy="12" r="10"/></svg>`;

@@ -1,1 +1,1 @@
-export const Instalod = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M153.6 480h233.7l115.4-204.2-298.3 57.4zM505 240.1 387.4 32H155.9l204.6 235.9zM124.6 48.8 7.5 256l116 205.2 102.4-295.6z"/></svg>`;
+export const Instalod = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 512 512"><path fill="currentColor" d="M153.6 480h233.7l115.4-204.2-298.3 57.4zM505 240.1 387.4 32H155.9l204.6 235.9zM124.6 48.8 7.5 256l116 205.2 102.4-295.6z"/></svg>`;

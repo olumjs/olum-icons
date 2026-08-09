@@ -1,1 +1,1 @@
-export const ArrowLeftFromLine = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="m9 6-6 6 6 6m-6-6h14m4 7V5"/></svg>`;
+export const ArrowLeftFromLine = `<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="m9 6-6 6 6 6m-6-6h14m4 7V5"/></svg>`;

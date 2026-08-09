@@ -7,6 +7,24 @@ const srcDir = path.resolve(__dirname, "../svgs_out");
 // removeViewBox is NOT part of preset-default in svgo v4, so icons stay scalable.
 // preservePatterns:false also drops the "<!--!" legal comments font awesome ships,
 // their attribution lives in attribution.md instead
+
+// every upstream sizes icons differently, this pins them all to 24px tall.
+// width is dropped on purpose, the browser derives it from the viewBox ratio, which
+// keeps font awesome's variable width icons (all 512 tall upstream) in proportion
+const setIconHeight = {
+  name: "setIconHeight",
+  fn: () => ({
+    element: {
+      enter: (node, parentNode) => {
+        if (node.name == "svg" && parentNode.type == "root") {
+          node.attributes.height = "24";
+          delete node.attributes.width;
+        }
+      },
+    },
+  }),
+};
+
 const config = {
   multipass: true,
   plugins: [
@@ -14,6 +32,7 @@ const config = {
       name: "preset-default",
       params: { overrides: { removeComments: { preservePatterns: false } } },
     },
+    setIconHeight,
   ],
 };
 

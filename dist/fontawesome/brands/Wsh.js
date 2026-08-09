@@ -1,1 +1,1 @@
-export const Wsh = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M18.9 479.8h83.4v-112l-83.4 47zm329 0h82.4v-65l-82.4-47zm0-448v219.8l-123.6-72.4-121.7 72.4V31.8H18.9v360.8l205.4-122.3 206 122.3V31.8H348z"/></svg>`;
+export const Wsh = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 448 512"><path fill="currentColor" d="M18.9 479.8h83.4v-112l-83.4 47zm329 0h82.4v-65l-82.4-47zm0-448v219.8l-123.6-72.4-121.7 72.4V31.8H18.9v360.8l205.4-122.3 206 122.3V31.8H348z"/></svg>`;

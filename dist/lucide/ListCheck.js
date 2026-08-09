@@ -1,1 +1,1 @@
-export const ListCheck = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M16 5H3m13 7H3m8 7H3m12-1 2 2 4-4"/></svg>`;
+export const ListCheck = `<svg xmlns="http://www.w3.org/2000/svg" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M16 5H3m13 7H3m8 7H3m12-1 2 2 4-4"/></svg>`;
