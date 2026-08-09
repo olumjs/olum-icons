@@ -66,8 +66,9 @@ if (fs.existsSync(lucidePath)) {
     Object.keys(mainCategories).forEach((key) => {
       if (categories.includes(key)) {
         const name = mainCategories[key];
-        const obj = { tags, name };
+        const obj = { tags, name, total: 0 };
         meta[key] = obj;
+        // todo -- add how many icons for each category
 
         const catDir = `./svg_out/lucide/${key}`;
         fs.mkdirSync(catDir, { recursive: true, force: true });
@@ -82,7 +83,7 @@ if (fs.existsSync(lucidePath)) {
     });
   });
 }
-
+meta.total = count;
 console.log("handled " + count + " lucide svg files!");
 
 const destDir = path.resolve(__dirname, "../dist");
