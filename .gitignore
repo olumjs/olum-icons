@@ -127,3 +127,7 @@ dist
 
 # macOS
 .DS_Store
+
+repos
+svgs
+svgs_out
