@@ -294,6 +294,9 @@
   .top-0\.75 {
     top: calc(var(--spacing) * 0.75);
   }
+  .top-1 {
+    top: var(--spacing);
+  }
   .top-1\/2 {
     top: calc(1 / 2 * 100%);
   }
@@ -429,6 +432,9 @@
       max-width: 96rem;
     }
   }
+  .m-5 {
+    margin: calc(var(--spacing) * 5);
+  }
   .m-auto {
     margin: auto;
   }
@@ -456,6 +462,9 @@
   .my-auto {
     margin-block: auto;
   }
+  .mt-0 {
+    margin-top: 0px;
+  }
   .mt-0\.5 {
     margin-top: calc(var(--spacing) * 0.5);
   }
@@ -479,6 +488,9 @@
   }
   .-mb-4 {
     margin-bottom: calc(var(--spacing) * -4);
+  }
+  .mb-1 {
+    margin-bottom: var(--spacing);
   }
   .mb-1\.5 {
     margin-bottom: calc(var(--spacing) * 1.5);
@@ -587,6 +599,10 @@
   }
   .aspect-video {
     aspect-ratio: var(--aspect-video);
+  }
+  .size-1 {
+    width: var(--spacing);
+    height: var(--spacing);
   }
   .size-1\.5 {
     width: calc(var(--spacing) * 1.5);
@@ -773,6 +789,9 @@
   .w-1 {
     width: var(--spacing);
   }
+  .w-3 {
+    width: calc(var(--spacing) * 3);
+  }
   .w-3\/4 {
     width: calc(3 / 4 * 100%);
   }
@@ -902,11 +921,17 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .shrink {
     flex-shrink: 1;
   }
   .shrink-0 {
     flex-shrink: 0;
+  }
+  .flex-grow {
+    flex-grow: 1;
   }
   .grow {
     flex-grow: 1;
@@ -923,6 +948,10 @@
   .border-collapse {
     border-collapse: collapse;
   }
+  .-translate-x-1 {
+    --tw-translate-x: calc(var(--spacing) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -937,6 +966,10 @@
   }
   .translate-x-full {
     --tw-translate-x: 100%;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .-translate-y-1 {
+    --tw-translate-y: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
@@ -1000,6 +1033,9 @@
   }
   .touch-none {
     touch-action: none;
+  }
+  .resize {
+    resize: both;
   }
   .snap-x {
     scroll-snap-type: x var(--tw-scroll-snap-strictness);
@@ -1421,6 +1457,9 @@
   .bg-chart-4 {
     background-color: var(--olum-chart-4);
   }
+  .bg-destructive {
+    background-color: var(--olum-destructive);
+  }
   .bg-destructive\/10 {
     background-color: var(--olum-destructive);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1432,6 +1471,9 @@
   }
   .bg-muted {
     background-color: var(--olum-muted);
+  }
+  .bg-muted-foreground {
+    background-color: var(--olum-muted-foreground);
   }
   .bg-muted-foreground\/30 {
     background-color: var(--olum-muted-foreground);
@@ -1488,6 +1530,11 @@
     --tw-gradient-from: transparent;
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
+  .via-muted {
+    --tw-gradient-via: var(--olum-muted);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
   .via-muted\/80 {
     --tw-gradient-via: var(--olum-muted);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1543,6 +1590,9 @@
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
+  .p-5 {
+    padding: calc(var(--spacing) * 5);
+  }
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
@@ -1581,6 +1631,9 @@
   }
   .py-\(--card-spacing\) {
     padding-block: var(--card-spacing);
+  }
+  .py-0 {
+    padding-block: 0px;
   }
   .py-0\.5 {
     padding-block: calc(var(--spacing) * 0.5);
@@ -1624,6 +1677,9 @@
   .pt-16 {
     padding-top: calc(var(--spacing) * 16);
   }
+  .pr-1 {
+    padding-right: var(--spacing);
+  }
   .pr-1\.5 {
     padding-right: calc(var(--spacing) * 1.5);
   }
@@ -1653,6 +1709,9 @@
   }
   .pb-16 {
     padding-bottom: calc(var(--spacing) * 16);
+  }
+  .pl-1 {
+    padding-left: var(--spacing);
   }
   .pl-1\.5 {
     padding-left: calc(var(--spacing) * 1.5);
@@ -1984,6 +2043,9 @@
   }
   .ring-border {
     --tw-ring-color: var(--olum-border);
+  }
+  .ring-ring {
+    --tw-ring-color: var(--olum-ring);
   }
   .ring-ring\/50 {
     --tw-ring-color: var(--olum-ring);
