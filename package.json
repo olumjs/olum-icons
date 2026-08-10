@@ -1,6 +1,6 @@
 {
   "name": "olum-icons",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A framework-agnostic collection of SVG icons as strings.",
   "type": "module",
   "main": "./dist/index.js",
@@ -11,7 +11,8 @@
     "./heroicons/outline": "./dist/heroicons/outline/index.js",
     "./fontawesome/solid": "./dist/fontawesome/solid/index.js",
     "./fontawesome/regular": "./dist/fontawesome/regular/index.js",
-    "./fontawesome/brands": "./dist/fontawesome/brands/index.js"
+    "./fontawesome/brands": "./dist/fontawesome/brands/index.js",
+    "./*.js": "./dist/*.js"
   },
   "sideEffects": false,
   "files": [
