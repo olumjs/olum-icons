@@ -93,42 +93,44 @@
   const menuItemClass = "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-foreground transition-colors hover:bg-muted [&_svg]:size-3.5 [&_svg]:text-muted-foreground";
 </script>
 
-<div class="{cardClass()}" onclick="copy()" title="Click to copy {name}">
-  <button
-    type="button"
-    onclick="toggleMenu($event)"
-    aria-label="Copy options for {name}"
-    class="absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-md text-muted-foreground opacity-70 transition-colors hover:bg-muted hover:text-foreground group-hover:opacity-100 [&_svg]:size-3.5"
-  >
-    <div html="state.copied ? icons.check : icons.more"></div>
-  </button>
-
-  <if when="state.menuOpen">
-    <div
-      onclick="(e) => e.stopPropagation()"
-      class="absolute top-9 right-2 z-10 w-52 rounded-lg border border-border bg-background p-1 text-left shadow-lg"
+<transition in="scale({ start: 0.9, duration: 180 })" out="scale({ start: 0.9, duration: 120 })" flip="{ duration: 220 }">
+  <div class="{cardClass()}" onclick="copy()" title="Click to copy {name}">
+    <button
+      type="button"
+      onclick="toggleMenu($event)"
+      aria-label="Copy options for {name}"
+      class="absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-md text-muted-foreground opacity-70 transition-colors hover:bg-muted hover:text-foreground group-hover:opacity-100 [&_svg]:size-3.5"
     >
-      <button type="button" onclick="copySvg($event)" class="{menuItemClass}">
-        <div html="icons.svg"></div>
-        Copy SVG
-      </button>
-      <button type="button" onclick="copyName($event)" class="{menuItemClass}">
-        <div html="icons.type"></div>
-        Copy Name
-      </button>
-      <button type="button" onclick="copyModuleLine($event)" class="{menuItemClass}">
-        <div html="icons.code"></div>
-        Copy Import
-      </button>
-    </div>
-  </if>
+      <div html="state.copied ? icons.check : icons.more"></div>
+    </button>
 
-  <div class="flex size-8 shrink-0 items-center justify-center text-foreground [&_svg]:size-6" html="svg"></div>
-
-  <div class="w-full min-w-0 flex-1">
-    <p class="truncate text-xs text-muted-foreground">{name}</p>
-    <if when="view === 'list'">
-      <p class="truncate text-xs text-muted-foreground/70">{sourceLabel} &middot; {license}</p>
+    <if when="state.menuOpen">
+      <div
+        onclick="(e) => e.stopPropagation()"
+        class="absolute top-9 right-2 z-10 w-52 rounded-lg border border-border bg-background p-1 text-left shadow-lg"
+      >
+        <button type="button" onclick="copySvg($event)" class="{menuItemClass}">
+          <div html="icons.svg"></div>
+          Copy SVG
+        </button>
+        <button type="button" onclick="copyName($event)" class="{menuItemClass}">
+          <div html="icons.type"></div>
+          Copy Name
+        </button>
+        <button type="button" onclick="copyModuleLine($event)" class="{menuItemClass}">
+          <div html="icons.code"></div>
+          Copy Import
+        </button>
+      </div>
     </if>
+
+    <div class="flex size-8 shrink-0 items-center justify-center text-foreground [&_svg]:size-6" html="svg"></div>
+
+    <div class="w-full min-w-0 flex-1">
+      <p class="truncate text-xs text-muted-foreground">{name}</p>
+      <if when="view === 'list'">
+        <p class="truncate text-xs text-muted-foreground/70">{sourceLabel} &middot; {license}</p>
+      </if>
+    </div>
   </div>
-</div>
+</transition>
