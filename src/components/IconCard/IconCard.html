@@ -1,0 +1,134 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { copyIconSvg } from "../../utils/copyIcon";
+
+  const { name, svg, sourceLabel, license, modulePath, view = "grid" } = props();
+
+  const state = { copied: false, menuOpen: false };
+  let timer;
+  let outsideHandlers = null;
+
+  const icons = {
+    more: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></svg>`,
+    check: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>`,
+    code: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></svg>`,
+    type: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7" /><line x1="9" x2="15" y1="20" y2="20" /><line x1="12" x2="12" y1="4" y2="20" /></svg>`,
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>`,
+  };
+
+  // The copied text mimics an ES module statement, but that keyword must not
+  // appear as one token anywhere in this file -- not in code, not even in a
+  // comment. The compiler's dependency scanner matches it as plain text
+  // (strings and comments included) and tries to resolve whatever looks like
+  // a specifier next to it, which crashes the build.
+  const kw = "im" + "port";
+  const moduleLine = `${kw} { ${name} } from "${modulePath}";`;
+
+  const flashCopied = () => {
+    state.copied = true;
+    clearTimeout(timer);
+    timer = setTimeout(() => (state.copied = false), 1200);
+  };
+
+  const copy = async () => {
+    await copyIconSvg(svg);
+    flashCopied();
+  };
+
+  const closeMenu = () => {
+    state.menuOpen = false;
+    if (!outsideHandlers) return;
+    document.removeEventListener("click", outsideHandlers.onClick);
+    document.removeEventListener("keydown", outsideHandlers.onKey);
+    outsideHandlers = null;
+  };
+
+  const openMenu = () => {
+    state.menuOpen = true;
+    const onClick = (e) => {
+      if (!host.contains(e.target)) closeMenu();
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    outsideHandlers = { onClick, onKey };
+    document.addEventListener("click", onClick);
+    document.addEventListener("keydown", onKey);
+  };
+
+  const toggleMenu = (e) => {
+    e.stopPropagation();
+    if (state.menuOpen) closeMenu();
+    else openMenu();
+  };
+
+  const copySvg = async (e) => {
+    e.stopPropagation();
+    await copyIconSvg(svg);
+    flashCopied();
+    closeMenu();
+  };
+
+  const copyName = async (e) => {
+    e.stopPropagation();
+    await navigator.clipboard.writeText(name);
+    flashCopied();
+    closeMenu();
+  };
+
+  const copyModuleLine = async (e) => {
+    e.stopPropagation();
+    await navigator.clipboard.writeText(moduleLine);
+    flashCopied();
+    closeMenu();
+  };
+
+  const cardClass = () =>
+    twMerge(
+      "group relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border border-border bg-background p-4 text-center transition-colors hover:border-ring/40 hover:bg-muted/40",
+      view === "list" && "flex-row items-center gap-3 rounded-lg p-3 text-left",
+    );
+
+  const menuItemClass = "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-foreground transition-colors hover:bg-muted [&_svg]:size-3.5 [&_svg]:text-muted-foreground";
+</script>
+
+<div class="{cardClass()}" onclick="copy()" title="Click to copy {name}">
+  <button
+    type="button"
+    onclick="toggleMenu($event)"
+    aria-label="Copy options for {name}"
+    class="absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-md text-muted-foreground opacity-70 transition-colors hover:bg-muted hover:text-foreground group-hover:opacity-100 [&_svg]:size-3.5"
+  >
+    <div html="state.copied ? icons.check : icons.more"></div>
+  </button>
+
+  <if when="state.menuOpen">
+    <div
+      onclick="(e) => e.stopPropagation()"
+      class="absolute top-9 right-2 z-10 w-52 rounded-lg border border-border bg-background p-1 text-left shadow-lg"
+    >
+      <button type="button" onclick="copySvg($event)" class="{menuItemClass}">
+        <div html="icons.svg"></div>
+        Copy SVG
+      </button>
+      <button type="button" onclick="copyName($event)" class="{menuItemClass}">
+        <div html="icons.type"></div>
+        Copy Name
+      </button>
+      <button type="button" onclick="copyModuleLine($event)" class="{menuItemClass}">
+        <div html="icons.code"></div>
+        Copy Import
+      </button>
+    </div>
+  </if>
+
+  <div class="flex size-8 shrink-0 items-center justify-center text-foreground [&_svg]:size-6" html="svg"></div>
+
+  <div class="w-full min-w-0 flex-1">
+    <p class="truncate text-xs text-muted-foreground">{name}</p>
+    <if when="view === 'list'">
+      <p class="truncate text-xs text-muted-foreground/70">{sourceLabel} &middot; {license}</p>
+    </if>
+  </div>
+</div>

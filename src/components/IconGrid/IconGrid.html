@@ -1,0 +1,123 @@
+<script>
+  import { onMount } from "olum";
+  import { twMerge } from "tailwind-merge";
+  import { galleryStore } from "../../store/gallery";
+  import { LICENSES } from "../../data/sources";
+  import { ALL_ICONS, filterIcons, sortIcons, capPerSource } from "../../utils/iconList";
+  import { recopyLastIcon } from "../../utils/copyIcon";
+  import FilterSelect from "../FilterSelect/FilterSelect";
+  import IconCard from "../IconCard/IconCard";
+
+  // A single shared listener rather than one per card (there can be
+  // thousands): Ctrl/Cmd+C re-copies whatever icon was last clicked, as long
+  // as focus isn't in a text field where a real copy-of-selection should win.
+  onMount(() => {
+    const onKey = (e) => {
+      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "c") return;
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (window.getSelection().toString()) return;
+      recopyLastIcon();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  });
+
+  const licenseOptions = [{ value: "all", label: "All licenses" }, ...LICENSES.map((l) => ({ value: l, label: l }))];
+  const sortOptions = [
+    { value: "name-asc", label: "Name A-Z" },
+    { value: "name-desc", label: "Name Z-A" },
+    { value: "source", label: "Source" },
+  ];
+
+  const icons = {
+    grid: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1" /><rect width="7" height="7" x="14" y="3" rx="1" /><rect width="7" height="7" x="14" y="14" rx="1" /><rect width="7" height="7" x="3" y="14" rx="1" /></svg>`,
+    list: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h.01" /><path d="M3 18h.01" /><path d="M3 6h.01" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M8 6h13" /></svg>`,
+    search: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>`,
+  };
+
+  // filteredIcons() is every match, unbounded (used only for the "X of Y" count
+  // and to know whether "Load more" should show). visibleIcons() is what
+  // actually renders -- capped per source, since mounting all matches at once
+  // (thousands of inline SVGs) is what was crashing the browser.
+  const filteredIcons = () => filterIcons(ALL_ICONS, { query: galleryStore.query, source: galleryStore.source, license: galleryStore.license });
+  const visibleIcons = () => sortIcons(capPerSource(filteredIcons(), galleryStore.perSourceLimit), galleryStore.sort);
+
+  const setLicense = (v) => galleryStore.setLicense(v);
+  const setSort = (v) => galleryStore.setSort(v);
+  const setView = (v) => (galleryStore.view = v);
+  const loadMore = () => galleryStore.loadMore();
+
+  const viewButtonClass = (v) =>
+    twMerge(
+      "inline-flex size-8 items-center justify-center rounded-md transition-colors [&_svg]:size-4",
+      galleryStore.view === v ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+    );
+
+  const gridClass = () =>
+    twMerge(
+      "grid gap-3",
+      galleryStore.view === "list"
+        ? "grid-cols-1"
+        : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8",
+    );
+</script>
+
+<div class="flex flex-col gap-4">
+  <div class="flex flex-wrap items-center gap-3">
+    <p class="text-sm text-muted-foreground">
+      <if when="visibleIcons().length < filteredIcons().length">
+        {visibleIcons().length.toLocaleString()} of {filteredIcons().length.toLocaleString()} icons
+      </if>
+      <else>{visibleIcons().length.toLocaleString()} icons</else>
+    </p>
+
+    <div class="flex-1"></div>
+
+    <FilterSelect ariaLabel="Filter by license" value="{galleryStore.license}" options="{licenseOptions}" onchange="{setLicense}" />
+    <FilterSelect ariaLabel="Sort icons" value="{galleryStore.sort}" options="{sortOptions}" onchange="{setSort}" />
+
+    <div class="inline-flex items-center gap-1 rounded-lg bg-muted p-1">
+      <button type="button" aria-label="Grid view" onclick="setView('grid')" class="{viewButtonClass('grid')}">
+        <div html="icons.grid"></div>
+      </button>
+      <button type="button" aria-label="List view" onclick="setView('list')" class="{viewButtonClass('list')}">
+        <div html="icons.list"></div>
+      </button>
+    </div>
+  </div>
+
+  <if when="visibleIcons().length">
+    <div class="{gridClass()}">
+      <for each="icon of visibleIcons()" key="icon.id">
+        <IconCard
+          name="{icon.name}"
+          svg="{icon.svg}"
+          sourceLabel="{icon.sourceLabel}"
+          license="{icon.license}"
+          modulePath="{icon.modulePath}"
+          view="{galleryStore.view}"
+        />
+      </for>
+    </div>
+
+    <if when="visibleIcons().length < filteredIcons().length">
+      <div class="flex justify-center pt-2">
+        <button
+          type="button"
+          onclick="loadMore()"
+          class="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
+          Load 50 more
+        </button>
+      </div>
+    </if>
+  </if>
+  <else>
+    <div class="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-24 text-center">
+      <div class="text-muted-foreground [&_svg]:size-8" html="icons.search"></div>
+      <p class="text-sm font-medium text-foreground">No icons found</p>
+      <p class="text-sm text-muted-foreground">Try a different search term or clear your filters.</p>
+    </div>
+  </else>
+</div>

@@ -1,0 +1,28 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  const { value, options = [], onchange, ariaLabel, class: className = "" } = props();
+
+  const chevron = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>`;
+
+  const handleChange = (e) => onchange && onchange(e.target.value);
+  // Note: called as handleChange($event) from the template -- Olum's compiler
+  // only forwards the native event to a "simple call" handler like this one
+  // when $event is passed explicitly.
+
+  const classes = () =>
+    twMerge(
+      "h-8 cursor-pointer appearance-none rounded-lg border border-border bg-background pr-7 pl-2.5 text-sm text-foreground transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
+      className,
+    );
+</script>
+
+<div class="relative inline-flex items-center">
+  <select aria-label="{ariaLabel}" onchange="handleChange($event)" class="{classes()}">
+    <for each="option of options" key="option.value">
+      <option value="{option.value}" selected="{option.value === value}">{option.label}</option>
+    </for>
+  </select>
+  <div class="pointer-events-none absolute right-2 text-muted-foreground [&_svg]:size-3.5" html="chevron"></div>
+</div>

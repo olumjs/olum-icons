@@ -1,0 +1,73 @@
+<script>
+  import { twMerge } from "tailwind-merge";
+  import { galleryStore } from "../../store/gallery";
+  import { SOURCES, TOTAL } from "../../data/sources";
+
+  const REPO = "https://github.com/olumjs/olum-icons";
+
+  const icons = {
+    grid: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1" /><rect width="7" height="7" x="14" y="3" rx="1" /><rect width="7" height="7" x="14" y="14" rx="1" /><rect width="7" height="7" x="3" y="14" rx="1" /></svg>`,
+    github: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.2c-3.34.72-4.04-1.42-4.04-1.42-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.96 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.92 1.23 3.23 0 4.63-2.8 5.65-5.48 5.95.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z" /></svg>`,
+  };
+
+  const isAllActive = () => !galleryStore.source;
+  const resetToAll = () => galleryStore.reset();
+  const selectSource = (id) => galleryStore.selectSource(id);
+
+  const allClass = () =>
+    twMerge(
+      "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors",
+      isAllActive() ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+    );
+
+  const sourceRowClass = (id) =>
+    twMerge(
+      "flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors",
+      galleryStore.source === id ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+    );
+
+  const countClass = (id) => twMerge("text-xs tabular-nums", galleryStore.source === id ? "text-foreground" : "text-muted-foreground");
+</script>
+
+<aside
+  data-slot="sidebar"
+  class="fixed bottom-0 left-0 top-14 z-30 hidden w-64 overflow-y-auto border-r border-border bg-background [scrollbar-width:none] lg:block [&::-webkit-scrollbar]:hidden"
+>
+  <div class="flex flex-col gap-6 px-4 py-6">
+    <nav class="flex flex-col gap-0.5">
+      <button type="button" onclick="resetToAll()" class="{allClass()}">
+        <div class="[&_svg]:size-4" html="icons.grid"></div>
+        <span class="flex-1 text-left">All Icons</span>
+        <span class="text-xs tabular-nums text-muted-foreground">{TOTAL.toLocaleString()}</span>
+      </button>
+    </nav>
+
+    <div class="flex flex-col gap-2">
+      <p class="px-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">Style</p>
+      <div class="flex flex-col gap-0.5">
+        <for each="source of SOURCES" key="source.id">
+          <button type="button" onclick="selectSource(source.id)" class="{sourceRowClass(source.id)}">
+            <span>{source.label}</span>
+            <span class="{countClass(source.id)}">{source.count.toLocaleString()}</span>
+          </button>
+        </for>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 rounded-xl border border-border bg-muted/40 p-4">
+      <div>
+        <p class="text-sm font-medium text-foreground">Using Olum Icons?</p>
+        <p class="text-sm text-muted-foreground">Give us a star on GitHub</p>
+      </div>
+      <a
+        href="{REPO}"
+        target="_blank"
+        rel="noreferrer"
+        class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted [&_svg]:size-4"
+      >
+        <span html="icons.github"></span>
+        Star on GitHub
+      </a>
+    </div>
+  </div>
+</aside>

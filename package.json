@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "npm run css && concurrently -k -n css,app -c magenta,green \"npm run css:watch\" \"npm run dev:app\"",
-    "build": "rm -rf ./docs && olum-compiler build && mv ./dist ./docs && echo icons.olumjs.top > ./docs/CNAME",
+    "build": "rm -rf ./docs && npm run icons:build && olum-compiler build && mv ./dist ./docs && echo icons.olumjs.top > ./docs/CNAME",
     "start": "olum-compiler start",
     "css": "tailwindcss -i src/main.css -o public/main.css",
     "css:watch": "npm run css -- --watch",
     "dev:app": "olum-compiler dev",
+    "icons:build": "node scripts/build-icons.mjs",
     "fonts": "cp node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2 public/fonts/geist-latin-variable.woff2 && cp node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2 public/fonts/geist-mono-latin-variable.woff2"
   },
   "keywords": [
@@ -18,20 +19,21 @@
   "author": "Eissa Saber",
   "license": "ISC",
   "dependencies": {
-    "olum": "latest",
+    "olum": "^0.9.2",
     "olum-icons": "^0.4.0",
-    "olum-router": "latest",
-    "olum-store": "latest",
-    "olum-transition": "latest",
+    "olum-router": "^0.5.1",
+    "olum-store": "^0.1.0",
+    "olum-transition": "^0.2.1",
     "tailwind-merge": "latest"
   },
   "devDependencies": {
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",
-    "@tailwindcss/cli": "latest",
-    "concurrently": "latest",
-    "olum-compiler": "latest",
-    "tailwindcss": "latest",
-    "vite": "^8.2.0"
+    "@tailwindcss/cli": "^4.3.3",
+    "concurrently": "^10.0.4",
+    "olum-compiler": "^1.9.2",
+    "olum-devtool": "^1.0.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.2.1"
   }
 }
