@@ -1,0 +1,65 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  // One panel holding several versions of the same snippet -- alternatives, not
+  // steps, so only one is on screen at a time. Each tab is
+  // { id, label, code, html }, where `html` is Shiki output from
+  // scripts/gen-snippets.mjs and `code` is what the copy button hands over.
+  const { tabs = [], class: className = "" } = props();
+
+  const state = { active: tabs.length ? tabs[0].id : "", copied: false };
+  let timer;
+
+  const icons = {
+    copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>`,
+    check: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>`,
+  };
+
+  const current = () => tabs.find((tab) => tab.id === state.active) || tabs[0];
+
+  const select = (id) => (state.active = id);
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(current().code);
+    state.copied = true;
+    clearTimeout(timer);
+    timer = setTimeout(() => (state.copied = false), 1200);
+  };
+
+  const wrapperClass = () => twMerge("overflow-hidden rounded-xl border border-border bg-muted/40", className);
+
+  const tabClass = (id) =>
+    twMerge(
+      "rounded-md px-2.5 py-1 font-mono text-xs font-medium whitespace-nowrap transition-colors",
+      state.active === id ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+    );
+</script>
+
+<div data-slot="code-tabs" class="{wrapperClass()}">
+  <div class="flex items-center justify-between gap-3 border-b border-border px-3 py-1.5">
+    <!-- The tab strip scrolls on its own rather than wrapping, so a narrow
+         screen never pushes the copy button onto a second row. -->
+    <div class="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div class="inline-flex items-center gap-0.5 rounded-lg bg-muted p-[3px]">
+        <for each="tab of tabs" key="tab.id">
+          <button type="button" onclick="select(tab.id)" class="{tabClass(tab.id)}">{tab.label}</button>
+        </for>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      onclick="copy()"
+      aria-label="Copy code"
+      class="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&_svg]:size-3.5"
+    >
+      <div html="state.copied ? icons.check : icons.copy"></div>
+      {state.copied ? "Copied" : "Copy"}
+    </button>
+  </div>
+
+  <!-- Shiki wraps its own <pre>; it scrolls horizontally rather than letting a
+       long line widen the page. -->
+  <div class="overflow-x-auto text-sm [&_pre]:bg-transparent! [&_pre]:p-4" html="current().html"></div>
+</div>

@@ -1,0 +1,71 @@
+<script>
+  import { props } from "olum";
+  import { twMerge } from "tailwind-merge";
+
+  // `commands` maps package manager name -> { code, html }, where `html` is
+  // Shiki output from scripts/gen-snippets.mjs and `code` is what the copy
+  // button hands over -- e.g. { npm: { code: "npm i olum-icons", html: ... } }.
+  // `tabs=false` hides the switcher and just shows the first manager's command.
+  const { commands, tabs = true, class: className = "" } = props();
+
+  const managers = Object.keys(commands);
+
+  const state = { active: managers[0], copied: false };
+  let timer;
+
+  const icons = {
+    terminal: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19h8" /><path d="m4 17 6-6-6-6" /></svg>`,
+    copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>`,
+    check: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>`,
+  };
+
+  const current = () => commands[state.active] || commands[managers[0]];
+
+  const select = (pm) => (state.active = pm);
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(current().code);
+    state.copied = true;
+    clearTimeout(timer);
+    timer = setTimeout(() => (state.copied = false), 1200);
+  };
+
+  const triggerClass = (pm) =>
+    twMerge(
+      "rounded-md px-2 py-1 font-mono text-xs font-medium transition-colors",
+      state.active === pm ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+    );
+
+  const wrapperClass = () => twMerge("overflow-hidden rounded-xl border border-border bg-muted/40", className);
+</script>
+
+<div data-slot="install-command" class="{wrapperClass()}">
+  <div class="flex items-center gap-3 px-3 py-1.5">
+    <div class="shrink-0 text-muted-foreground [&_svg]:size-4" html="icons.terminal"></div>
+
+    <if when="tabs">
+      <div class="inline-flex items-center gap-0.5 rounded-lg bg-muted p-[3px]">
+        <for each="pm of managers" key="pm">
+          <button type="button" onclick="select(pm)" class="{triggerClass(pm)}">{pm}</button>
+        </for>
+      </div>
+    </if>
+
+    <button
+      type="button"
+      onclick="copy()"
+      aria-label="Copy command"
+      class="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&_svg]:size-3.5"
+    >
+      <div html="state.copied ? icons.check : icons.copy"></div>
+      {state.copied ? "Copied" : "Copy"}
+    </button>
+  </div>
+
+  <!-- Shiki wraps its own <pre>; the padding overrides sit here so the command
+       lines up with the header row above it. -->
+  <div
+    class="overflow-x-auto border-t border-border text-sm [&_pre]:bg-transparent! [&_pre]:px-3 [&_pre]:py-2.5"
+    html="current().html"
+  ></div>
+</div>

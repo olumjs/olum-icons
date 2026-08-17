@@ -25,3 +25,44 @@
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
+
+/* Shiki emits both palettes as custom properties (defaultColor: false), so the
+   theme switch is a CSS swap with no re-highlighting at runtime. Colour only --
+   backgrounds would paint an opaque box behind every span; CodeBlock's own
+   container supplies the surface. */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+}
+
+/* Line numbers as a counter rather than markup: the gutter never reaches the
+   clipboard, since CodeBlock copies the raw `code` string and generated content
+   isn't selectable anyway. Grid puts every .line on its own row so the numbers
+   stay aligned when a long line overflows into the container's scroll. */
+.shiki code {
+  display: grid;
+  counter-reset: line;
+}
+
+.shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  min-width: 2ch;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: var(--olum-muted-foreground);
+  opacity: 0.6;
+  user-select: none;
+}
+
+/* A one-liner like the install command reads better without a lone "1" beside
+   it -- gen-snippets.mjs tags those blocks. */
+.shiki.no-lines .line::before {
+  content: none;
+}

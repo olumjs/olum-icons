@@ -5,7 +5,6 @@
   :root, :host {
     --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
     --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --color-black: #000;
     --spacing: 0.25rem;
     --container-md: 28rem;
     --container-xl: 36rem;
@@ -29,6 +28,7 @@
     --font-weight-bold: 700;
     --tracking-tight: -0.025em;
     --tracking-wider: 0.05em;
+    --leading-relaxed: 1.625;
     --radius-md: calc(var(--olum-radius) * 0.8);
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -319,6 +319,9 @@
   }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
+  }
+  .ml-auto {
+    margin-left: auto;
   }
   .block {
     display: block;
@@ -782,6 +785,9 @@
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
+  .p-\[3px\] {
+    padding: 3px;
+  }
   .px-1 {
     padding-inline: var(--spacing);
   }
@@ -803,11 +809,17 @@
   .py-0\.5 {
     padding-block: calc(var(--spacing) * 0.5);
   }
+  .py-1 {
+    padding-block: var(--spacing);
+  }
   .py-1\.5 {
     padding-block: calc(var(--spacing) * 1.5);
   }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
+  }
+  .py-2\.5 {
+    padding-block: calc(var(--spacing) * 2.5);
   }
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
@@ -883,6 +895,10 @@
   }
   .text-\[0\.8rem\] {
     font-size: 0.8rem;
+  }
+  .leading-relaxed {
+    --tw-leading: var(--leading-relaxed);
+    line-height: var(--leading-relaxed);
   }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
@@ -1318,6 +1334,18 @@
       grid-template-columns: repeat(8, minmax(0, 1fr));
     }
   }
+  .\[\&_pre\]\:bg-transparent\! pre {
+    background-color: transparent !important;
+  }
+  .\[\&_pre\]\:p-4 pre {
+    padding: calc(var(--spacing) * 4);
+  }
+  .\[\&_pre\]\:px-3 pre {
+    padding-inline: calc(var(--spacing) * 3);
+  }
+  .\[\&_pre\]\:py-2\.5 pre {
+    padding-block: calc(var(--spacing) * 2.5);
+  }
   .\[\&_svg\]\:pointer-events-none svg {
     pointer-events: none;
   }
@@ -1441,6 +1469,30 @@
   font-display: swap;
   src: url("/fonts/geist-mono-latin-variable.woff2") format("woff2");
 }
+.shiki, .shiki span {
+  color: var(--shiki-light);
+}
+.dark .shiki, .dark .shiki span {
+  color: var(--shiki-dark);
+}
+.shiki code {
+  display: grid;
+  counter-reset: line;
+}
+.shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  min-width: 2ch;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: var(--olum-muted-foreground);
+  opacity: 0.6;
+  user-select: none;
+}
+.shiki.no-lines .line::before {
+  content: none;
+}
 @property --tw-scale-x {
   syntax: "*";
   inherits: false;
@@ -1512,6 +1564,10 @@
   syntax: "*";
   inherits: false;
   initial-value: 0;
+}
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
 }
 @property --tw-font-weight {
   syntax: "*";
@@ -1734,6 +1790,7 @@
       --tw-divide-x-reverse: 0;
       --tw-border-style: solid;
       --tw-divide-y-reverse: 0;
+      --tw-leading: initial;
       --tw-font-weight: initial;
       --tw-tracking: initial;
       --tw-ordinal: initial;
