@@ -140,3 +140,60 @@ The icons themselves stay under their original licenses — Font Awesome Free ic
 CC BY 4.0, Heroicons is MIT, and Lucide is ISC with a subset under MIT. Full notices,
 including the required attribution and notice of modification, are in
 [attribution.md](./attribution.md).
+
+## Contributing
+
+Thanks for wanting to help make olum-icons better! 💙 Bug fixes, new features, and docs improvements are all welcome.
+
+### Step by step
+
+1. **Fork** the repo and clone your fork:
+   ```bash
+   git clone https://github.com/<your-username>/olum-icons.git
+   cd olum-icons
+   ```
+2. **Make sure you're up to date** with the latest `v0.x.y` release branch:
+   ```bash
+   git fetch origin
+   git checkout v0.x.y
+   ```
+3. **Create your own branch from it:**
+   ```bash
+   git checkout -b feat/my-awesome-feature
+   # or: git checkout -b fix/describe-the-bug
+   ```
+4. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+5. **Make your change.** Olum's own icons live in `src/icons` and the generator scripts in `scripts/`. Keep the change focused: one feature or fix per PR.
+6. **Check your change** by running the pipeline with `npm start`. Note that `dist/` is generated — do not edit it by hand.
+7. **Commit** using a clear message, following the existing style:
+   ```
+   feat: add a new icon
+   fix: describe the bug
+   ```
+8. **Push** your branch to your fork:
+   ```bash
+   git push origin feat/my-awesome-feature
+   ```
+9. **Open a Pull Request** against the latest `v0.x.y` branch. Describe what changed, why, and include a screenshot or small example if it's user-facing.
+
+### PR checklist
+
+- [ ] Branched from the latest `v0.x.y` branch
+- [ ] PR targets that same branch
+- [ ] One focused change, clear commit messages
+
+Questions or unsure about an idea? Ask in [Discord](https://discord.gg/2zK7tb2Cg9) before you start — we're happy to help.
+
+## Community
+
+- [X](https://x.com/olumjs)
+- [Bluesky](https://bsky.app/profile/olumjs.bsky.social)
+- [Discord](https://discord.gg/2zK7tb2Cg9)
+
+## Contact
+
+- General: [hello@olumjs.top](mailto:hello@olumjs.top)
+- Security: [security@olumjs.top](mailto:security@olumjs.top) — please report vulnerabilities here privately rather than opening a public issue
